@@ -36,22 +36,23 @@ function Nav() {
 // ---------------------------------------------------------------------------
 function Hero() {
   return (
-    <section className="px-6 py-32 text-center">
-      <div className="mx-auto max-w-3xl">
-        <h1 className="text-4xl font-bold leading-tight text-white sm:text-5xl md:text-6xl">
-          Eliminate Front Desk Bottlenecks.
-        </h1>
-        <p className="mx-auto mt-6 max-w-2xl text-lg text-gray-400">
-          We design custom systems that automate the repetitive tasks keeping
-          your front desk from focusing on patient care.
-        </p>
-        <a
-          href="#audit"
-          className="mt-10 inline-flex items-center gap-2 rounded-full bg-teal-400 px-7 py-3.5 text-base font-semibold text-black transition hover:bg-teal-300"
-        >
-          Request an Automation Audit
-          <ArrowRight className="h-4 w-4" />
-        </a>
+    <section className="px-6 py-32">
+      <div className="mx-auto max-w-6xl">
+        <div className="max-w-2xl">
+          <h1 className="text-4xl font-bold leading-tight text-white sm:text-5xl md:text-6xl">
+            Wypełnij kalendarz. Odzyskaj czas i zyski.
+          </h1>
+          <p className="mt-6 text-lg text-gray-400">
+            Stały napływ pacjentów bez angażowania Twojego zespołu.
+          </p>
+          <a
+            href="#audit"
+            className="mt-10 inline-flex items-center gap-2 rounded-full bg-teal-400 px-7 py-3.5 text-base font-semibold text-black transition hover:bg-teal-300"
+          >
+            Sprawdź potencjał swoich zysków
+            <ArrowRight className="h-4 w-4" />
+          </a>
+        </div>
       </div>
     </section>
   );
