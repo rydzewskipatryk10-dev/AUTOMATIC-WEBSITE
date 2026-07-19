@@ -43,7 +43,7 @@ function Hero() {
             Wypełnij kalendarz. Odzyskaj czas i zyski.
           </h1>
           <p className="mt-6 text-lg text-gray-400">
-            Stały napływ pacjentów bez angażowania Twojego zespołu.
+            Stały napływ pacjentów przy minimalnym zaangażowaniu zespołu. Automatyzujemy stomatologię, odzyskując Twój czas i zyski.
           </p>
           <a
             href="#audit"
