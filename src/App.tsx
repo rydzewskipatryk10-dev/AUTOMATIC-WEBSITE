@@ -2,11 +2,11 @@ import {
   useState,
   useEffect,
   useRef,
+  type ReactNode,
 } from 'react';
 import {
   ArrowRight,
   Calendar,
-  Clock,
   Users,
   TrendingUp,
   CheckCircle,
@@ -26,7 +26,156 @@ import {
   Wrench,
   Rocket,
   ShieldCheck,
+  X,
+  Gift,
 } from 'lucide-react';
+
+// ---------------------------------------------------------------------------
+// Typewriter hook — reveals text character by character
+// ---------------------------------------------------------------------------
+function useTypewriter(text: string, speed = 45, startDelay = 400) {
+  const [displayed, setDisplayed] = useState('');
+  const [done, setDone] = useState(false);
+
+  useEffect(() => {
+    setDisplayed('');
+    setDone(false);
+    let i = 0;
+    let timer: ReturnType<typeof setTimeout>;
+
+    const start = setTimeout(() => {
+      const tick = () => {
+        if (i < text.length) {
+          setDisplayed(text.slice(0, i + 1));
+          i += 1;
+          timer = setTimeout(tick, speed);
+        } else {
+          setDone(true);
+        }
+      };
+      tick();
+    }, startDelay);
+
+    return () => {
+      clearTimeout(start);
+      clearTimeout(timer);
+    };
+  }, [text, speed, startDelay]);
+
+  return { displayed, done };
+}
+
+// ---------------------------------------------------------------------------
+// Scroll-reveal hook — fades children in when they enter the viewport
+// ---------------------------------------------------------------------------
+function useScrollReveal<T extends HTMLElement>() {
+  const ref = useRef<T>(null);
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setVisible(true);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.15 }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
+  return { ref, visible };
+}
+
+function Reveal({
+  children,
+  delay = 0,
+  className = '',
+}: {
+  children: ReactNode;
+  delay?: number;
+  className?: string;
+}) {
+  const { ref, visible } = useScrollReveal<HTMLDivElement>();
+  return (
+    <div
+      ref={ref}
+      className={`transition-all duration-700 ease-out ${
+        visible ? 'translate-y-0 opacity-100' : 'translate-y-6 opacity-0'
+      } ${className}`}
+      style={{ transitionDelay: `${delay}ms` }}
+    >
+      {children}
+    </div>
+  );
+}
+
+// ---------------------------------------------------------------------------
+// Lead Magnet Toast — slides in after a few seconds
+// ---------------------------------------------------------------------------
+function LeadMagnetToast() {
+  const [open, setOpen] = useState(false);
+  const [dismissed, setDismissed] = useState(false);
+
+  useEffect(() => {
+    if (dismissed) return;
+    const timer = setTimeout(() => setOpen(true), 3500);
+    return () => clearTimeout(timer);
+  }, [dismissed]);
+
+  const close = () => {
+    setOpen(false);
+    setDismissed(true);
+  };
+
+  return (
+    <div
+      className={`fixed bottom-6 left-6 z-50 w-[calc(100vw-3rem)] max-w-sm transition-all duration-500 ${
+        open && !dismissed
+          ? 'translate-y-0 opacity-100'
+          : 'pointer-events-none translate-y-8 opacity-0'
+      }`}
+    >
+      <div className="relative overflow-hidden rounded-2xl border border-teal-400/20 bg-[#111111] p-5 shadow-2xl shadow-black/50">
+        <button
+          onClick={close}
+          aria-label="Zamknij"
+          className="absolute right-3 top-3 text-gray-500 transition hover:text-white"
+        >
+          <X className="h-4 w-4" />
+        </button>
+        <div className="flex items-start gap-3 pr-6">
+          <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl bg-amber-400/15">
+            <Gift className="h-5 w-5 text-amber-400" strokeWidth={1.5} />
+          </div>
+          <div>
+            <p className="text-sm font-semibold text-white">
+              Darmowy przewodnik
+            </p>
+            <p className="mt-1 text-xs leading-relaxed text-gray-400">
+              Pobierz krótki przewodnik:{' '}
+              <span className="font-medium text-teal-300">
+                „5 sygnałów, że Twój gabinet traci na ręcznej obsłudze"
+              </span>
+            </p>
+            <a
+              href="#lead"
+              onClick={close}
+              className="mt-3 inline-flex items-center gap-1.5 rounded-full bg-amber-400 px-4 py-2 text-xs font-semibold text-black transition hover:bg-amber-300"
+            >
+              Pobierz PDF
+              <ArrowRight className="h-3 w-3" />
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
 
 // ---------------------------------------------------------------------------
 // Sticky Navigation (appears after scrolling past hero)
@@ -64,6 +213,24 @@ function Nav() {
 }
 
 // ---------------------------------------------------------------------------
+// Typewriter headline — reveals the hero headline char by char with a caret
+// ---------------------------------------------------------------------------
+function TypewriterHeadline({ text }: { text: string }) {
+  const { displayed, done } = useTypewriter(text, 42, 500);
+  return (
+    <>
+      {displayed}
+      <span
+        className={`inline-block w-[3px] -mb-1 ml-1 self-stretch bg-teal-400 transition-opacity ${
+          done ? 'animate-pulse' : 'opacity-100'
+        }`}
+        style={{ height: '0.9em', opacity: done ? 0.6 : 1 }}
+      />
+    </>
+  );
+}
+
+// ---------------------------------------------------------------------------
 // Hero — asymmetric, with dashboard mockup on the right
 // ---------------------------------------------------------------------------
 function Hero() {
@@ -77,9 +244,7 @@ function Hero() {
       <div className="relative mx-auto grid max-w-6xl items-center gap-12 lg:grid-cols-2">
         <div className="max-w-2xl">
           <h1 className="text-4xl font-bold leading-tight text-white sm:text-5xl md:text-6xl">
-            Wypełnij kalendarz.
-            <br />
-            Odzyskaj czas i dochody.
+            <TypewriterHeadline text="Twoja klinika traci zyski przy każdym wolnym slocie." />
           </h1>
           <p className="mt-6 text-lg text-gray-400">
             Stały napływ pacjentów przy minimalnym zaangażowaniu zespołu.
@@ -1052,17 +1217,38 @@ function App() {
     <div className="min-h-screen bg-[#0a0a0a] text-white antialiased">
       <Nav />
       <Hero />
-      <SocialProof />
-      <Calculator />
-      <WhyAutomation />
-      <SystemDiagram />
-      <BeforeAfter />
-      <Implementation />
-      <Testimonials />
-      <FounderNote />
-      <FAQ />
-      <AuditCta />
+      <Reveal>
+        <SocialProof />
+      </Reveal>
+      <Reveal>
+        <Calculator />
+      </Reveal>
+      <Reveal>
+        <WhyAutomation />
+      </Reveal>
+      <Reveal>
+        <SystemDiagram />
+      </Reveal>
+      <Reveal>
+        <BeforeAfter />
+      </Reveal>
+      <Reveal>
+        <Implementation />
+      </Reveal>
+      <Reveal>
+        <Testimonials />
+      </Reveal>
+      <Reveal>
+        <FounderNote />
+      </Reveal>
+      <Reveal>
+        <FAQ />
+      </Reveal>
+      <Reveal>
+        <AuditCta />
+      </Reveal>
       <Footer />
+      <LeadMagnetToast />
     </div>
   );
 }
