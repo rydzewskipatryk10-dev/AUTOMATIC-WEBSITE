@@ -28,10 +28,10 @@ import {
   ShieldCheck,
   X,
   Gift,
-  Loader2,
-  Check,
 } from 'lucide-react';
-import { supabase } from './lib/supabase';
+
+// Path to the downloadable PDF guide (place the file in /public)
+const GUIDE_PDF_PATH = '/practiceflow-przewodnik.pdf';
 
 // ---------------------------------------------------------------------------
 // Typewriter hook — reveals text character by character
@@ -216,115 +216,12 @@ function MagneticButton({
 }
 
 // ---------------------------------------------------------------------------
-// Lead form hook — submits to Supabase leads table
-// ---------------------------------------------------------------------------
-type LeadStatus = 'idle' | 'loading' | 'success' | 'error';
-
-function useLeadForm(source: string) {
-  const [status, setStatus] = useState<LeadStatus>('idle');
-  const [errorMsg, setErrorMsg] = useState('');
-
-  const submit = async (email: string, name?: string, message?: string) => {
-    setStatus('loading');
-    setErrorMsg('');
-    const { error } = await supabase.from('leads').insert({
-      email,
-      name: name || null,
-      source,
-      message: message || null,
-    });
-    if (error) {
-      setStatus('error');
-      setErrorMsg('Coś poszło nie tak. Spróbuj ponownie.');
-    } else {
-      setStatus('success');
-    }
-  };
-
-  const reset = () => {
-    setStatus('idle');
-    setErrorMsg('');
-  };
-
-  return { status, errorMsg, submit, reset };
-}
-
-// ---------------------------------------------------------------------------
-// Lead form fields — shared UI for modal, exit-intent, contact
-// ---------------------------------------------------------------------------
-function LeadFormFields({
-  status,
-  errorMsg,
-  showName = false,
-  showMessage = false,
-  submitLabel = 'Pobierz PDF',
-}: {
-  status: LeadStatus;
-  errorMsg: string;
-  showName?: boolean;
-  showMessage?: boolean;
-  submitLabel?: string;
-}) {
-  return (
-    <>
-      {showName && (
-        <input
-          name="name"
-          type="text"
-          required
-          placeholder="Imię"
-          className="w-full rounded-lg border border-white/10 bg-white/5 px-4 py-3 text-sm text-white placeholder-gray-500 focus:border-teal-400 focus:outline-none"
-        />
-      )}
-      <input
-        name="email"
-        type="email"
-        required
-        placeholder="Twój e-mail"
-        className="w-full rounded-lg border border-white/10 bg-white/5 px-4 py-3 text-sm text-white placeholder-gray-500 focus:border-teal-400 focus:outline-none"
-      />
-      {showMessage && (
-        <textarea
-          name="message"
-          rows={3}
-          placeholder="Twoja wiadomość (opcjonalnie)"
-          className="w-full rounded-lg border border-white/10 bg-white/5 px-4 py-3 text-sm text-white placeholder-gray-500 focus:border-teal-400 focus:outline-none"
-        />
-      )}
-      {errorMsg && (
-        <p className="text-xs text-red-400">{errorMsg}</p>
-      )}
-      <button
-        type="submit"
-        disabled={status === 'loading' || status === 'success'}
-        className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-amber-400 px-6 py-3.5 text-base font-semibold text-black transition hover:bg-amber-300 disabled:opacity-60"
-      >
-        {status === 'loading' && <Loader2 className="h-4 w-4 animate-spin" />}
-        {status === 'success' && <Check className="h-4 w-4" />}
-        {status === 'idle' && submitLabel}
-        {status === 'loading' && 'Wysyłanie...'}
-        {status === 'success' && 'Wysłano!'}
-        {status === 'error' && submitLabel}
-      </button>
-    </>
-  );
-}
-
-// ---------------------------------------------------------------------------
 // Lead Magnet Modal — centered overlay shown on first page load
 // ---------------------------------------------------------------------------
 function LeadMagnetModal() {
   const [open, setOpen] = useState(true);
-  const { status, errorMsg, submit } = useLeadForm('modal');
 
   const close = () => setOpen(false);
-
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const form = e.currentTarget;
-    const email = (form.elements.namedItem('email') as HTMLInputElement).value;
-    await submit(email);
-  };
 
   return (
     <div
@@ -349,57 +246,36 @@ function LeadMagnetModal() {
           <X className="h-5 w-5" />
         </button>
 
-        {status === 'success' ? (
-          <div className="flex flex-col items-center text-center">
-            <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-teal-400/15">
-              <Check className="h-7 w-7 text-teal-400" strokeWidth={1.5} />
-            </div>
-            <h3 className="mt-5 text-xl font-bold text-white">Gotowe!</h3>
-            <p className="mt-3 text-sm leading-relaxed text-gray-400">
-              Przewodnik trafi na Twój e-mail w ciągu kilku minut. Sprawdź
-              skrzynkę (i folder Spam, na wszelki wypadek).
-            </p>
-            <button
-              onClick={close}
-              className="mt-6 inline-flex items-center gap-2 rounded-full border border-white/10 px-6 py-3 text-sm font-semibold text-white transition hover:bg-white/5"
-            >
-              Przejdź do strony
-              <ArrowRight className="h-4 w-4" />
-            </button>
+        <div className="flex flex-col items-center text-center">
+          <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-amber-400/15">
+            <Gift className="h-7 w-7 text-amber-400" strokeWidth={1.5} />
           </div>
-        ) : (
-          <div className="flex flex-col items-center text-center">
-            <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-amber-400/15">
-              <Gift className="h-7 w-7 text-amber-400" strokeWidth={1.5} />
-            </div>
-            <p className="mt-5 text-xs font-semibold uppercase tracking-widest text-teal-400">
-              Darmowy przewodnik
-            </p>
-            <h3 className="mt-3 text-xl font-bold text-white">
-              5 sygnałów, że Twój gabinet traci na ręcznej obsłudze
-            </h3>
-            <p className="mt-3 text-sm leading-relaxed text-gray-400">
-              Krótki przewodnik, który pokaże Ci, gdzie uciekają zyski — i jak je
-              odzyskać automatyzacją.
-            </p>
-            <form
-              onSubmit={handleSubmit}
-              className="mt-6 flex w-full flex-col gap-3"
-            >
-              <LeadFormFields
-                status={status}
-                errorMsg={errorMsg}
-                submitLabel="Pobierz PDF"
-              />
-            </form>
-            <button
-              onClick={close}
-              className="mt-3 text-xs text-gray-500 transition hover:text-gray-300"
-            >
-              Nie, dziękuję — przejdź do strony
-            </button>
-          </div>
-        )}
+          <p className="mt-5 text-xs font-semibold uppercase tracking-widest text-teal-400">
+            Darmowy przewodnik
+          </p>
+          <h3 className="mt-3 text-xl font-bold text-white">
+            5 sygnałów, że Twój gabinet traci na ręcznej obsłudze
+          </h3>
+          <p className="mt-3 text-sm leading-relaxed text-gray-400">
+            Krótki przewodnik, który pokaże Ci, gdzie uciekają zyski — i jak je
+            odzyskać automatyzacją. Pobierz PDF, bez podawania e-maila.
+          </p>
+          <a
+            href={GUIDE_PDF_PATH}
+            download
+            onClick={close}
+            className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-full bg-amber-400 px-6 py-3.5 text-base font-semibold text-black transition hover:bg-amber-300"
+          >
+            Pobierz PDF
+            <ArrowRight className="h-4 w-4" />
+          </a>
+          <button
+            onClick={close}
+            className="mt-3 text-xs text-gray-500 transition hover:text-gray-300"
+          >
+            Nie, dziękuję — przejdź do strony
+          </button>
+        </div>
       </div>
     </div>
   );
@@ -411,7 +287,6 @@ function LeadMagnetModal() {
 function ExitIntentPopup() {
   const [open, setOpen] = useState(false);
   const [dismissed, setDismissed] = useState(false);
-  const { status, errorMsg, submit } = useLeadForm('exit-intent');
 
   useEffect(() => {
     if (dismissed) return;
@@ -427,13 +302,6 @@ function ExitIntentPopup() {
   const close = () => {
     setOpen(false);
     setDismissed(true);
-  };
-
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const form = e.currentTarget;
-    const email = (form.elements.namedItem('email') as HTMLInputElement).value;
-    await submit(email);
   };
 
   return (
@@ -461,55 +329,36 @@ function ExitIntentPopup() {
           <X className="h-5 w-5" />
         </button>
 
-        {status === 'success' ? (
-          <div className="flex flex-col items-center text-center">
-            <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-teal-400/15">
-              <Check className="h-7 w-7 text-teal-400" strokeWidth={1.5} />
-            </div>
-            <h3 className="mt-5 text-xl font-bold text-white">Sukces!</h3>
-            <p className="mt-3 text-sm leading-relaxed text-gray-400">
-              Wyślemy audyt na Twój e-mail w ciągu 24 godzin.
-            </p>
-            <button
-              onClick={close}
-              className="mt-6 inline-flex items-center gap-2 rounded-full border border-white/10 px-6 py-3 text-sm font-semibold text-white transition hover:bg-white/5"
-            >
-              Zamknij
-            </button>
+        <div className="flex flex-col items-center text-center">
+          <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-teal-400/15">
+            <CalendarClock className="h-7 w-7 text-teal-400" strokeWidth={1.5} />
           </div>
-        ) : (
-          <div className="flex flex-col items-center text-center">
-            <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-teal-400/15">
-              <CalendarClock className="h-7 w-7 text-teal-400" strokeWidth={1.5} />
-            </div>
-            <p className="mt-5 text-xs font-semibold uppercase tracking-widest text-teal-400">
-              Zanim odejdziesz
-            </p>
-            <h3 className="mt-3 text-xl font-bold text-white">
-              Darmowy audyt Twojego grafiku — 15 minut
-            </h3>
-            <p className="mt-3 text-sm leading-relaxed text-gray-400">
-              Zostaw e-mail, a prześlemy Ci krótki audyt: gdzie uciekają zyski i
-              ile możesz odzyskać w 30 dni.
-            </p>
-            <form
-              onSubmit={handleSubmit}
-              className="mt-6 flex w-full flex-col gap-3"
-            >
-              <LeadFormFields
-                status={status}
-                errorMsg={errorMsg}
-                submitLabel="Chcę darmowy audyt"
-              />
-            </form>
-            <button
-              onClick={close}
-              className="mt-3 text-xs text-gray-500 transition hover:text-gray-300"
-            >
-              Nie, dziękuję
-            </button>
-          </div>
-        )}
+          <p className="mt-5 text-xs font-semibold uppercase tracking-widest text-teal-400">
+            Zanim odejdziesz
+          </p>
+          <h3 className="mt-3 text-xl font-bold text-white">
+            Pobierz darmowy przewodnik
+          </h3>
+          <p className="mt-3 text-sm leading-relaxed text-gray-400">
+            Zanim odejdziesz — zabierz krótki przewodnik: 5 sygnałów, że Twój
+            gabinet traci na ręcznej obsłudze. PDF, bez podawania e-maila.
+          </p>
+          <a
+            href={GUIDE_PDF_PATH}
+            download
+            onClick={close}
+            className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-full bg-amber-400 px-6 py-3.5 text-base font-semibold text-black transition hover:bg-amber-300"
+          >
+            Pobierz PDF
+            <ArrowRight className="h-4 w-4" />
+          </a>
+          <button
+            onClick={close}
+            className="mt-3 text-xs text-gray-500 transition hover:text-gray-300"
+          >
+            Nie, dziękuję
+          </button>
+        </div>
       </div>
     </div>
   );
@@ -1692,17 +1541,6 @@ function FAQ() {
 // Audit CTA + Booking
 // ---------------------------------------------------------------------------
 function AuditCta() {
-  const { status, errorMsg, submit } = useLeadForm('contact');
-
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const form = e.currentTarget;
-    const email = (form.elements.namedItem('email') as HTMLInputElement).value;
-    const name = (form.elements.namedItem('name') as HTMLInputElement).value;
-    const message = (form.elements.namedItem('message') as HTMLTextAreaElement).value;
-    await submit(email, name, message);
-  };
-
   return (
     <section id="book" className="relative overflow-hidden bg-[#111111] px-6 py-32">
       {/* Gradient glow */}
@@ -1719,31 +1557,14 @@ function AuditCta() {
           możemy to zautomatyzować. Bez zobowiązań.
         </p>
 
-        {status === 'success' ? (
-          <div className="mx-auto mt-10 max-w-md rounded-2xl border border-teal-400/20 bg-teal-400/5 p-8">
-            <div className="flex h-14 w-14 mx-auto items-center justify-center rounded-2xl bg-teal-400/15">
-              <Check className="h-7 w-7 text-teal-400" strokeWidth={1.5} />
-            </div>
-            <h3 className="mt-5 text-xl font-bold text-white">Dziękujemy!</h3>
-            <p className="mt-3 text-sm leading-relaxed text-gray-400">
-              Odezwiemy się w ciągu 24 godzin, aby umówić rozmowę.
-            </p>
-          </div>
-        ) : (
-          <form
-            onSubmit={handleSubmit}
-            className="mx-auto mt-10 flex max-w-md flex-col gap-3"
-          >
-            <LeadFormFields
-              status={status}
-              errorMsg={errorMsg}
-              showName
-              showMessage
-              submitLabel="Umów audyt grafiku"
-            />
-            <p className="mt-2 text-xs text-gray-500">15 min, bez zobowiązań</p>
-          </form>
-        )}
+        <a
+          href="mailto:kontakt@practiceflow.pl?subject=Pro%C5%9Bba%20o%20audyt%20grafiku"
+          className="mt-10 inline-flex items-center gap-2 rounded-full bg-amber-400 px-8 py-4 text-base font-semibold text-black transition hover:bg-amber-300"
+        >
+          Umów audyt grafiku
+          <ArrowRight className="h-4 w-4" />
+        </a>
+        <p className="mt-3 text-sm text-gray-500">15 min, bez zobowiązań</p>
 
         <p className="mt-6 flex items-center justify-center gap-2 text-sm text-gray-500">
           <Mail className="h-4 w-4" />
