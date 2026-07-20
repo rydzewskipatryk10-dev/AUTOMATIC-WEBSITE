@@ -49,7 +49,7 @@ function Nav() {
           href="#diagnoza"
           className="rounded-full bg-teal-400 px-5 py-2 text-sm font-semibold text-black transition hover:bg-teal-300"
         >
-          Zamów audyt
+          Umów rozmowę
         </a>
       </div>
     </header>
@@ -70,11 +70,13 @@ function Hero() {
       <div className="relative mx-auto max-w-6xl">
         <div className="max-w-2xl">
           <h1 className="text-4xl font-bold leading-tight text-white sm:text-5xl md:text-6xl">
-            Wypełnij kalendarz. Odzyskaj czas i zyski.
+            Wypełnij kalendarz.
+            <br />
+            Odzyskaj czas i dochody.
           </h1>
           <p className="mt-6 text-lg text-gray-400">
             Stały napływ pacjentów przy minimalnym zaangażowaniu zespołu.
-            Automatyzujemy stomatologię, odzyskując Twój czas i zyski.
+            Automatyzujemy stomatologię, odzyskując Twój czas i pieniądze.
           </p>
           <a
             href="#diagnoza"
@@ -93,16 +95,16 @@ function Hero() {
 // Automation Calculator + 3-question Diagnosis
 // ---------------------------------------------------------------------------
 type DiagnosisAnswers = {
-  hours: string;
+  cancellations: string;
   emptySlots: string;
   dropOff: string;
 };
 
 const DIAGNOSIS_OPTIONS = {
-  hours: [
-    { value: '<5h', label: 'Poniżej 5h' },
-    { value: '5-10h', label: '5–10h' },
-    { value: '>10h', label: 'Powyżej 10h' },
+  cancellations: [
+    { value: '0-2', label: '0–2 wizyty' },
+    { value: '3-5', label: '3–5 wizyt' },
+    { value: '>5', label: 'Powyżej 5' },
   ],
   emptySlots: [
     { value: '0', label: 'Brak' },
@@ -116,28 +118,37 @@ const DIAGNOSIS_OPTIONS = {
   ],
 };
 
+// Stałe wartości kalkulatora
+const AVG_REVENUE_PER_VISIT = 500; // zł — średni zysk z wizyty
+const HOURS_SAVED_PER_STAFF = 10; // h/tydzień — oszczędność czasu na jedną osobę
+const HOURLY_COST = 37; // zł brutto — koszt godziny pracy
+const WORKING_WEEKS = 48; // tygodnie robocze w roku
+
 function Calculator() {
+  const [cancellations, setCancellations] = useState(3);
   const [staff, setStaff] = useState(2);
-  const [hours, setHours] = useState(15);
   const [step, setStep] = useState(0);
   const [answers, setAnswers] = useState<DiagnosisAnswers>({
-    hours: '',
+    cancellations: '',
     emptySlots: '',
     dropOff: '',
   });
   const [showResult, setShowResult] = useState(false);
 
-  // Simple recovery estimate: ~60% of manual hours can be automated
-  const recoveredHours = Math.round(hours * 0.6 * staff);
-  const recoveredPLN = recoveredHours * 120; // ~120 PLN/h blended value
-  const annualPLN = recoveredPLN * 48; // working weeks
+  // Wyniki kalkulatora
+  const recoveredRevenuePLN = cancellations * AVG_REVENUE_PER_VISIT; // /tydzień
+  const recoveredRevenueAnnual = recoveredRevenuePLN * WORKING_WEEKS;
+  const savedHoursWeekly = staff * HOURS_SAVED_PER_STAFF;
+  const savedCostWeekly = savedHoursWeekly * HOURLY_COST;
+  const savedCostAnnual = savedCostWeekly * WORKING_WEEKS;
+  const totalAnnual = recoveredRevenueAnnual + savedCostAnnual;
 
   const questions = [
     {
-      key: 'hours' as const,
+      key: 'cancellations' as const,
       icon: Phone,
-      title: 'Ile czasu tygodniowo Twój zespół poświęca na telefoniczne potwierdzanie wizyt i zarządzanie odwołaniami?',
-      options: DIAGNOSIS_OPTIONS.hours,
+      title: 'Ile wizyt tygodniowo jest odwoływanych w Twoim gabinecie?',
+      options: DIAGNOSIS_OPTIONS.cancellations,
     },
     {
       key: 'emptySlots' as const,
@@ -154,7 +165,21 @@ function Calculator() {
   ];
 
   const handleAnswer = (key: keyof DiagnosisAnswers, value: string) => {
-    setAnswers((prev) => ({ ...prev, [key]: value }));
+    const newAnswers = { ...answers, [key]: value };
+    setAnswers(newAnswers);
+
+    // Predefiniuj suwaki na podstawie odpowiedzi diagnozy (realistyczne mapowanie)
+    if (key === 'cancellations') {
+      if (value === '0-2') setCancellations(2);
+      else if (value === '3-5') setCancellations(4);
+      else if (value === '>5') setCancellations(7);
+    }
+    if (key === 'emptySlots') {
+      if (value === '0') setCancellations((c) => Math.max(c, 1));
+      else if (value === '1-3') setCancellations((c) => Math.max(c, 3));
+      else if (value === '>3') setCancellations((c) => Math.max(c, 5));
+    }
+
     if (step < questions.length - 1) {
       setStep(step + 1);
     } else {
@@ -179,10 +204,28 @@ function Calculator() {
               Kalkulator automatyzacji
             </h3>
             <p className="mt-2 text-sm text-gray-400">
-              Suwaki pokazują szacunkowy potencjał odzyskanego czasu.
+              Suwaki pokazują szacunkowy potencjał odzyskanych dochodów i oszczędności.
             </p>
 
             <div className="mt-8 space-y-8">
+              <div>
+                <div className="flex items-center justify-between">
+                  <label className="flex items-center gap-2 text-sm font-medium text-gray-300">
+                    <CalendarClock className="h-4 w-4 text-teal-400" />
+                    Odwołane wizyty tygodniowo
+                  </label>
+                  <span className="text-lg font-bold text-teal-400">{cancellations}</span>
+                </div>
+                <input
+                  type="range"
+                  min={0}
+                  max={10}
+                  value={cancellations}
+                  onChange={(e) => setCancellations(Number(e.target.value))}
+                  className="mt-3 w-full accent-teal-400"
+                />
+              </div>
+
               <div>
                 <div className="flex items-center justify-between">
                   <label className="flex items-center gap-2 text-sm font-medium text-gray-300">
@@ -194,28 +237,9 @@ function Calculator() {
                 <input
                   type="range"
                   min={1}
-                  max={6}
+                  max={10}
                   value={staff}
                   onChange={(e) => setStaff(Number(e.target.value))}
-                  className="mt-3 w-full accent-teal-400"
-                />
-              </div>
-
-              <div>
-                <div className="flex items-center justify-between">
-                  <label className="flex items-center gap-2 text-sm font-medium text-gray-300">
-                    <Clock className="h-4 w-4 text-teal-400" />
-                    Godziny/tydzień na zadania manualne
-                  </label>
-                  <span className="text-lg font-bold text-teal-400">{hours}h</span>
-                </div>
-                <input
-                  type="range"
-                  min={5}
-                  max={40}
-                  step={5}
-                  value={hours}
-                  onChange={(e) => setHours(Number(e.target.value))}
                   className="mt-3 w-full accent-teal-400"
                 />
               </div>
@@ -223,21 +247,27 @@ function Calculator() {
 
             <div className="mt-10 space-y-4 border-t border-white/5 pt-8">
               <div className="flex items-center justify-between">
-                <span className="text-sm text-gray-400">Odzyskane godziny / tydzień</span>
-                <span className="text-xl font-bold text-white">{recoveredHours}h</span>
+                <span className="text-sm text-gray-400">Odzyskane dochody z wizyt / tydzień</span>
+                <span className="text-xl font-bold text-white">
+                  {recoveredRevenuePLN.toLocaleString('pl-PL')} zł
+                </span>
               </div>
               <div className="flex items-center justify-between">
-                <span className="text-sm text-gray-400">Szacowana wartość / tydzień</span>
+                <span className="text-sm text-gray-400">Oszczędność na recepcji / tydzień</span>
                 <span className="text-xl font-bold text-white">
-                  {recoveredPLN.toLocaleString('pl-PL')} zł
+                  {savedCostWeekly.toLocaleString('pl-PL')} zł
                 </span>
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="text-sm text-gray-400">Odzyskany czas / tydzień</span>
+                <span className="text-xl font-bold text-white">{savedHoursWeekly}h</span>
               </div>
               <div className="flex items-center justify-between rounded-lg bg-teal-400/10 px-4 py-3">
                 <span className="text-sm font-medium text-teal-300">
-                  Potencjał roczny
+                  Potencjał roczny (łącznie)
                 </span>
                 <span className="text-2xl font-bold text-teal-300">
-                  {annualPLN.toLocaleString('pl-PL')} zł
+                  {totalAnnual.toLocaleString('pl-PL')} zł
                 </span>
               </div>
             </div>
@@ -303,9 +333,10 @@ function Calculator() {
                   Twój gabinet ma wyraźny potencjał automatyzacji.
                 </h3>
                 <p className="mt-3 text-sm text-gray-400">
-                  Na podstawie Twoich odpowiedzi i kalkulatora, możemy odzyskać
-                  do <span className="font-semibold text-teal-300">{recoveredHours}h tygodniowo</span> —
-                  to <span className="font-semibold text-teal-300">{annualPLN.toLocaleString('pl-PL')} zł rocznie</span> potencjalnie odzyskanych zysków.
+                  Na podstawie Twoich odpowiedzi i kalkulatora, możesz odzyskać
+                  do <span className="font-semibold text-teal-300">{savedHoursWeekly}h tygodniowo</span> i
+                  <span className="font-semibold text-teal-300"> {totalAnnual.toLocaleString('pl-PL')} zł rocznie</span> —
+                  z odzyskanych wizyt i oszczędności na recepcji.
                 </p>
 
                 <div className="mt-6 space-y-3">
@@ -326,9 +357,10 @@ function Calculator() {
                     href="#book"
                     className="inline-flex items-center gap-2 rounded-full bg-teal-400 px-7 py-3.5 text-base font-semibold text-black transition hover:bg-teal-300"
                   >
-                    Zamów darmowy audyt
+                    Umów rozmowę
                     <ArrowRight className="h-4 w-4" />
                   </a>
+                  <p className="mt-3 text-xs text-gray-500">30 min, bez zobowiązań</p>
                 </div>
               </div>
             )}
@@ -350,20 +382,18 @@ function WhyAutomation() {
           Dlaczego automatyzacja w stomatologii?
         </p>
         <h2 className="mt-4 text-3xl font-bold text-white sm:text-4xl">
-          Nie jesteśmy agencją, która "robi strony".
+          Systemy odzyskujące twoje dochody
         </h2>
         <div className="mt-8 space-y-6 text-lg leading-relaxed text-gray-300">
           <p>
-            Jesteśmy inżynierami systemów automatyzacji dedykowanych wyłącznie
-            gabinetom stomatologicznym. Naszą siłą jest głęboka analiza procesów,
-            które w 90% klinik stomatologicznych działają na przestarzałych
-            schematach.
-          </p>
-          <p>
-            Wiemy, że w Twojej branży każda minuta spędzona na administracji to
-            minuta zabrana pacjentowi.
+            Projektujemy systemy dla klinik dentystycznych, które automatycznie
+            zapełniają Twój grafik i usuwają puste fotele, eliminując potrzebę
+            ręcznej obsługi recepcji.
           </p>
         </div>
+        <p className="mt-6 text-base text-gray-500">
+          Od zapełniania grafiku po samoobsługową rezerwację — bez zatrudniania dodatkowych osób.
+        </p>
 
         <div className="mt-12 grid gap-6 md:grid-cols-3">
           {[
@@ -492,7 +522,7 @@ function BeforeAfter() {
     'Ręczne potwierdzanie wizyt telefonicznie',
     'Papierowe grafiki i notatki',
     'Przepełnona skrzynka mailowa',
-    'Puste sloty po odwołeniach',
+    'Puste sloty po odwołaniach',
   ];
   const afterItems = [
     'Automatyczne przypomnienia SMS i e-mail',
@@ -599,10 +629,10 @@ function FounderNote() {
             Notatka założyciela
           </p>
           <p className="mt-6 text-lg leading-relaxed text-gray-300">
-            "Pracowałem wewnątrz gabinetów stomatologicznych i widziałem, ile
-            czasu traci się na zadania, które nie wymagają udziału człowieka.
-            Dlatego zbudowaliśmy systemy, które sami chcieliśmy mieć — proste,
-            dyskretne i realnie odzyskujące czas dla pacjenta."
+            "Kliniki dentystyczne tracą dochody nie przez brak pacjentów, ale
+            przez procesy, których nikt nie audytuje. Stworzyliśmy PracticeFlow,
+            żeby to zmienić — z systemem, który sam wypełnia grafik i odzyskuje
+            Twój czas."
           </p>
           <div className="mt-6 flex items-center gap-3">
             <div className="flex h-10 w-10 items-center justify-center rounded-full bg-teal-400/10 text-sm font-bold text-teal-300">
@@ -627,19 +657,20 @@ function AuditCta() {
     <section id="book" className="bg-[#111111] px-6 py-32">
       <div className="mx-auto max-w-3xl text-center">
         <h2 className="text-4xl font-bold text-white sm:text-5xl">
-          Zamów darmowy audyt automatyzacji.
+          Porozmawiajmy o Twoim grafiku.
         </h2>
         <p className="mx-auto mt-6 max-w-xl text-lg text-gray-400">
-          Diagnostyczny przegląd procesów Twojego gabinetu — wskażemy dokładnie,
-          gdzie tracisz czas. Bez zobowiązań.
+          Krótka rozmowa o tym, gdzie Twój gabinet traci czas i dochody — i jak
+          możemy to zautomatyzować. Bez zobowiązań.
         </p>
         <a
           href="mailto:kontakt@practiceflow.pl"
           className="mt-10 inline-flex items-center gap-2 rounded-full bg-teal-400 px-8 py-4 text-base font-semibold text-black transition hover:bg-teal-300"
         >
-          Zamów audyt
+          Umów rozmowę
           <ArrowRight className="h-4 w-4" />
         </a>
+        <p className="mt-3 text-sm text-gray-500">30 min, bez zobowiązań</p>
         <p className="mt-6 flex items-center justify-center gap-2 text-sm text-gray-500">
           <Mail className="h-4 w-4" />
           kontakt@practiceflow.pl
