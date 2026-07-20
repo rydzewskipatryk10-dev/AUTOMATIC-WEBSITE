@@ -370,7 +370,7 @@ function Calculator() {
                     Umów rozmowę
                     <ArrowRight className="h-4 w-4" />
                   </a>
-                  <p className="mt-3 text-xs text-gray-500">30 min, bez zobowiązań</p>
+                  <p className="mt-3 text-xs text-gray-500">15 min, bez zobowiązań</p>
                 </div>
               </div>
             )}
@@ -680,7 +680,7 @@ function AuditCta() {
           Umów rozmowę
           <ArrowRight className="h-4 w-4" />
         </a>
-        <p className="mt-3 text-sm text-gray-500">30 min, bez zobowiązań</p>
+        <p className="mt-3 text-sm text-gray-500">15 min, bez zobowiązań</p>
         <p className="mt-6 flex items-center justify-center gap-2 text-sm text-gray-500">
           <Mail className="h-4 w-4" />
           kontakt@practiceflow.pl
