@@ -258,7 +258,7 @@ function LeadMagnetModal() {
           </h3>
           <p className="mt-3 text-sm leading-relaxed text-gray-400">
             Krótki przewodnik, który pokaże Ci, gdzie uciekają zyski — i jak je
-            odzyskać automatyzacją. Pobierz PDF, bez podawania e-maila.
+            odzyskać automatyzacją. Pobierz za darmo — bez podawania e-maila.
           </p>
           <a
             href={GUIDE_PDF_PATH}
@@ -266,7 +266,7 @@ function LeadMagnetModal() {
             onClick={close}
             className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-full bg-amber-400 px-6 py-3.5 text-base font-semibold text-black transition hover:bg-amber-300"
           >
-            Pobierz PDF
+            Pobierz darmowy przewodnik
             <ArrowRight className="h-4 w-4" />
           </a>
           <button
@@ -349,7 +349,7 @@ function ExitIntentPopup() {
             onClick={close}
             className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-full bg-amber-400 px-6 py-3.5 text-base font-semibold text-black transition hover:bg-amber-300"
           >
-            Pobierz PDF
+            Pobierz darmowy przewodnik
             <ArrowRight className="h-4 w-4" />
           </a>
           <button
