@@ -28,7 +28,10 @@ import {
   ShieldCheck,
   X,
   Gift,
+  Loader2,
+  Check,
 } from 'lucide-react';
+import { supabase } from './lib/supabase';
 
 // ---------------------------------------------------------------------------
 // Typewriter hook — reveals text character by character
@@ -115,12 +118,213 @@ function Reveal({
 }
 
 // ---------------------------------------------------------------------------
+// Animated counter — counts up from 0 to target when scrolled into view
+// ---------------------------------------------------------------------------
+function useCountUp(target: number, duration = 1600, startDelay = 200) {
+  const [value, setValue] = useState(0);
+  const ref = useRef<HTMLSpanElement>(null);
+  const started = useRef(false);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && !started.current) {
+          started.current = true;
+          setTimeout(() => {
+            const startTime = performance.now();
+            const tick = (now: number) => {
+              const progress = Math.min((now - startTime) / duration, 1);
+              const eased = 1 - Math.pow(1 - progress, 3);
+              setValue(Math.round(target * eased));
+              if (progress < 1) requestAnimationFrame(tick);
+            };
+            requestAnimationFrame(tick);
+          }, startDelay);
+        }
+      },
+      { threshold: 0.4 }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [target, duration, startDelay]);
+
+  return { ref, value };
+}
+
+function StatCounter({
+  value,
+  suffix = '',
+  prefix = '',
+  className = '',
+}: {
+  value: number;
+  suffix?: string;
+  prefix?: string;
+  className?: string;
+}) {
+  const { ref, value: display } = useCountUp(value);
+  return (
+    <span ref={ref} className={className}>
+      {prefix}
+      {display.toLocaleString('pl-PL')}
+      {suffix}
+    </span>
+  );
+}
+
+// ---------------------------------------------------------------------------
+// Magnetic button — subtly attracts toward the cursor
+// ---------------------------------------------------------------------------
+function MagneticButton({
+  children,
+  href,
+  className = '',
+}: {
+  children: ReactNode;
+  href: string;
+  className?: string;
+}) {
+  const ref = useRef<HTMLAnchorElement>(null);
+
+  const handleMove = (e: React.MouseEvent) => {
+    const el = ref.current;
+    if (!el) return;
+    const rect = el.getBoundingClientRect();
+    const x = e.clientX - rect.left - rect.width / 2;
+    const y = e.clientY - rect.top - rect.height / 2;
+    el.style.transform = `translate(${x * 0.15}px, ${y * 0.15}px)`;
+  };
+
+  const handleLeave = () => {
+    const el = ref.current;
+    if (el) el.style.transform = 'translate(0, 0)';
+  };
+
+  return (
+    <a
+      ref={ref}
+      href={href}
+      onMouseMove={handleMove}
+      onMouseLeave={handleLeave}
+      className={`inline-flex items-center gap-2 transition-transform duration-200 ease-out ${className}`}
+    >
+      {children}
+    </a>
+  );
+}
+
+// ---------------------------------------------------------------------------
+// Lead form hook — submits to Supabase leads table
+// ---------------------------------------------------------------------------
+type LeadStatus = 'idle' | 'loading' | 'success' | 'error';
+
+function useLeadForm(source: string) {
+  const [status, setStatus] = useState<LeadStatus>('idle');
+  const [errorMsg, setErrorMsg] = useState('');
+
+  const submit = async (email: string, name?: string, message?: string) => {
+    setStatus('loading');
+    setErrorMsg('');
+    const { error } = await supabase.from('leads').insert({
+      email,
+      name: name || null,
+      source,
+      message: message || null,
+    });
+    if (error) {
+      setStatus('error');
+      setErrorMsg('Coś poszło nie tak. Spróbuj ponownie.');
+    } else {
+      setStatus('success');
+    }
+  };
+
+  const reset = () => {
+    setStatus('idle');
+    setErrorMsg('');
+  };
+
+  return { status, errorMsg, submit, reset };
+}
+
+// ---------------------------------------------------------------------------
+// Lead form fields — shared UI for modal, exit-intent, contact
+// ---------------------------------------------------------------------------
+function LeadFormFields({
+  status,
+  errorMsg,
+  showName = false,
+  showMessage = false,
+  submitLabel = 'Pobierz PDF',
+}: {
+  status: LeadStatus;
+  errorMsg: string;
+  showName?: boolean;
+  showMessage?: boolean;
+  submitLabel?: string;
+}) {
+  return (
+    <>
+      {showName && (
+        <input
+          name="name"
+          type="text"
+          required
+          placeholder="Imię"
+          className="w-full rounded-lg border border-white/10 bg-white/5 px-4 py-3 text-sm text-white placeholder-gray-500 focus:border-teal-400 focus:outline-none"
+        />
+      )}
+      <input
+        name="email"
+        type="email"
+        required
+        placeholder="Twój e-mail"
+        className="w-full rounded-lg border border-white/10 bg-white/5 px-4 py-3 text-sm text-white placeholder-gray-500 focus:border-teal-400 focus:outline-none"
+      />
+      {showMessage && (
+        <textarea
+          name="message"
+          rows={3}
+          placeholder="Twoja wiadomość (opcjonalnie)"
+          className="w-full rounded-lg border border-white/10 bg-white/5 px-4 py-3 text-sm text-white placeholder-gray-500 focus:border-teal-400 focus:outline-none"
+        />
+      )}
+      {errorMsg && (
+        <p className="text-xs text-red-400">{errorMsg}</p>
+      )}
+      <button
+        type="submit"
+        disabled={status === 'loading' || status === 'success'}
+        className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-amber-400 px-6 py-3.5 text-base font-semibold text-black transition hover:bg-amber-300 disabled:opacity-60"
+      >
+        {status === 'loading' && <Loader2 className="h-4 w-4 animate-spin" />}
+        {status === 'success' && <Check className="h-4 w-4" />}
+        {status === 'idle' && submitLabel}
+        {status === 'loading' && 'Wysyłanie...'}
+        {status === 'success' && 'Wysłano!'}
+        {status === 'error' && submitLabel}
+      </button>
+    </>
+  );
+}
+
+// ---------------------------------------------------------------------------
 // Lead Magnet Modal — centered overlay shown on first page load
 // ---------------------------------------------------------------------------
 function LeadMagnetModal() {
   const [open, setOpen] = useState(true);
+  const { status, errorMsg, submit } = useLeadForm('modal');
 
   const close = () => setOpen(false);
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const form = e.currentTarget;
+    const email = (form.elements.namedItem('email') as HTMLInputElement).value;
+    await submit(email);
+  };
 
   return (
     <div
@@ -128,12 +332,10 @@ function LeadMagnetModal() {
         open ? 'opacity-100' : 'pointer-events-none opacity-0'
       }`}
     >
-      {/* Backdrop */}
       <div
         className="absolute inset-0 bg-black/80 backdrop-blur-sm"
         onClick={close}
       />
-      {/* Modal */}
       <div
         className={`relative w-full max-w-md overflow-hidden rounded-2xl border border-teal-400/20 bg-[#111111] p-8 shadow-2xl shadow-black/60 transition-all duration-300 ${
           open ? 'scale-100 translate-y-0' : 'scale-95 translate-y-4'
@@ -147,36 +349,197 @@ function LeadMagnetModal() {
           <X className="h-5 w-5" />
         </button>
 
-        <div className="flex flex-col items-center text-center">
-          <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-amber-400/15">
-            <Gift className="h-7 w-7 text-amber-400" strokeWidth={1.5} />
+        {status === 'success' ? (
+          <div className="flex flex-col items-center text-center">
+            <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-teal-400/15">
+              <Check className="h-7 w-7 text-teal-400" strokeWidth={1.5} />
+            </div>
+            <h3 className="mt-5 text-xl font-bold text-white">Gotowe!</h3>
+            <p className="mt-3 text-sm leading-relaxed text-gray-400">
+              Przewodnik trafi na Twój e-mail w ciągu kilku minut. Sprawdź
+              skrzynkę (i folder Spam, na wszelki wypadek).
+            </p>
+            <button
+              onClick={close}
+              className="mt-6 inline-flex items-center gap-2 rounded-full border border-white/10 px-6 py-3 text-sm font-semibold text-white transition hover:bg-white/5"
+            >
+              Przejdź do strony
+              <ArrowRight className="h-4 w-4" />
+            </button>
           </div>
-          <p className="mt-5 text-xs font-semibold uppercase tracking-widest text-teal-400">
-            Darmowy przewodnik
-          </p>
-          <h3 className="mt-3 text-xl font-bold text-white">
-            5 sygnałów, że Twój gabinet traci na ręcznej obsłudze
-          </h3>
-          <p className="mt-3 text-sm leading-relaxed text-gray-400">
-            Krótki przewodnik, który pokaże Ci, gdzie uciekają zyski — i jak je
-            odzyskać automatyzacją.
-          </p>
-          <a
-            href="#lead"
-            onClick={close}
-            className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-full bg-amber-400 px-6 py-3.5 text-base font-semibold text-black transition hover:bg-amber-300"
-          >
-            Pobierz PDF
-            <ArrowRight className="h-4 w-4" />
-          </a>
-          <button
-            onClick={close}
-            className="mt-3 text-xs text-gray-500 transition hover:text-gray-300"
-          >
-            Nie, dziękuję — przejdź do strony
-          </button>
-        </div>
+        ) : (
+          <div className="flex flex-col items-center text-center">
+            <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-amber-400/15">
+              <Gift className="h-7 w-7 text-amber-400" strokeWidth={1.5} />
+            </div>
+            <p className="mt-5 text-xs font-semibold uppercase tracking-widest text-teal-400">
+              Darmowy przewodnik
+            </p>
+            <h3 className="mt-3 text-xl font-bold text-white">
+              5 sygnałów, że Twój gabinet traci na ręcznej obsłudze
+            </h3>
+            <p className="mt-3 text-sm leading-relaxed text-gray-400">
+              Krótki przewodnik, który pokaże Ci, gdzie uciekają zyski — i jak je
+              odzyskać automatyzacją.
+            </p>
+            <form
+              onSubmit={handleSubmit}
+              className="mt-6 flex w-full flex-col gap-3"
+            >
+              <LeadFormFields
+                status={status}
+                errorMsg={errorMsg}
+                submitLabel="Pobierz PDF"
+              />
+            </form>
+            <button
+              onClick={close}
+              className="mt-3 text-xs text-gray-500 transition hover:text-gray-300"
+            >
+              Nie, dziękuję — przejdź do strony
+            </button>
+          </div>
+        )}
       </div>
+    </div>
+  );
+}
+
+// ---------------------------------------------------------------------------
+// Exit-intent popup — shows when cursor leaves the top of the page
+// ---------------------------------------------------------------------------
+function ExitIntentPopup() {
+  const [open, setOpen] = useState(false);
+  const [dismissed, setDismissed] = useState(false);
+  const { status, errorMsg, submit } = useLeadForm('exit-intent');
+
+  useEffect(() => {
+    if (dismissed) return;
+    const handleMouseLeave = (e: MouseEvent) => {
+      if (e.clientY <= 0) {
+        setOpen(true);
+      }
+    };
+    document.addEventListener('mouseleave', handleMouseLeave);
+    return () => document.removeEventListener('mouseleave', handleMouseLeave);
+  }, [dismissed]);
+
+  const close = () => {
+    setOpen(false);
+    setDismissed(true);
+  };
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const form = e.currentTarget;
+    const email = (form.elements.namedItem('email') as HTMLInputElement).value;
+    await submit(email);
+  };
+
+  return (
+    <div
+      className={`fixed inset-0 z-[90] flex items-center justify-center px-6 transition-all duration-300 ${
+        open && !dismissed
+          ? 'opacity-100'
+          : 'pointer-events-none opacity-0'
+      }`}
+    >
+      <div
+        className="absolute inset-0 bg-black/80 backdrop-blur-sm"
+        onClick={close}
+      />
+      <div
+        className={`relative w-full max-w-md overflow-hidden rounded-2xl border border-teal-400/20 bg-[#111111] p-8 shadow-2xl shadow-black/60 transition-all duration-300 ${
+          open ? 'scale-100 translate-y-0' : 'scale-95 translate-y-4'
+        }`}
+      >
+        <button
+          onClick={close}
+          aria-label="Zamknij"
+          className="absolute right-4 top-4 text-gray-500 transition hover:text-white"
+        >
+          <X className="h-5 w-5" />
+        </button>
+
+        {status === 'success' ? (
+          <div className="flex flex-col items-center text-center">
+            <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-teal-400/15">
+              <Check className="h-7 w-7 text-teal-400" strokeWidth={1.5} />
+            </div>
+            <h3 className="mt-5 text-xl font-bold text-white">Sukces!</h3>
+            <p className="mt-3 text-sm leading-relaxed text-gray-400">
+              Wyślemy audyt na Twój e-mail w ciągu 24 godzin.
+            </p>
+            <button
+              onClick={close}
+              className="mt-6 inline-flex items-center gap-2 rounded-full border border-white/10 px-6 py-3 text-sm font-semibold text-white transition hover:bg-white/5"
+            >
+              Zamknij
+            </button>
+          </div>
+        ) : (
+          <div className="flex flex-col items-center text-center">
+            <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-teal-400/15">
+              <CalendarClock className="h-7 w-7 text-teal-400" strokeWidth={1.5} />
+            </div>
+            <p className="mt-5 text-xs font-semibold uppercase tracking-widest text-teal-400">
+              Zanim odejdziesz
+            </p>
+            <h3 className="mt-3 text-xl font-bold text-white">
+              Darmowy audyt Twojego grafiku — 15 minut
+            </h3>
+            <p className="mt-3 text-sm leading-relaxed text-gray-400">
+              Zostaw e-mail, a prześlemy Ci krótki audyt: gdzie uciekają zyski i
+              ile możesz odzyskać w 30 dni.
+            </p>
+            <form
+              onSubmit={handleSubmit}
+              className="mt-6 flex w-full flex-col gap-3"
+            >
+              <LeadFormFields
+                status={status}
+                errorMsg={errorMsg}
+                submitLabel="Chcę darmowy audyt"
+              />
+            </form>
+            <button
+              onClick={close}
+              className="mt-3 text-xs text-gray-500 transition hover:text-gray-300"
+            >
+              Nie, dziękuję
+            </button>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+// ---------------------------------------------------------------------------
+// Sticky mobile CTA bar
+// ---------------------------------------------------------------------------
+function StickyMobileCta() {
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => setVisible(window.scrollY > 600);
+    window.addEventListener('scroll', onScroll);
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+
+  return (
+    <div
+      className={`fixed bottom-0 left-0 right-0 z-40 border-t border-white/10 bg-[#0a0a0a]/95 px-4 py-3 backdrop-blur-md transition-transform duration-300 md:hidden ${
+        visible ? 'translate-y-0' : 'translate-y-full'
+      }`}
+    >
+      <a
+        href="#diagnoza"
+        className="flex items-center justify-center gap-2 rounded-full bg-amber-400 px-6 py-3 text-sm font-semibold text-black"
+      >
+        Umów rozmowę
+        <ArrowRight className="h-4 w-4" />
+      </a>
     </div>
   );
 }
@@ -235,9 +598,165 @@ function TypewriterHeadline({ text }: { text: string }) {
 }
 
 // ---------------------------------------------------------------------------
+// Case Study — concrete before/after with numbers
+// ---------------------------------------------------------------------------
+function CaseStudy() {
+  return (
+    <section className="px-6 py-24">
+      <div className="mx-auto max-w-5xl">
+        <div className="mb-12 text-center">
+          <p className="text-xs font-semibold uppercase tracking-widest text-teal-400">
+            Case study
+          </p>
+          <h2 className="mt-3 text-3xl font-bold text-white sm:text-4xl">
+            Gabinet Stomatologiczny „Uśmiech"
+          </h2>
+          <p className="mt-4 text-gray-400">
+            3 fotele, 6 higienistek, 4 dentystów. Wdrożenie: 14 dni.
+          </p>
+        </div>
+
+        <div className="grid gap-6 md:grid-cols-2">
+          {/* Before */}
+          <div className="rounded-2xl border border-red-500/20 bg-red-500/5 p-8">
+            <p className="text-sm font-semibold text-red-400">Przed wdrożeniem</p>
+            <div className="mt-6 space-y-4">
+              <div>
+                <p className="text-3xl font-bold text-white">12%</p>
+                <p className="text-sm text-gray-400">wskaźnik no-shows</p>
+              </div>
+              <div>
+                <p className="text-3xl font-bold text-white">18h/tyg.</p>
+                <p className="text-sm text-gray-400">czas recepcji na telefon i przypomnienia</p>
+              </div>
+              <div>
+                <p className="text-3xl font-bold text-white">~14 000 zł</p>
+                <p className="text-sm text-gray-400">stracone zyski / miesiąc (puste sloty)</p>
+              </div>
+            </div>
+          </div>
+
+          {/* After */}
+          <div className="rounded-2xl border border-teal-400/20 bg-teal-400/5 p-8">
+            <p className="text-sm font-semibold text-teal-400">Po wdrożeniu</p>
+            <div className="mt-6 space-y-4">
+              <div>
+                <p className="text-3xl font-bold text-white">
+                  <StatCounter value={3} suffix="%" />
+                </p>
+                <p className="text-sm text-gray-400">wskaźnik no-shows</p>
+              </div>
+              <div>
+                <p className="text-3xl font-bold text-white">
+                  <StatCounter value={4} suffix="h/tyg." />
+                </p>
+                <p className="text-sm text-gray-400">czas recepcji na telefon i przypomnienia</p>
+              </div>
+              <div>
+                <p className="text-3xl font-bold text-white">
+                  <StatCounter value={21000} suffix=" zł" />
+                </p>
+                <p className="text-sm text-gray-400">odzyskane zyski / miesiąc</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="mt-8 rounded-2xl border border-white/10 bg-white/5 p-6 text-center">
+          <p className="text-lg font-semibold text-white">
+            ROI wdrożenia: <span className="text-teal-400">3,2x</span> w pierwszym miesiącu
+          </p>
+          <p className="mt-2 text-sm text-gray-400">
+            „Przestaliśmy gonić pacjentów telefonem. Teraz to oni rezerwują sami, a my skupiamy się na leczeniu."
+          </p>
+          <p className="mt-3 text-xs text-gray-500">— Anna K., właścicielka gabinetu „Uśmiech"</p>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// ---------------------------------------------------------------------------
+// Comparison Table — PracticeFlow vs. ręczna obsługa vs. typowy system
+// ---------------------------------------------------------------------------
+function ComparisonTable() {
+  const features = [
+    { label: 'Rezerwacja online 24/7', pf: true, manual: false, other: true },
+    { label: 'Automatyczne przypomnienia SMS', pf: true, manual: false, other: 'Częściowo' },
+    { label: 'Samoobsługowa zmiana terminu', pf: true, manual: false, other: false },
+    { label: 'Inteligentne wypełnianie pustych slotów', pf: true, manual: false, other: false },
+    { label: 'Lista oczekujących z auto-powiadomieniem', pf: true, manual: false, other: 'Ręcznie' },
+    { label: 'Mniej niż 15 min obsługi / tyg.', pf: true, manual: false, other: false },
+    { label: 'Wdrożenie w 14 dni', pf: true, manual: false, other: false },
+  ];
+
+  const renderCell = (val: boolean | string) => {
+    if (val === true)
+      return <CheckCircle className="mx-auto h-5 w-5 text-teal-400" />;
+    if (val === false) return <XCircle className="mx-auto h-5 w-5 text-gray-600" />;
+    return <span className="text-xs text-gray-400">{val}</span>;
+  };
+
+  return (
+    <section className="px-6 py-24">
+      <div className="mx-auto max-w-4xl">
+        <div className="mb-12 text-center">
+          <p className="text-xs font-semibold uppercase tracking-widest text-teal-400">
+            Porównanie
+          </p>
+          <h2 className="mt-3 text-3xl font-bold text-white sm:text-4xl">
+            Dlaczego PracticeFlow?
+          </h2>
+        </div>
+
+        <div className="overflow-x-auto">
+          <table className="w-full border-collapse">
+            <thead>
+              <tr className="border-b border-white/10">
+                <th className="py-4 text-left text-sm font-medium text-gray-400" />
+                <th className="py-4 px-4 text-center text-sm font-bold text-teal-400">
+                  PracticeFlow
+                </th>
+                <th className="py-4 px-4 text-center text-sm font-medium text-gray-400">
+                  Ręczna obsługa
+                </th>
+                <th className="py-4 px-4 text-center text-sm font-medium text-gray-400">
+                  Typowy system
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {features.map((f, i) => (
+                <tr
+                  key={f.label}
+                  className={`border-b border-white/5 ${i % 2 === 0 ? 'bg-white/[0.02]' : ''}`}
+                >
+                  <td className="py-4 text-left text-sm text-white">{f.label}</td>
+                  <td className="py-4 px-4 text-center">{renderCell(f.pf)}</td>
+                  <td className="py-4 px-4 text-center">{renderCell(f.manual)}</td>
+                  <td className="py-4 px-4 text-center">{renderCell(f.other)}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// ---------------------------------------------------------------------------
 // Hero — asymmetric, with dashboard mockup on the right
 // ---------------------------------------------------------------------------
 function Hero() {
+  const [scrollY, setScrollY] = useState(0);
+
+  useEffect(() => {
+    const onScroll = () => setScrollY(window.scrollY);
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+
   return (
     <section className="relative overflow-hidden px-6 py-32">
       {/* Subtle radial glow */}
@@ -254,17 +773,20 @@ function Hero() {
             Stały napływ pacjentów przy minimalnym zaangażowaniu zespołu.
             Automatyzujemy stomatologię, odzyskując Twój czas i pieniądze.
           </p>
-          <a
+          <MagneticButton
             href="#diagnoza"
-            className="mt-10 inline-flex items-center gap-2 rounded-full bg-amber-400 px-7 py-3.5 text-base font-semibold text-black transition hover:bg-amber-300"
+            className="mt-10 rounded-full bg-amber-400 px-7 py-3.5 text-base font-semibold text-black transition hover:bg-amber-300"
           >
             Sprawdź potencjał swoich zysków
             <ArrowRight className="h-4 w-4" />
-          </a>
+          </MagneticButton>
         </div>
 
         {/* Dashboard mockup */}
-        <div className="relative hidden lg:block">
+        <div
+          className="relative hidden lg:block"
+          style={{ transform: `translateY(${scrollY * 0.08}px)` }}
+        >
           <div className="rounded-2xl border border-white/10 bg-[#111111] p-5 shadow-2xl shadow-black/50">
             {/* Mock header */}
             <div className="flex items-center justify-between border-b border-white/5 pb-4">
@@ -527,13 +1049,13 @@ function Calculator() {
               <div className="flex items-center justify-between">
                 <span className="text-sm text-gray-400">Odzyskane dochody z wizyt / tydzień</span>
                 <span className="text-xl font-bold text-white">
-                  {recoveredRevenuePLN.toLocaleString('pl-PL')} zł
+                  <StatCounter value={recoveredRevenuePLN} suffix=" zł" />
                 </span>
               </div>
               <div className="flex items-center justify-between">
                 <span className="text-sm text-gray-400">Oszczędność na recepcji / tydzień</span>
                 <span className="text-xl font-bold text-white">
-                  {savedCostWeekly.toLocaleString('pl-PL')} zł
+                  <StatCounter value={savedCostWeekly} suffix=" zł" />
                 </span>
               </div>
               <div className="flex items-center justify-between">
@@ -554,7 +1076,7 @@ function Calculator() {
                     Potencjał miesięczny (łącznie)
                   </span>
                   <span className="text-2xl font-bold text-teal-300">
-                    {totalMonthly.toLocaleString('pl-PL')} zł
+                    <StatCounter value={totalMonthly} suffix=" zł" />
                   </span>
                 </div>
               </div>
@@ -641,13 +1163,13 @@ function Calculator() {
                 </div>
 
                 <div className="mt-auto pt-8">
-                  <a
+                  <MagneticButton
                     href="#book"
-                    className="inline-flex items-center gap-2 rounded-full bg-amber-400 px-7 py-3.5 text-base font-semibold text-black transition hover:bg-amber-300"
+                    className="rounded-full bg-amber-400 px-7 py-3.5 text-base font-semibold text-black transition hover:bg-amber-300"
                   >
                     Umów rozmowę
                     <ArrowRight className="h-4 w-4" />
-                  </a>
+                  </MagneticButton>
                   <p className="mt-3 text-xs text-gray-500">15 min, bez zobowiązań</p>
                 </div>
               </div>
@@ -1170,9 +1692,25 @@ function FAQ() {
 // Audit CTA + Booking
 // ---------------------------------------------------------------------------
 function AuditCta() {
+  const { status, errorMsg, submit } = useLeadForm('contact');
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const form = e.currentTarget;
+    const email = (form.elements.namedItem('email') as HTMLInputElement).value;
+    const name = (form.elements.namedItem('name') as HTMLInputElement).value;
+    const message = (form.elements.namedItem('message') as HTMLTextAreaElement).value;
+    await submit(email, name, message);
+  };
+
   return (
-    <section id="book" className="bg-[#111111] px-6 py-32">
-      <div className="mx-auto max-w-3xl text-center">
+    <section id="book" className="relative overflow-hidden bg-[#111111] px-6 py-32">
+      {/* Gradient glow */}
+      <div
+        className="pointer-events-none absolute left-1/2 top-1/2 h-[400px] w-[600px] -translate-x-1/2 -translate-y-1/2 animate-pulse rounded-full opacity-10 blur-3xl"
+        style={{ background: 'radial-gradient(ellipse, #fbbf24 0%, transparent 70%)' }}
+      />
+      <div className="relative mx-auto max-w-3xl text-center">
         <h2 className="text-4xl font-bold text-white sm:text-5xl">
           Porozmawiajmy o Twoim grafiku.
         </h2>
@@ -1180,14 +1718,33 @@ function AuditCta() {
           Krótka rozmowa o tym, gdzie Twój gabinet traci czas i dochody — i jak
           możemy to zautomatyzować. Bez zobowiązań.
         </p>
-        <a
-          href="mailto:kontakt@practiceflow.pl"
-          className="mt-10 inline-flex items-center gap-2 rounded-full bg-amber-400 px-8 py-4 text-base font-semibold text-black transition hover:bg-amber-300"
-        >
-          Umów audyt grafiku
-          <ArrowRight className="h-4 w-4" />
-        </a>
-        <p className="mt-3 text-sm text-gray-500">15 min, bez zobowiązań</p>
+
+        {status === 'success' ? (
+          <div className="mx-auto mt-10 max-w-md rounded-2xl border border-teal-400/20 bg-teal-400/5 p-8">
+            <div className="flex h-14 w-14 mx-auto items-center justify-center rounded-2xl bg-teal-400/15">
+              <Check className="h-7 w-7 text-teal-400" strokeWidth={1.5} />
+            </div>
+            <h3 className="mt-5 text-xl font-bold text-white">Dziękujemy!</h3>
+            <p className="mt-3 text-sm leading-relaxed text-gray-400">
+              Odezwiemy się w ciągu 24 godzin, aby umówić rozmowę.
+            </p>
+          </div>
+        ) : (
+          <form
+            onSubmit={handleSubmit}
+            className="mx-auto mt-10 flex max-w-md flex-col gap-3"
+          >
+            <LeadFormFields
+              status={status}
+              errorMsg={errorMsg}
+              showName
+              showMessage
+              submitLabel="Umów audyt grafiku"
+            />
+            <p className="mt-2 text-xs text-gray-500">15 min, bez zobowiązań</p>
+          </form>
+        )}
+
         <p className="mt-6 flex items-center justify-center gap-2 text-sm text-gray-500">
           <Mail className="h-4 w-4" />
           kontakt@practiceflow.pl
@@ -1237,6 +1794,12 @@ function App() {
         <BeforeAfter />
       </Reveal>
       <Reveal>
+        <CaseStudy />
+      </Reveal>
+      <Reveal>
+        <ComparisonTable />
+      </Reveal>
+      <Reveal>
         <Implementation />
       </Reveal>
       <Reveal>
@@ -1253,6 +1816,8 @@ function App() {
       </Reveal>
       <Footer />
       <LeadMagnetModal />
+      <ExitIntentPopup />
+      <StickyMobileCta />
     </div>
   );
 }
