@@ -262,13 +262,23 @@ function Calculator() {
                 <span className="text-sm text-gray-400">Odzyskany czas / tydzień</span>
                 <span className="text-xl font-bold text-white">{savedHoursWeekly}h</span>
               </div>
-              <div className="flex items-center justify-between rounded-lg bg-teal-400/10 px-4 py-3">
-                <span className="text-sm font-medium text-teal-300">
-                  Potencjał roczny (łącznie)
-                </span>
-                <span className="text-2xl font-bold text-teal-300">
-                  {totalAnnual.toLocaleString('pl-PL')} zł
-                </span>
+              <div className="rounded-lg bg-teal-400/10 px-4 py-3">
+                <div className="flex items-center justify-between">
+                  <span className="text-sm font-medium text-teal-300">
+                    Potencjał tygodniowy (łącznie)
+                  </span>
+                  <span className="text-lg font-bold text-teal-300">
+                    {(recoveredRevenuePLN + savedCostWeekly).toLocaleString('pl-PL')} zł
+                  </span>
+                </div>
+                <div className="mt-2 flex items-center justify-between border-t border-teal-400/20 pt-2">
+                  <span className="text-sm font-medium text-teal-300">
+                    Potencjał roczny (łącznie)
+                  </span>
+                  <span className="text-2xl font-bold text-teal-300">
+                    {totalAnnual.toLocaleString('pl-PL')} zł
+                  </span>
+                </div>
               </div>
             </div>
           </div>
