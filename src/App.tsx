@@ -241,6 +241,11 @@ function ExitIntentPopup() {
         </button>
 
         <div className="flex flex-col items-center text-center">
+          <img
+            src="/Projekt_bez_nazwy_-_2026-07-21T160459.162-removebg-preview copy.png"
+            alt="FullSchedule"
+            className="mb-5 h-12 w-auto"
+          />
           <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-cyan-400/15">
             <CalendarClock className="h-7 w-7 text-cyan-400" strokeWidth={1.5} />
           </div>
@@ -256,6 +261,7 @@ function ExitIntentPopup() {
           <a
             href="/practiceflow-przewodnik.pdf"
             download
+            id="exit-pdf-link"
             onClick={close}
             className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-full bg-sky-500 px-6 py-3.5 text-base font-semibold text-black transition hover:bg-sky-400"
           >
@@ -328,12 +334,12 @@ function Nav() {
       <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
         <a
           href="#top"
-          className="text-base font-semibold tracking-tight text-white transition hover:text-cyan-300"
+          className="flex items-center"
         >
           <img
-            src="/Projekt_bez_nazwy_-_2026-07-21T160459.162-removebg-preview.png"
+            src="/Projekt_bez_nazwy_-_2026-07-21T160459.162-removebg-preview copy.png"
             alt="FullSchedule"
-            className="h-8 w-auto"
+            className="h-11 w-auto"
           />
         </a>
         <nav className="hidden items-center gap-7 md:flex">
@@ -345,7 +351,7 @@ function Nav() {
           <LanguageToggle />
           <a
             href="#book"
-            className="rounded-full bg-gradient-to-r from-sky-500 to-cyan-400 px-7 py-3 text-base font-bold text-black shadow-lg shadow-cyan-500/40 transition hover:scale-105 hover:shadow-xl hover:shadow-cyan-400/50"
+            className="rounded-full bg-gradient-to-r from-sky-500 to-cyan-400 px-7 py-3 text-base font-bold text-black shadow-lg shadow-cyan-500/40 transition hover:bg-cyan-400"
           >
             {t.nav.book}
           </a>
@@ -446,18 +452,18 @@ function CaseStudy() {
 }
 
 // ---------------------------------------------------------------------------
-// Comparison Table — FullSchedule vs. ręczna obsługa vs. typowy system
+// Comparison Table — FullSchedule vs. ręczna obsługa
 // ---------------------------------------------------------------------------
 function ComparisonTable() {
   const { t } = useI18n();
   const features = [
-    { pf: true, manual: false, other: true },
-    { pf: true, manual: false, other: t.comparison.partial },
-    { pf: true, manual: false, other: false },
-    { pf: true, manual: false, other: false },
-    { pf: true, manual: false, other: t.comparison.manual2 },
-    { pf: true, manual: false, other: false },
-    { pf: true, manual: false, other: false },
+    { pf: true, manual: false },
+    { pf: true, manual: false },
+    { pf: true, manual: false },
+    { pf: true, manual: false },
+    { pf: true, manual: t.comparison.manual2 },
+    { pf: true, manual: false },
+    { pf: true, manual: false },
   ];
 
   const renderCell = (val: boolean | string) => {
@@ -469,7 +475,7 @@ function ComparisonTable() {
 
   return (
     <section className="bg-[#f7f7f5] px-6 py-24">
-      <div className="mx-auto max-w-4xl">
+      <div className="mx-auto max-w-3xl">
         <div className="mb-12 text-center">
           <p className="text-xs font-semibold uppercase tracking-widest text-cyan-600">
             {t.comparison.eyebrow}
@@ -479,7 +485,8 @@ function ComparisonTable() {
           </h2>
         </div>
 
-        <div className="overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm">
+        {/* Desktop: table */}
+        <div className="hidden overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm sm:block">
           <table className="w-full border-collapse">
             <thead>
               <tr className="border-b border-gray-200 bg-gray-50">
@@ -489,9 +496,6 @@ function ComparisonTable() {
                 </th>
                 <th className="py-5 px-6 text-center text-sm font-medium text-gray-500">
                   {t.comparison.manual}
-                </th>
-                <th className="py-5 px-6 text-center text-sm font-medium text-gray-500">
-                  {t.comparison.other}
                 </th>
               </tr>
             </thead>
@@ -504,11 +508,29 @@ function ComparisonTable() {
                   <td className="py-5 pl-6 pr-4 text-left text-sm text-gray-900">{t.comparison.features[i]}</td>
                   <td className="py-5 px-6 text-center">{renderCell(f.pf)}</td>
                   <td className="py-5 px-6 text-center">{renderCell(f.manual)}</td>
-                  <td className="py-5 px-6 text-center">{renderCell(f.other)}</td>
                 </tr>
               ))}
             </tbody>
           </table>
+        </div>
+
+        {/* Mobile: cards */}
+        <div className="space-y-3 sm:hidden">
+          {features.map((f, i) => (
+            <div key={i} className="rounded-xl border border-gray-200 bg-white p-4 shadow-sm">
+              <p className="text-sm font-medium text-gray-900">{t.comparison.features[i]}</p>
+              <div className="mt-3 flex items-center gap-4">
+                <div className="flex items-center gap-1.5">
+                  {renderCell(f.pf)}
+                  <span className="text-xs font-medium text-cyan-600">{t.comparison.pf}</span>
+                </div>
+                <div className="flex items-center gap-1.5">
+                  {renderCell(f.manual)}
+                  <span className="text-xs text-gray-500">{t.comparison.manual}</span>
+                </div>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
     </section>
@@ -520,21 +542,29 @@ function ComparisonTable() {
 // ---------------------------------------------------------------------------
 function Hero() {
   const { t } = useI18n();
-  const [scrollY, setScrollY] = useState(0);
-
-  useEffect(() => {
-    const onScroll = () => setScrollY(window.scrollY);
-    window.addEventListener('scroll', onScroll, { passive: true });
-    return () => window.removeEventListener('scroll', onScroll);
-  }, []);
 
   return (
     <section className="relative overflow-hidden px-6 pb-32 pt-40">
-      {/* Subtle radial glow */}
-      <div
-        className="pointer-events-none absolute -right-40 -top-40 h-[500px] w-[500px] rounded-full opacity-20 blur-3xl"
-        style={{ background: 'radial-gradient(circle, #22d3ee 0%, transparent 70%)' }}
-      />
+      {/* Dental clinic background image */}
+      <div className="absolute inset-0">
+        <img
+          src="https://images.pexels.com/photos/6628076/pexels-photo-6628076.jpeg?auto=compress&cs=tinysrgb&w=1920"
+          alt="Dental clinic"
+          className="h-full w-full object-cover opacity-20"
+          loading="eager"
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#0a1628]/80 via-[#0a1628]/70 to-[#0a1628]" />
+      </div>
+
+      {/* Logo top-left in hero */}
+      <div className="relative mb-8 flex justify-center lg:justify-start">
+        <img
+          src="/Projekt_bez_nazwy_-_2026-07-21T160459.162-removebg-preview copy.png"
+          alt="FullSchedule"
+          className="h-14 w-auto"
+        />
+      </div>
+
       <div className="relative mx-auto grid max-w-6xl items-center gap-12 lg:grid-cols-2">
         <div className="max-w-2xl">
           <h1 className="text-4xl font-bold leading-tight text-white sm:text-5xl md:text-6xl">
@@ -543,22 +573,19 @@ function Hero() {
           <p className="mt-6 text-lg text-gray-300">
             {t.hero.subtitle}
           </p>
-          <MagneticButton
+          <a
             href="#diagnoza"
-            className="mt-10 rounded-full bg-gradient-to-r from-sky-500 to-cyan-400 px-9 py-5 text-lg font-bold text-black shadow-xl shadow-cyan-500/40 transition hover:scale-105 hover:shadow-2xl hover:shadow-cyan-400/50"
+            className="mt-10 inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-sky-500 to-cyan-400 px-9 py-5 text-lg font-bold text-black shadow-xl shadow-cyan-500/40 transition hover:bg-cyan-400"
           >
             {t.hero.cta}
             <ArrowRight className="h-5 w-5" />
-          </MagneticButton>
+          </a>
         </div>
 
         {/* Dashboard mockup with clinic photo */}
-        <div
-          className="relative hidden md:block"
-          style={{ transform: `translateY(${scrollY * 0.08}px)` }}
-        >
+        <div className="relative hidden md:block">
           {/* Floating clinic photo card */}
-          <div className="absolute -right-6 -top-8 z-10 w-44 overflow-hidden rounded-xl border border-white/15 shadow-2xl shadow-black/60 transition-transform duration-500 hover:scale-105">
+          <div className="absolute -right-6 -top-8 z-10 w-44 overflow-hidden rounded-xl border border-white/15 shadow-2xl shadow-black/60">
             <img
               src="https://images.pexels.com/photos/6812532/pexels-photo-6812532.jpeg?auto=compress&cs=tinysrgb&w=400"
               alt="Dental clinic"
@@ -827,22 +854,22 @@ function Calculator() {
             </div>
 
             <div className="mt-10 space-y-4 border-t border-white/15 pt-8">
-              <div className="flex items-center justify-between">
+              <div className="flex items-center justify-between gap-4">
                 <span className="text-sm text-gray-300">{t.calc.recoveredRevenue}</span>
-                <span className="text-xl font-bold text-white">
+                <span className="text-xl font-bold tabular-nums text-white whitespace-nowrap">
                   {recoveredRevenueMonthly.toLocaleString('pl-PL')} zł
                 </span>
               </div>
-              <div className="flex items-center justify-between">
+              <div className="flex items-center justify-between gap-4">
                 <span className="text-sm text-gray-300">{t.calc.savedHours}</span>
-                <span className="text-xl font-bold text-white">{savedHoursMonthly}h</span>
+                <span className="text-xl font-bold tabular-nums text-white whitespace-nowrap">{savedHoursMonthly}h</span>
               </div>
               <div className="rounded-lg bg-cyan-400/10 px-4 py-3">
-                <div className="flex items-center justify-between">
+                <div className="flex items-center justify-between gap-4">
                   <span className="text-sm font-medium text-cyan-200">
                     {t.calc.totalPotential}
                   </span>
-                  <span className="text-2xl font-bold text-cyan-200">
+                  <span className="text-2xl font-bold tabular-nums text-cyan-200 whitespace-nowrap">
                     {totalMonthly.toLocaleString('pl-PL')} zł
                   </span>
                 </div>
@@ -930,13 +957,13 @@ function Calculator() {
                 </div>
 
                 <div className="mt-auto pt-8">
-                  <MagneticButton
+                  <a
                     href="#book"
-                    className="rounded-full bg-gradient-to-r from-sky-500 to-cyan-400 px-8 py-4 text-lg font-bold text-black shadow-xl shadow-cyan-500/40 transition hover:scale-105 hover:shadow-2xl hover:shadow-cyan-400/50"
+                    className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-sky-500 to-cyan-400 px-8 py-4 text-lg font-bold text-black shadow-xl shadow-cyan-500/40 transition hover:bg-cyan-400"
                   >
                     {t.calc.bookCta}
                     <ArrowRight className="h-5 w-5" />
-                  </MagneticButton>
+                  </a>
                   <p className="mt-3 text-xs text-gray-400">{t.calc.noCommit}</p>
                 </div>
               </div>
@@ -1381,26 +1408,29 @@ function AuditCta() {
           {t.audit.desc}
         </p>
 
-        <div className="mx-auto mt-12 flex max-w-lg flex-wrap items-center justify-center gap-4">
-          {t.audit.stats.map((stat) => (
-            <div
-              key={stat.label}
-              className="flex flex-col items-center rounded-xl border border-white/10 bg-white/[0.03] px-6 py-4"
-            >
-              <span className="text-2xl font-bold text-cyan-300">{stat.value}</span>
-              <span className="text-sm text-gray-400">{stat.label}</span>
-            </div>
-          ))}
+        <div className="mt-8 flex flex-wrap justify-center gap-x-8 gap-y-3">
+          <div className="flex items-center gap-2 text-base text-gray-300">
+            <Clock className="h-5 w-5 text-cyan-400" strokeWidth={1.5} />
+            <span>15 min</span>
+          </div>
+          <div className="flex items-center gap-2 text-base text-gray-300">
+            <Video className="h-5 w-5 text-cyan-400" strokeWidth={1.5} />
+            <span>Online</span>
+          </div>
+          <div className="flex items-center gap-2 text-base text-gray-300">
+            <ShieldCheck className="h-5 w-5 text-cyan-400" strokeWidth={1.5} />
+            <span>Bez zobowiązań</span>
+          </div>
         </div>
 
-        <div className="mx-auto mt-14 max-w-md rounded-2xl border border-white/10 bg-[#0a1628]/60 p-6 text-left backdrop-blur-sm sm:p-8">
+        <div className="mx-auto mt-14 max-w-xl rounded-2xl border border-white/10 bg-[#0a1628]/60 p-8 text-left backdrop-blur-sm sm:p-10">
           <LeadForm source="audit-cta" variant="booking" />
         </div>
-        <p className="mt-4 text-base text-gray-400">{t.audit.noCommit}</p>
+        <p className="mt-5 text-base text-gray-400">{t.audit.noCommit}</p>
 
         <p className="mt-6 flex items-center justify-center gap-2 text-sm text-gray-400">
           <Mail className="h-4 w-4" />
-          kontakt@practiceflow.pl
+          kontakt@fullschedule.pl
         </p>
       </div>
     </section>

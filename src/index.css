@@ -41,13 +41,12 @@ body {
   border-radius: 50%;
   background: #ffffff;
   border: 2px solid #22d3ee;
-  box-shadow: 0 4px 12px rgba(34, 211, 238, 0.4);
   cursor: pointer;
   transition: transform 0.15s ease;
 }
 
 .pf-range::-webkit-slider-thumb:hover {
-  transform: scale(1.15);
+  transform: scale(1.1);
 }
 
 .pf-range::-webkit-slider-thumb:active {
@@ -60,15 +59,15 @@ body {
   border-radius: 50%;
   background: #ffffff;
   border: 2px solid #22d3ee;
-  box-shadow: 0 4px 12px rgba(34, 211, 238, 0.4);
   cursor: pointer;
 }
 
 .pf-range::-moz-range-thumb:hover {
-  transform: scale(1.15);
+  transform: scale(1.1);
 }
 
 .pf-range:focus-visible {
-  box-shadow: 0 0 0 4px rgba(34, 211, 238, 0.25);
+  outline: 2px solid #22d3ee;
+  outline-offset: 4px;
 }
 

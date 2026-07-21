@@ -158,7 +158,7 @@ const translations = {
       timeLabel: 'czas recepcji na telefon i przypomnienia',
       lostLabel: 'stracone zyski / miesiąc (puste sloty)',
       recoveredLabel: 'odzyskane zyski / miesiąc',
-      roi: 'ROI wdrożenia: 3,2x w pierwszym miesiącu',
+      roi: 'Zwrot z inwestycji już w pierwszym miesiącu — 3,2x więcej niż kosztuje',
       quote: '„Przestaliśmy gonić pacjentów telefonem. Teraz to oni rezerwują sami, a my skupiamy się na leczeniu."',
       author: '— Anna K., właścicielka gabinetu „Uśmiech"',
     },
@@ -206,7 +206,7 @@ const translations = {
     },
     audit: {
       title: 'Porozmawiajmy o Twoim kalendarzu.',
-      desc: 'Krótka rozmowa o tym, gdzie Twój gabinet traci czas i dochody — i jak możemy to zautomatyzować. Bez zobowiązań.',
+      desc: 'Krótka rozmowa o tym, gdzie Twój gabinet traci czas, dochody i jak możemy to rozwiązać. Bez zobowiązań.',
       stats: [
         { value: '15 min', label: 'rozmowy' },
         { value: '40h', label: 'odzyskane / m-c' },
@@ -235,8 +235,8 @@ const translations = {
       download: 'Pobierz za darmo',
     },
     form: {
-      name: 'Imię',
-      namePh: 'Imię',
+      name: 'Imię i nazwisko',
+      namePh: 'Imię i nazwisko',
       phone: 'Telefon',
       phonePh: 'Numer telefonu',
       email: 'E-mail',
@@ -399,7 +399,7 @@ const translations = {
       timeLabel: 'front-desk time on phone and reminders',
       lostLabel: 'lost revenue / month (empty slots)',
       recoveredLabel: 'recovered revenue / month',
-      roi: 'Deployment ROI: 3.2x in the first month',
+      roi: 'Payback in the first month — 3.2x more value than it costs',
       quote: '"We stopped chasing patients by phone. Now they book themselves, and we focus on treatment."',
       author: '— Anna K., owner of "Uśmiech" clinic',
     },
