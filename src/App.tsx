@@ -588,14 +588,14 @@ function ComparisonTable() {
           <table className="w-full border-collapse">
             <thead>
               <tr className="border-b border-gray-200 bg-gray-50">
-                <th className="py-4 text-left text-sm font-medium text-gray-500" />
-                <th className="py-4 px-4 text-center text-sm font-bold text-cyan-600">
+                <th className="py-5 pl-6 pr-4 text-left text-sm font-medium text-gray-500" />
+                <th className="py-5 px-6 text-center text-sm font-bold text-cyan-600">
                   PracticeFlow
                 </th>
-                <th className="py-4 px-4 text-center text-sm font-medium text-gray-500">
+                <th className="py-5 px-6 text-center text-sm font-medium text-gray-500">
                   Ręczna obsługa
                 </th>
-                <th className="py-4 px-4 text-center text-sm font-medium text-gray-500">
+                <th className="py-5 px-6 text-center text-sm font-medium text-gray-500">
                   Typowy system
                 </th>
               </tr>
@@ -606,10 +606,10 @@ function ComparisonTable() {
                   key={f.label}
                   className={`border-b border-gray-100 ${i % 2 === 0 ? 'bg-gray-50/50' : ''}`}
                 >
-                  <td className="py-4 text-left text-sm text-gray-900">{f.label}</td>
-                  <td className="py-4 px-4 text-center">{renderCell(f.pf)}</td>
-                  <td className="py-4 px-4 text-center">{renderCell(f.manual)}</td>
-                  <td className="py-4 px-4 text-center">{renderCell(f.other)}</td>
+                  <td className="py-5 pl-6 pr-4 text-left text-sm text-gray-900">{f.label}</td>
+                  <td className="py-5 px-6 text-center">{renderCell(f.pf)}</td>
+                  <td className="py-5 px-6 text-center">{renderCell(f.manual)}</td>
+                  <td className="py-5 px-6 text-center">{renderCell(f.other)}</td>
                 </tr>
               ))}
             </tbody>
@@ -875,8 +875,8 @@ function Calculator() {
   };
 
   return (
-    <section id="diagnoza" className="px-6 py-24">
-      <div className="mx-auto max-w-6xl">
+    <section id="diagnoza" className="px-6 py-20">
+      <div className="mx-auto max-w-5xl">
         <p className="text-xs font-semibold uppercase tracking-widest text-cyan-400">
           Diagnoza Twojego gabinetu
         </p>
@@ -884,9 +884,9 @@ function Calculator() {
           Zobacz, ile czasu i zysków odzyska Twój gabinet.
         </h2>
 
-        <div className="mt-12 grid gap-8 lg:grid-cols-2">
+        <div className="mt-10 grid gap-6 lg:grid-cols-2">
           {/* Calculator */}
-          <div className="rounded-2xl border border-white/15 bg-[#0d1a2e] p-8">
+          <div className="rounded-2xl border border-white/15 bg-[#0d1a2e] p-6">
             <h3 className="text-lg font-semibold text-white">
               Kalkulator automatyzacji
             </h3>
@@ -905,7 +905,7 @@ function Calculator() {
                 </div>
                 <input
                   type="range"
-                  min={0}
+                  min={1}
                   max={10}
                   value={cancellations}
                   onChange={(e) => setCancellations(Number(e.target.value))}
@@ -971,7 +971,7 @@ function Calculator() {
           </div>
 
           {/* Diagnosis */}
-          <div className="rounded-2xl border border-white/15 bg-[#0d1a2e] p-8">
+          <div className="rounded-2xl border border-white/15 bg-[#0d1a2e] p-6">
             {!showResult ? (
               <>
                 <div className="flex items-center justify-between">
@@ -1185,9 +1185,9 @@ function BeforeAfter() {
         <div className="relative mt-12 h-80 overflow-hidden rounded-2xl border border-white/5">
           {/* Before (left) — chaotic calendar */}
           <div className="absolute inset-0 flex flex-col bg-[#1a1410]">
-            <div className="flex items-center gap-2 border-b border-red-400/10 px-4 py-3">
-              <XCircle className="h-4 w-4 text-red-400/60" strokeWidth={1.5} />
-              <span className="text-xs font-semibold uppercase tracking-widest text-red-400/70">
+            <div className="flex items-center gap-2 border-b border-amber-400/10 px-4 py-3">
+              <XCircle className="h-4 w-4 text-amber-400/60" strokeWidth={1.5} />
+              <span className="text-xs font-semibold uppercase tracking-widest text-amber-400/70">
                 Przed — chaos w grafiku
               </span>
             </div>
@@ -1197,15 +1197,13 @@ function BeforeAfter() {
                   key={i}
                   className={`flex items-center gap-3 rounded-lg border px-3 py-2.5 text-xs ${
                     slot.gap
-                      ? 'border-red-400/20 bg-red-400/5'
-                      : 'border-sky-400/20 bg-sky-500/5'
+                      ? 'border-amber-400/20 bg-amber-400/5'
+                      : 'border-amber-400/15 bg-amber-400/[0.03]'
                   }`}
                 >
                   <span className="w-12 font-mono text-gray-400">{slot.time}</span>
                   <span
-                    className={`flex-1 font-medium ${
-                      slot.gap ? 'text-red-300/70' : 'text-sky-300/70'
-                    }`}
+                    className={`flex-1 font-medium text-amber-300/70`}
                   >
                     {slot.label}
                   </span>
@@ -1258,8 +1256,8 @@ function BeforeAfter() {
 
         {/* Lists */}
         <div className="mt-10 grid gap-6 md:grid-cols-2">
-          <div className="rounded-xl border border-red-400/10 bg-[#1a1410]/40 p-6">
-            <h3 className="text-sm font-semibold uppercase tracking-widest text-red-400/70">
+          <div className="rounded-xl border border-amber-400/10 bg-[#1a1410]/40 p-6">
+            <h3 className="text-sm font-semibold uppercase tracking-widest text-amber-400/70">
               Przed
             </h3>
             <ul className="mt-4 space-y-3">
@@ -1270,7 +1268,7 @@ function BeforeAfter() {
                 'Puste sloty po odwołaniach',
               ].map((item) => (
                 <li key={item} className="flex items-start gap-3">
-                  <XCircle className="mt-0.5 h-5 w-5 flex-shrink-0 text-red-400/50" strokeWidth={1.5} />
+                  <XCircle className="mt-0.5 h-5 w-5 flex-shrink-0 text-amber-400/50" strokeWidth={1.5} />
                   <span className="text-sm text-gray-300">{item}</span>
                 </li>
               ))}
@@ -1511,29 +1509,40 @@ function FAQ() {
 // ---------------------------------------------------------------------------
 function MiniCta() {
   return (
-    <section className="bg-white px-6 py-14">
+    <section className="bg-white px-6 py-20">
       <div className="mx-auto max-w-4xl">
-        <div className="flex flex-col items-center gap-6 rounded-2xl border border-cyan-500/20 bg-[#f7f7f5] p-8 text-center md:flex-row md:justify-between md:text-left">
-          <div className="flex items-center gap-4">
-            <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-cyan-500/10">
-              <CalendarClock className="h-6 w-6 text-cyan-600" strokeWidth={1.5} />
+        <div className="relative overflow-hidden rounded-3xl border border-gray-200 bg-gradient-to-br from-[#f7f7f5] to-white p-10 text-center shadow-xl shadow-gray-200/50 sm:p-14">
+          {/* Animated glow orbs */}
+          <div
+            className="pointer-events-none absolute -left-20 -top-20 h-48 w-48 animate-pulse rounded-full bg-cyan-400/15 blur-3xl"
+          />
+          <div
+            className="pointer-events-none absolute -bottom-20 -right-20 h-48 w-48 rounded-full bg-sky-400/10 blur-3xl"
+            style={{ animation: 'pulse 4s ease-in-out 1s infinite' }}
+          />
+
+          <div className="relative">
+            <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-cyan-500/10 transition-transform duration-500 hover:scale-110">
+              <CalendarClock className="h-8 w-8 text-cyan-600" strokeWidth={1.5} />
             </div>
-            <div>
-              <h3 className="text-xl font-bold text-gray-900 sm:text-2xl">
-                Gotów odzyskać kontrol nad grafikiem?
-              </h3>
-              <p className="mt-1 text-sm text-gray-600">
-                15 minut rozmowy — pokazujemy dokładnie, gdzie Twoja klinika traci pieniądze.
-              </p>
-            </div>
+
+            <h3 className="mt-6 text-2xl font-bold text-gray-900 sm:text-3xl">
+              Gotów odzyskać kontrolę nad grafikiem?
+            </h3>
+            <p className="mx-auto mt-3 max-w-lg text-base text-gray-600">
+              15 minut rozmowy — pokazujemy dokładnie, gdzie Twoja klinika traci pieniądze
+              i jak możesz to odzyskać.
+            </p>
+
+            <a
+              href="mailto:kontakt@practiceflow.pl?subject=Pro%C5%9Bba%20o%20audyt%20grafiku"
+              className="group mt-8 inline-flex items-center gap-2 rounded-full bg-sky-500 px-8 py-4 text-base font-semibold text-black shadow-lg shadow-sky-500/30 transition hover:bg-sky-400 hover:shadow-xl hover:shadow-sky-500/40"
+            >
+              Umów bezpłatny audyt
+              <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+            </a>
+            <p className="mt-3 text-xs text-gray-500">15 min, bez zobowiązań</p>
           </div>
-          <a
-            href="mailto:kontakt@practiceflow.pl?subject=Pro%C5%9Bba%20o%20audyt%20grafiku"
-            className="inline-flex flex-shrink-0 items-center gap-2 rounded-full bg-sky-500 px-7 py-3.5 text-sm font-semibold text-black transition hover:bg-sky-400"
-          >
-            Umów bezpłatny audyt
-            <ArrowRight className="h-4 w-4" />
-          </a>
         </div>
       </div>
     </section>
