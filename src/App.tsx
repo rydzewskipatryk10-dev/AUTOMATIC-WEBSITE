@@ -34,38 +34,48 @@ import {
 const GUIDE_PDF_PATH = '/practiceflow-przewodnik.pdf';
 
 // ---------------------------------------------------------------------------
-// Typewriter hook — reveals text character by character
+// Rotating typewriter hook — cycles through phrases: type in, pause, delete, next
 // ---------------------------------------------------------------------------
-function useTypewriter(text: string, speed = 45, startDelay = 400) {
+function useRotatingTypewriter(
+  phrases: string[],
+  typeSpeed = 55,
+  deleteSpeed = 28,
+  pauseEnd = 2200,
+  pauseStart = 500,
+) {
   const [displayed, setDisplayed] = useState('');
-  const [done, setDone] = useState(false);
+  const [phraseIndex, setPhraseIndex] = useState(0);
+  const [phase, setPhase] = useState<'typing' | 'pausing' | 'deleting'>('typing');
 
   useEffect(() => {
-    setDisplayed('');
-    setDone(false);
-    let i = 0;
+    const current = phrases[phraseIndex] ?? '';
     let timer: ReturnType<typeof setTimeout>;
 
-    const start = setTimeout(() => {
-      const tick = () => {
-        if (i < text.length) {
-          setDisplayed(text.slice(0, i + 1));
-          i += 1;
-          timer = setTimeout(tick, speed);
-        } else {
-          setDone(true);
-        }
-      };
-      tick();
-    }, startDelay);
+    if (phase === 'typing') {
+      if (displayed.length < current.length) {
+        timer = setTimeout(() => {
+          setDisplayed(current.slice(0, displayed.length + 1));
+        }, typeSpeed);
+      } else {
+        timer = setTimeout(() => setPhase('pausing'), pauseEnd);
+      }
+    } else if (phase === 'pausing') {
+      timer = setTimeout(() => setPhase('deleting'), pauseStart);
+    } else {
+      if (displayed.length > 0) {
+        timer = setTimeout(() => {
+          setDisplayed(current.slice(0, displayed.length - 1));
+        }, deleteSpeed);
+      } else {
+        setPhraseIndex((phraseIndex + 1) % phrases.length);
+        setPhase('typing');
+      }
+    }
 
-    return () => {
-      clearTimeout(start);
-      clearTimeout(timer);
-    };
-  }, [text, speed, startDelay]);
+    return () => clearTimeout(timer);
+  }, [displayed, phase, phraseIndex, phrases, typeSpeed, deleteSpeed, pauseEnd, pauseStart]);
 
-  return { displayed, done };
+  return { displayed, phraseIndex, phase };
 }
 
 // ---------------------------------------------------------------------------
@@ -234,7 +244,7 @@ function LeadMagnetModal() {
         onClick={close}
       />
       <div
-        className={`relative w-full max-w-md overflow-hidden rounded-2xl border border-teal-400/20 bg-[#111111] p-8 shadow-2xl shadow-black/60 transition-all duration-300 ${
+        className={`relative w-full max-w-md overflow-hidden rounded-2xl border border-cyan-400/20 bg-[#0d1a2e] p-8 shadow-2xl shadow-black/60 transition-all duration-300 ${
           open ? 'scale-100 translate-y-0' : 'scale-95 translate-y-4'
         }`}
       >
@@ -247,10 +257,10 @@ function LeadMagnetModal() {
         </button>
 
         <div className="flex flex-col items-center text-center">
-          <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-amber-400/15">
-            <Gift className="h-7 w-7 text-amber-400" strokeWidth={1.5} />
+          <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-sky-500/15">
+            <Gift className="h-7 w-7 text-sky-400" strokeWidth={1.5} />
           </div>
-          <p className="mt-5 text-xs font-semibold uppercase tracking-widest text-teal-400">
+          <p className="mt-5 text-xs font-semibold uppercase tracking-widest text-cyan-400">
             Darmowy przewodnik
           </p>
           <h3 className="mt-3 text-xl font-bold text-white">
@@ -264,7 +274,7 @@ function LeadMagnetModal() {
             href={GUIDE_PDF_PATH}
             download
             onClick={close}
-            className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-full bg-amber-400 px-6 py-3.5 text-base font-semibold text-black transition hover:bg-amber-300"
+            className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-full bg-sky-500 px-6 py-3.5 text-base font-semibold text-black transition hover:bg-sky-400"
           >
             Pobierz darmowy przewodnik
             <ArrowRight className="h-4 w-4" />
@@ -317,7 +327,7 @@ function ExitIntentPopup() {
         onClick={close}
       />
       <div
-        className={`relative w-full max-w-md overflow-hidden rounded-2xl border border-teal-400/20 bg-[#111111] p-8 shadow-2xl shadow-black/60 transition-all duration-300 ${
+        className={`relative w-full max-w-md overflow-hidden rounded-2xl border border-cyan-400/20 bg-[#0d1a2e] p-8 shadow-2xl shadow-black/60 transition-all duration-300 ${
           open ? 'scale-100 translate-y-0' : 'scale-95 translate-y-4'
         }`}
       >
@@ -330,10 +340,10 @@ function ExitIntentPopup() {
         </button>
 
         <div className="flex flex-col items-center text-center">
-          <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-teal-400/15">
-            <CalendarClock className="h-7 w-7 text-teal-400" strokeWidth={1.5} />
+          <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-cyan-400/15">
+            <CalendarClock className="h-7 w-7 text-cyan-400" strokeWidth={1.5} />
           </div>
-          <p className="mt-5 text-xs font-semibold uppercase tracking-widest text-teal-400">
+          <p className="mt-5 text-xs font-semibold uppercase tracking-widest text-cyan-400">
             Zanim odejdziesz
           </p>
           <h3 className="mt-3 text-xl font-bold text-white">
@@ -347,7 +357,7 @@ function ExitIntentPopup() {
             href={GUIDE_PDF_PATH}
             download
             onClick={close}
-            className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-full bg-amber-400 px-6 py-3.5 text-base font-semibold text-black transition hover:bg-amber-300"
+            className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-full bg-sky-500 px-6 py-3.5 text-base font-semibold text-black transition hover:bg-sky-400"
           >
             Pobierz darmowy przewodnik
             <ArrowRight className="h-4 w-4" />
@@ -378,13 +388,13 @@ function StickyMobileCta() {
 
   return (
     <div
-      className={`fixed bottom-0 left-0 right-0 z-40 border-t border-white/10 bg-[#0a0a0a]/95 px-4 py-3 backdrop-blur-md transition-transform duration-300 md:hidden ${
+      className={`fixed bottom-0 left-0 right-0 z-40 border-t border-white/10 bg-[#0a1628]/95 px-4 py-3 backdrop-blur-md transition-transform duration-300 md:hidden ${
         visible ? 'translate-y-0' : 'translate-y-full'
       }`}
     >
       <a
         href="#diagnoza"
-        className="flex items-center justify-center gap-2 rounded-full bg-amber-400 px-6 py-3 text-sm font-semibold text-black"
+        className="flex items-center justify-center gap-2 rounded-full bg-sky-500 px-6 py-3 text-sm font-semibold text-black"
       >
         Umów rozmowę
         <ArrowRight className="h-4 w-4" />
@@ -409,7 +419,7 @@ function Nav() {
 
   return (
     <header
-      className={`fixed inset-x-0 top-0 z-50 border-b border-white/5 bg-[#0a0a0a]/80 backdrop-blur-md transition-all duration-300 ${
+      className={`fixed inset-x-0 top-0 z-50 border-b border-white/5 bg-[#0a1628]/80 backdrop-blur-md transition-all duration-300 ${
         visible ? 'translate-y-0 opacity-100' : '-translate-y-full opacity-0'
       }`}
     >
@@ -419,7 +429,7 @@ function Nav() {
         </span>
         <a
           href="#diagnoza"
-          className="rounded-full bg-amber-400 px-5 py-2 text-sm font-semibold text-black transition hover:bg-amber-300"
+          className="rounded-full bg-sky-500 px-5 py-2 text-sm font-semibold text-black transition hover:bg-sky-400"
         >
           Umów rozmowę
         </a>
@@ -429,18 +439,24 @@ function Nav() {
 }
 
 // ---------------------------------------------------------------------------
-// Typewriter headline — reveals the hero headline char by char with a caret
+// Rotating typewriter headline — cycles through pain-point phrases
 // ---------------------------------------------------------------------------
-function TypewriterHeadline({ text }: { text: string }) {
-  const { displayed, done } = useTypewriter(text, 42, 500);
+const HERO_PHRASES = [
+  'Twoja klinika traci zyski przy każdym wolnym slocie.',
+  'Twoja recepcja traci 18 godzin tygodniowo na telefon.',
+  'Twoi pacjenci rezygnują przez trudny zapis na wizytę.',
+];
+
+function TypewriterHeadline() {
+  const { displayed, phase } = useRotatingTypewriter(HERO_PHRASES);
   return (
     <>
       {displayed}
       <span
-        className={`inline-block w-[3px] -mb-1 ml-1 self-stretch bg-teal-400 transition-opacity ${
-          done ? 'animate-pulse' : 'opacity-100'
+        className={`inline-block w-[3px] -mb-1 ml-1 self-stretch bg-cyan-400 transition-opacity duration-100 ${
+          phase === 'pausing' ? 'animate-pulse' : 'opacity-100'
         }`}
-        style={{ height: '0.9em', opacity: done ? 0.6 : 1 }}
+        style={{ height: '0.9em' }}
       />
     </>
   );
@@ -454,7 +470,7 @@ function CaseStudy() {
     <section className="px-6 py-24">
       <div className="mx-auto max-w-5xl">
         <div className="mb-12 text-center">
-          <p className="text-xs font-semibold uppercase tracking-widest text-teal-400">
+          <p className="text-xs font-semibold uppercase tracking-widest text-cyan-400">
             Case study
           </p>
           <h2 className="mt-3 text-3xl font-bold text-white sm:text-4xl">
@@ -463,6 +479,16 @@ function CaseStudy() {
           <p className="mt-4 text-gray-400">
             3 fotele, 6 higienistek, 4 dentystów. Wdrożenie: 14 dni.
           </p>
+        </div>
+
+        {/* Clinic photo */}
+        <div className="mb-8 overflow-hidden rounded-2xl border border-white/10 shadow-2xl shadow-black/40">
+          <img
+            src="https://images.pexels.com/photos/6812532/pexels-photo-6812532.jpeg?auto=compress&cs=tinysrgb&w=1200"
+            alt="Dentysta pracujący z pacjentem w nowoczesnej klinice"
+            className="h-64 w-full object-cover sm:h-80"
+            loading="lazy"
+          />
         </div>
 
         <div className="grid gap-6 md:grid-cols-2">
@@ -486,8 +512,8 @@ function CaseStudy() {
           </div>
 
           {/* After */}
-          <div className="rounded-2xl border border-teal-400/20 bg-teal-400/5 p-8">
-            <p className="text-sm font-semibold text-teal-400">Po wdrożeniu</p>
+          <div className="rounded-2xl border border-cyan-400/20 bg-cyan-400/5 p-8">
+            <p className="text-sm font-semibold text-cyan-400">Po wdrożeniu</p>
             <div className="mt-6 space-y-4">
               <div>
                 <p className="text-3xl font-bold text-white">
@@ -513,7 +539,7 @@ function CaseStudy() {
 
         <div className="mt-8 rounded-2xl border border-white/10 bg-white/5 p-6 text-center">
           <p className="text-lg font-semibold text-white">
-            ROI wdrożenia: <span className="text-teal-400">3,2x</span> w pierwszym miesiącu
+            ROI wdrożenia: <span className="text-cyan-400">3,2x</span> w pierwszym miesiącu
           </p>
           <p className="mt-2 text-sm text-gray-400">
             „Przestaliśmy gonić pacjentów telefonem. Teraz to oni rezerwują sami, a my skupiamy się na leczeniu."
@@ -541,7 +567,7 @@ function ComparisonTable() {
 
   const renderCell = (val: boolean | string) => {
     if (val === true)
-      return <CheckCircle className="mx-auto h-5 w-5 text-teal-400" />;
+      return <CheckCircle className="mx-auto h-5 w-5 text-cyan-400" />;
     if (val === false) return <XCircle className="mx-auto h-5 w-5 text-gray-600" />;
     return <span className="text-xs text-gray-400">{val}</span>;
   };
@@ -550,7 +576,7 @@ function ComparisonTable() {
     <section className="px-6 py-24">
       <div className="mx-auto max-w-4xl">
         <div className="mb-12 text-center">
-          <p className="text-xs font-semibold uppercase tracking-widest text-teal-400">
+          <p className="text-xs font-semibold uppercase tracking-widest text-cyan-400">
             Porównanie
           </p>
           <h2 className="mt-3 text-3xl font-bold text-white sm:text-4xl">
@@ -563,7 +589,7 @@ function ComparisonTable() {
             <thead>
               <tr className="border-b border-white/10">
                 <th className="py-4 text-left text-sm font-medium text-gray-400" />
-                <th className="py-4 px-4 text-center text-sm font-bold text-teal-400">
+                <th className="py-4 px-4 text-center text-sm font-bold text-cyan-400">
                   PracticeFlow
                 </th>
                 <th className="py-4 px-4 text-center text-sm font-medium text-gray-400">
@@ -611,12 +637,12 @@ function Hero() {
       {/* Subtle radial glow */}
       <div
         className="pointer-events-none absolute -right-40 -top-40 h-[500px] w-[500px] rounded-full opacity-20 blur-3xl"
-        style={{ background: 'radial-gradient(circle, #2dd4bf 0%, transparent 70%)' }}
+        style={{ background: 'radial-gradient(circle, #22d3ee 0%, transparent 70%)' }}
       />
       <div className="relative mx-auto grid max-w-6xl items-center gap-12 lg:grid-cols-2">
         <div className="max-w-2xl">
-          <h1 className="text-4xl font-bold leading-tight text-white sm:text-5xl md:text-6xl">
-            <TypewriterHeadline text="Twoja klinika traci zyski przy każdym wolnym slocie." />
+          <h1 className="min-h-[2.5em] text-4xl font-bold leading-tight text-white sm:text-5xl md:text-6xl">
+            <TypewriterHeadline />
           </h1>
           <p className="mt-6 text-lg text-gray-400">
             Stały napływ pacjentów przy minimalnym zaangażowaniu zespołu.
@@ -624,25 +650,37 @@ function Hero() {
           </p>
           <MagneticButton
             href="#diagnoza"
-            className="mt-10 rounded-full bg-amber-400 px-7 py-3.5 text-base font-semibold text-black transition hover:bg-amber-300"
+            className="mt-10 rounded-full bg-sky-500 px-7 py-3.5 text-base font-semibold text-black transition hover:bg-sky-400"
           >
             Sprawdź potencjał swoich zysków
             <ArrowRight className="h-4 w-4" />
           </MagneticButton>
         </div>
 
-        {/* Dashboard mockup */}
+        {/* Dashboard mockup with clinic photo */}
         <div
           className="relative hidden lg:block"
           style={{ transform: `translateY(${scrollY * 0.08}px)` }}
         >
-          <div className="rounded-2xl border border-white/10 bg-[#111111] p-5 shadow-2xl shadow-black/50">
+          {/* Floating clinic photo card */}
+          <div className="absolute -right-6 -top-8 z-10 w-44 overflow-hidden rounded-xl border border-white/15 shadow-2xl shadow-black/60 transition-transform duration-500 hover:scale-105">
+            <img
+              src="https://images.pexels.com/photos/305568/pexels-photo-305568.jpeg?auto=compress&cs=tinysrgb&w=400"
+              alt="Nowoczesna klinika dentystyczna"
+              className="h-28 w-full object-cover"
+              loading="lazy"
+            />
+            <div className="bg-[#0d1a2e] px-2 py-1.5">
+              <p className="text-[10px] font-semibold text-cyan-400">Twoja klinika</p>
+            </div>
+          </div>
+          <div className="rounded-2xl border border-white/10 bg-[#0d1a2e] p-5 shadow-2xl shadow-black/50">
             {/* Mock header */}
             <div className="flex items-center justify-between border-b border-white/5 pb-4">
               <div className="flex items-center gap-2">
                 <div className="h-3 w-3 rounded-full bg-red-400/60" />
-                <div className="h-3 w-3 rounded-full bg-amber-400/60" />
-                <div className="h-3 w-3 rounded-full bg-teal-400/60" />
+                <div className="h-3 w-3 rounded-full bg-sky-500/60" />
+                <div className="h-3 w-3 rounded-full bg-cyan-400/60" />
               </div>
               <span className="text-xs font-medium text-gray-500">
                 Kalendarz — 9:00–14:00
@@ -663,32 +701,32 @@ function Hero() {
                   key={i}
                   className={`flex items-center gap-3 rounded-lg border px-3 py-2.5 text-xs transition ${
                     slot.status === 'filled'
-                      ? 'border-teal-400/30 bg-teal-400/10'
+                      ? 'border-cyan-400/30 bg-cyan-400/10'
                       : slot.status === 'reminder'
-                      ? 'border-amber-400/30 bg-amber-400/5'
-                      : 'border-white/5 bg-[#0a0a0a]'
+                      ? 'border-sky-400/30 bg-sky-500/5'
+                      : 'border-white/5 bg-[#0a1628]'
                   }`}
                 >
                   <span className="w-12 font-mono text-gray-500">{slot.time}</span>
                   <span
                     className={`flex-1 font-medium ${
                       slot.status === 'filled'
-                        ? 'text-teal-300'
+                        ? 'text-cyan-300'
                         : slot.status === 'reminder'
-                        ? 'text-amber-300'
+                        ? 'text-sky-300'
                         : 'text-gray-300'
                     }`}
                   >
                     {slot.label}
                   </span>
                   {slot.status === 'booked' && (
-                    <CheckCircle className="h-3.5 w-3.5 text-teal-400/70" strokeWidth={1.5} />
+                    <CheckCircle className="h-3.5 w-3.5 text-cyan-400/70" strokeWidth={1.5} />
                   )}
                   {slot.status === 'filled' && (
-                    <Sparkles className="h-3.5 w-3.5 text-teal-400" strokeWidth={1.5} />
+                    <Sparkles className="h-3.5 w-3.5 text-cyan-400" strokeWidth={1.5} />
                   )}
                   {slot.status === 'reminder' && (
-                    <Bell className="h-3.5 w-3.5 text-amber-400" strokeWidth={1.5} />
+                    <Bell className="h-3.5 w-3.5 text-sky-400" strokeWidth={1.5} />
                   )}
                 </div>
               ))}
@@ -697,11 +735,11 @@ function Hero() {
             <div className="mt-4 grid grid-cols-3 gap-3 border-t border-white/5 pt-4">
               <div>
                 <p className="text-xs text-gray-500">Obsadzone</p>
-                <p className="text-sm font-bold text-teal-300">94%</p>
+                <p className="text-sm font-bold text-cyan-300">94%</p>
               </div>
               <div>
                 <p className="text-xs text-gray-500">No-shows</p>
-                <p className="text-sm font-bold text-amber-300">2%</p>
+                <p className="text-sm font-bold text-sky-300">2%</p>
               </div>
               <div>
                 <p className="text-xs text-gray-500">Odzyskany czas</p>
@@ -720,7 +758,7 @@ function Hero() {
 // ---------------------------------------------------------------------------
 function SocialProof() {
   return (
-    <section className="border-y border-white/5 bg-[#0c0c0c] px-6 py-12">
+    <section className="border-y border-white/5 bg-[#0d1a2e] px-6 py-12">
       <div className="mx-auto max-w-6xl">
         <p className="text-center text-xs font-semibold uppercase tracking-widest text-gray-500">
           Zaufały nam gabinety stomatologiczne w całej Polsce
@@ -839,7 +877,7 @@ function Calculator() {
   return (
     <section id="diagnoza" className="px-6 py-24">
       <div className="mx-auto max-w-6xl">
-        <p className="text-xs font-semibold uppercase tracking-widest text-teal-400">
+        <p className="text-xs font-semibold uppercase tracking-widest text-cyan-400">
           Diagnoza Twojego gabinetu
         </p>
         <h2 className="mt-4 max-w-2xl text-3xl font-bold text-white sm:text-4xl">
@@ -848,7 +886,7 @@ function Calculator() {
 
         <div className="mt-12 grid gap-8 lg:grid-cols-2">
           {/* Calculator */}
-          <div className="rounded-2xl border border-white/5 bg-[#111111] p-8">
+          <div className="rounded-2xl border border-white/5 bg-[#0d1a2e] p-8">
             <h3 className="text-lg font-semibold text-white">
               Kalkulator automatyzacji
             </h3>
@@ -860,10 +898,10 @@ function Calculator() {
               <div>
                 <div className="flex items-center justify-between">
                   <label className="flex items-center gap-2 text-sm font-medium text-gray-300">
-                    <CalendarClock className="h-4 w-4 text-teal-400" />
+                    <CalendarClock className="h-4 w-4 text-cyan-400" />
                     Odwołane wizyty tygodniowo
                   </label>
-                  <span className="text-lg font-bold text-teal-400">{cancellations}</span>
+                  <span className="text-lg font-bold text-cyan-400">{cancellations}</span>
                 </div>
                 <input
                   type="range"
@@ -871,17 +909,17 @@ function Calculator() {
                   max={10}
                   value={cancellations}
                   onChange={(e) => setCancellations(Number(e.target.value))}
-                  className="mt-3 w-full accent-teal-400"
+                  className="mt-3 w-full accent-cyan-400"
                 />
               </div>
 
               <div>
                 <div className="flex items-center justify-between">
                   <label className="flex items-center gap-2 text-sm font-medium text-gray-300">
-                    <Users className="h-4 w-4 text-teal-400" />
+                    <Users className="h-4 w-4 text-cyan-400" />
                     Osoby w recepcji
                   </label>
-                  <span className="text-lg font-bold text-teal-400">{staff}</span>
+                  <span className="text-lg font-bold text-cyan-400">{staff}</span>
                 </div>
                 <input
                   type="range"
@@ -889,7 +927,7 @@ function Calculator() {
                   max={10}
                   value={staff}
                   onChange={(e) => setStaff(Number(e.target.value))}
-                  className="mt-3 w-full accent-teal-400"
+                  className="mt-3 w-full accent-cyan-400"
                 />
               </div>
             </div>
@@ -911,20 +949,20 @@ function Calculator() {
                 <span className="text-sm text-gray-400">Odzyskany czas / tydzień</span>
                 <span className="text-xl font-bold text-white">{savedHoursWeekly}h</span>
               </div>
-              <div className="rounded-lg bg-teal-400/10 px-4 py-3">
+              <div className="rounded-lg bg-cyan-400/10 px-4 py-3">
                 <div className="flex items-center justify-between">
-                  <span className="text-sm font-medium text-teal-300">
+                  <span className="text-sm font-medium text-cyan-300">
                     Potencjał tygodniowy (łącznie)
                   </span>
-                  <span className="text-lg font-bold text-teal-300">
+                  <span className="text-lg font-bold text-cyan-300">
                     {(recoveredRevenuePLN + savedCostWeekly).toLocaleString('pl-PL')} zł
                   </span>
                 </div>
-                <div className="mt-2 flex items-center justify-between border-t border-teal-400/20 pt-2">
-                  <span className="text-sm font-medium text-teal-300">
+                <div className="mt-2 flex items-center justify-between border-t border-cyan-400/20 pt-2">
+                  <span className="text-sm font-medium text-cyan-300">
                     Potencjał miesięczny (łącznie)
                   </span>
-                  <span className="text-2xl font-bold text-teal-300">
+                  <span className="text-2xl font-bold text-cyan-300">
                     <StatCounter value={totalMonthly} suffix=" zł" />
                   </span>
                 </div>
@@ -933,7 +971,7 @@ function Calculator() {
           </div>
 
           {/* Diagnosis */}
-          <div className="rounded-2xl border border-white/5 bg-[#111111] p-8">
+          <div className="rounded-2xl border border-white/5 bg-[#0d1a2e] p-8">
             {!showResult ? (
               <>
                 <div className="flex items-center justify-between">
@@ -947,13 +985,13 @@ function Calculator() {
 
                 <div className="mt-2 h-1 w-full overflow-hidden rounded-full bg-white/5">
                   <div
-                    className="h-full bg-teal-400 transition-all duration-300"
+                    className="h-full bg-cyan-400 transition-all duration-300"
                     style={{ width: `${((step + 1) / questions.length) * 100}%` }}
                   />
                 </div>
 
                 <div className="mt-8">
-                  <div className="flex items-center gap-2 text-teal-400">
+                  <div className="flex items-center gap-2 text-cyan-400">
                     {(() => {
                       const Icon = questions[step].icon;
                       return <Icon className="h-5 w-5" strokeWidth={1.5} />;
@@ -971,7 +1009,7 @@ function Calculator() {
                       <button
                         key={opt.value}
                         onClick={() => handleAnswer(questions[step].key, opt.value)}
-                        className="flex items-center justify-between rounded-xl border border-white/5 bg-[#0a0a0a] px-5 py-4 text-left text-sm font-medium text-gray-300 transition hover:border-teal-400/40 hover:text-white"
+                        className="flex items-center justify-between rounded-xl border border-white/5 bg-[#0a1628] px-5 py-4 text-left text-sm font-medium text-gray-300 transition hover:border-cyan-400/40 hover:text-white"
                       >
                         {opt.label}
                         <ArrowRight className="h-4 w-4 text-gray-600" />
@@ -982,7 +1020,7 @@ function Calculator() {
               </>
             ) : (
               <div className="flex h-full flex-col">
-                <div className="flex items-center gap-2 text-teal-400">
+                <div className="flex items-center gap-2 text-cyan-400">
                   <Sparkles className="h-5 w-5" />
                   <span className="text-xs font-semibold uppercase tracking-widest">
                     Wynik diagnozy
@@ -993,8 +1031,8 @@ function Calculator() {
                 </h3>
                 <p className="mt-3 text-sm text-gray-400">
                   Na podstawie Twoich odpowiedzi i kalkulatora, możesz odzyskać
-                  do <span className="font-semibold text-teal-300">{savedHoursWeekly}h tygodniowo</span> i
-                  <span className="font-semibold text-teal-300"> {totalMonthly.toLocaleString('pl-PL')} zł miesięcznie</span> —
+                  do <span className="font-semibold text-cyan-300">{savedHoursWeekly}h tygodniowo</span> i
+                  <span className="font-semibold text-cyan-300"> {totalMonthly.toLocaleString('pl-PL')} zł miesięcznie</span> —
                   z odzyskanych wizyt i oszczędności na recepcji.
                 </p>
 
@@ -1005,7 +1043,7 @@ function Calculator() {
                     'Samoobsługowa rezerwacja 24/7',
                   ].map((goal) => (
                     <div key={goal} className="flex items-center gap-3">
-                      <CheckCircle className="h-5 w-5 flex-shrink-0 text-teal-400" strokeWidth={1.5} />
+                      <CheckCircle className="h-5 w-5 flex-shrink-0 text-cyan-400" strokeWidth={1.5} />
                       <span className="text-sm text-gray-300">{goal}</span>
                     </div>
                   ))}
@@ -1014,7 +1052,7 @@ function Calculator() {
                 <div className="mt-auto pt-8">
                   <MagneticButton
                     href="#book"
-                    className="rounded-full bg-amber-400 px-7 py-3.5 text-base font-semibold text-black transition hover:bg-amber-300"
+                    className="rounded-full bg-sky-500 px-7 py-3.5 text-base font-semibold text-black transition hover:bg-sky-400"
                   >
                     Umów rozmowę
                     <ArrowRight className="h-4 w-4" />
@@ -1037,7 +1075,7 @@ function WhyAutomation() {
   return (
     <section className="bg-[#f7f7f5] px-6 py-24">
       <div className="mx-auto max-w-5xl">
-        <p className="text-xs font-semibold uppercase tracking-widest text-teal-600">
+        <p className="text-xs font-semibold uppercase tracking-widest text-cyan-600">
           Dlaczego automatyzacja w stomatologii?
         </p>
         <h2 className="mt-4 text-3xl font-bold text-gray-900 sm:text-4xl">
@@ -1084,9 +1122,9 @@ function WhyAutomation() {
           ].map((goal) => (
             <div
               key={goal.title}
-              className="rounded-xl border border-gray-200 bg-white p-6 transition hover:border-teal-300 hover:shadow-md"
+              className="rounded-xl border border-gray-200 bg-white p-6 transition hover:border-cyan-300 hover:shadow-md"
             >
-              <goal.icon className="h-6 w-6 text-teal-600" strokeWidth={1.5} />
+              <goal.icon className="h-6 w-6 text-cyan-600" strokeWidth={1.5} />
               <h3 className="mt-4 text-base font-semibold text-gray-900">
                 {goal.title}
               </h3>
@@ -1132,7 +1170,7 @@ function SystemDiagram() {
   return (
     <section ref={sectionRef} className="px-6 py-24">
       <div className="mx-auto max-w-5xl">
-        <p className="text-xs font-semibold uppercase tracking-widest text-teal-400">
+        <p className="text-xs font-semibold uppercase tracking-widest text-cyan-400">
           Jak działa system
         </p>
         <h2 className="mt-4 text-3xl font-bold text-white sm:text-4xl">
@@ -1145,13 +1183,13 @@ function SystemDiagram() {
               <div
                 className={`flex h-16 w-16 items-center justify-center rounded-2xl border transition-all duration-500 ${
                   visibleSteps > i
-                    ? 'border-teal-400/40 bg-teal-400/10 opacity-100'
-                    : 'border-white/5 bg-[#111111] opacity-30'
+                    ? 'border-cyan-400/40 bg-cyan-400/10 opacity-100'
+                    : 'border-white/5 bg-[#0d1a2e] opacity-30'
                 }`}
               >
                 <step.icon
                   className={`h-7 w-7 transition-colors duration-500 ${
-                    visibleSteps > i ? 'text-teal-400' : 'text-gray-600'
+                    visibleSteps > i ? 'text-cyan-400' : 'text-gray-600'
                   }`}
                   strokeWidth={1.5}
                 />
@@ -1171,7 +1209,7 @@ function SystemDiagram() {
                 {step.text}
               </p>
               {i < steps.length - 1 && (
-                <div className="mt-4 hidden h-8 w-px bg-gradient-to-b from-teal-400/40 to-transparent md:block md:h-px md:w-full md:bg-gradient-to-r md:from-teal-400/40 md:to-transparent" />
+                <div className="mt-4 hidden h-8 w-px bg-gradient-to-b from-cyan-400/40 to-transparent md:block md:h-px md:w-full md:bg-gradient-to-r md:from-cyan-400/40 md:to-transparent" />
               )}
             </div>
           ))}
@@ -1205,7 +1243,7 @@ function BeforeAfter() {
   return (
     <section className="px-6 py-24">
       <div className="mx-auto max-w-5xl">
-        <p className="text-xs font-semibold uppercase tracking-widest text-teal-400">
+        <p className="text-xs font-semibold uppercase tracking-widest text-cyan-400">
           Przed / Po
         </p>
         <h2 className="mt-4 text-3xl font-bold text-white sm:text-4xl">
@@ -1229,13 +1267,13 @@ function BeforeAfter() {
                   className={`flex items-center gap-3 rounded-lg border px-3 py-2.5 text-xs ${
                     slot.gap
                       ? 'border-red-400/20 bg-red-400/5'
-                      : 'border-amber-400/20 bg-amber-400/5'
+                      : 'border-sky-400/20 bg-sky-500/5'
                   }`}
                 >
                   <span className="w-12 font-mono text-gray-500">{slot.time}</span>
                   <span
                     className={`flex-1 font-medium ${
-                      slot.gap ? 'text-red-300/70' : 'text-amber-300/70'
+                      slot.gap ? 'text-red-300/70' : 'text-sky-300/70'
                     }`}
                   >
                     {slot.label}
@@ -1249,9 +1287,9 @@ function BeforeAfter() {
             className="absolute inset-0 flex flex-col overflow-hidden bg-[#0a1a18]"
             style={{ clipPath: `inset(0 0 0 ${position}%)` }}
           >
-            <div className="flex items-center gap-2 border-b border-teal-400/10 px-4 py-3">
-              <CheckCircle className="h-4 w-4 text-teal-400" strokeWidth={1.5} />
-              <span className="text-xs font-semibold uppercase tracking-widest text-teal-400">
+            <div className="flex items-center gap-2 border-b border-cyan-400/10 px-4 py-3">
+              <CheckCircle className="h-4 w-4 text-cyan-400" strokeWidth={1.5} />
+              <span className="text-xs font-semibold uppercase tracking-widest text-cyan-400">
                 Po — zautomatyzowany kalendarz
               </span>
             </div>
@@ -1259,22 +1297,22 @@ function BeforeAfter() {
               {afterSlots.map((slot, i) => (
                 <div
                   key={i}
-                  className="flex items-center gap-3 rounded-lg border border-teal-400/20 bg-teal-400/5 px-3 py-2.5 text-xs"
+                  className="flex items-center gap-3 rounded-lg border border-cyan-400/20 bg-cyan-400/5 px-3 py-2.5 text-xs"
                 >
                   <span className="w-12 font-mono text-gray-500">{slot.time}</span>
-                  <span className="flex-1 font-medium text-teal-300">{slot.label}</span>
-                  <CheckCircle className="h-3.5 w-3.5 text-teal-400/70" strokeWidth={1.5} />
+                  <span className="flex-1 font-medium text-cyan-300">{slot.label}</span>
+                  <CheckCircle className="h-3.5 w-3.5 text-cyan-400/70" strokeWidth={1.5} />
                 </div>
               ))}
             </div>
           </div>
           {/* Divider handle */}
           <div
-            className="absolute top-0 z-10 h-full w-0.5 bg-teal-400"
+            className="absolute top-0 z-10 h-full w-0.5 bg-cyan-400"
             style={{ left: `${position}%` }}
           >
-            <div className="absolute top-1/2 left-1/2 flex h-8 w-8 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-teal-400 bg-[#0a0a0a]">
-              <ChevronDown className="h-4 w-4 rotate-90 text-teal-400" />
+            <div className="absolute top-1/2 left-1/2 flex h-8 w-8 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-cyan-400 bg-[#0a1628]">
+              <ChevronDown className="h-4 w-4 rotate-90 text-cyan-400" />
             </div>
           </div>
           <input
@@ -1307,8 +1345,8 @@ function BeforeAfter() {
               ))}
             </ul>
           </div>
-          <div className="rounded-xl border border-teal-400/10 bg-[#0a1a18]/40 p-6">
-            <h3 className="text-sm font-semibold uppercase tracking-widest text-teal-400">
+          <div className="rounded-xl border border-cyan-400/10 bg-[#0a1a18]/40 p-6">
+            <h3 className="text-sm font-semibold uppercase tracking-widest text-cyan-400">
               Po
             </h3>
             <ul className="mt-4 space-y-3">
@@ -1319,7 +1357,7 @@ function BeforeAfter() {
                 'Inteligentne obsadzanie wolnych slotów',
               ].map((item) => (
                 <li key={item} className="flex items-start gap-3">
-                  <CheckCircle className="mt-0.5 h-5 w-5 flex-shrink-0 text-teal-400" strokeWidth={1.5} />
+                  <CheckCircle className="mt-0.5 h-5 w-5 flex-shrink-0 text-cyan-400" strokeWidth={1.5} />
                   <span className="text-sm text-gray-300">{item}</span>
                 </li>
               ))}
@@ -1354,9 +1392,9 @@ function Implementation() {
   ];
 
   return (
-    <section className="bg-[#0c0c0c] px-6 py-24">
+    <section className="bg-[#0d1a2e] px-6 py-24">
       <div className="mx-auto max-w-5xl">
-        <p className="text-xs font-semibold uppercase tracking-widest text-teal-400">
+        <p className="text-xs font-semibold uppercase tracking-widest text-cyan-400">
           Jak to wygląda w praktyce
         </p>
         <h2 className="mt-4 text-3xl font-bold text-white sm:text-4xl">
@@ -1366,9 +1404,9 @@ function Implementation() {
           {phases.map((phase) => (
             <div
               key={phase.title}
-              className="rounded-xl border border-white/5 bg-[#111111] p-6 transition hover:border-teal-400/30"
+              className="rounded-xl border border-white/5 bg-[#0d1a2e] p-6 transition hover:border-cyan-400/30"
             >
-              <phase.icon className="h-6 w-6 text-teal-400" strokeWidth={1.5} />
+              <phase.icon className="h-6 w-6 text-cyan-400" strokeWidth={1.5} />
               <h3 className="mt-4 text-base font-semibold text-white">
                 {phase.title}
               </h3>
@@ -1403,7 +1441,7 @@ function Testimonials() {
   return (
     <section className="px-6 py-24">
       <div className="mx-auto max-w-5xl">
-        <p className="text-xs font-semibold uppercase tracking-widest text-teal-400">
+        <p className="text-xs font-semibold uppercase tracking-widest text-cyan-400">
           Opinie gabinetów
         </p>
         <h2 className="mt-4 text-3xl font-bold text-white sm:text-4xl">
@@ -1413,19 +1451,19 @@ function Testimonials() {
           {reviews.map((review) => (
             <div
               key={review.author}
-              className="rounded-2xl border border-white/5 bg-[#111111] p-8"
+              className="rounded-2xl border border-white/5 bg-[#0d1a2e] p-8"
             >
-              <div className="flex items-center gap-1 text-amber-400">
+              <div className="flex items-center gap-1 text-sky-400">
                 {Array.from({ length: 5 }).map((_, i) => (
-                  <Star key={i} className="h-4 w-4 fill-amber-400" strokeWidth={0} />
+                  <Star key={i} className="h-4 w-4 fill-sky-400" strokeWidth={0} />
                 ))}
               </div>
-              <Quote className="mt-4 h-6 w-6 text-teal-400/40" strokeWidth={1.5} />
+              <Quote className="mt-4 h-6 w-6 text-cyan-400/40" strokeWidth={1.5} />
               <p className="mt-4 text-base leading-relaxed text-gray-300">
                 {review.quote}
               </p>
               <div className="mt-6 flex items-center gap-3">
-                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-teal-400/10 text-sm font-bold text-teal-300">
+                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-cyan-400/10 text-sm font-bold text-cyan-300">
                   {review.author.split(' ').slice(-1)[0][0]}
                 </div>
                 <div>
@@ -1449,7 +1487,7 @@ function FounderNote() {
     <section className="bg-[#f7f7f5] px-6 py-24">
       <div className="mx-auto max-w-3xl">
         <div className="rounded-2xl border border-gray-200 bg-white p-10 shadow-lg">
-          <p className="text-xs font-semibold uppercase tracking-widest text-teal-600">
+          <p className="text-xs font-semibold uppercase tracking-widest text-cyan-600">
             Notatka założyciela
           </p>
           <p className="mt-6 text-lg leading-relaxed text-gray-700">
@@ -1459,7 +1497,7 @@ function FounderNote() {
             Twój czas."
           </p>
           <div className="mt-6 flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-teal-600/10 text-sm font-bold text-teal-700">
+            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-cyan-600/10 text-sm font-bold text-cyan-700">
               PF
             </div>
             <div>
@@ -1501,7 +1539,7 @@ function FAQ() {
   return (
     <section className="px-6 py-24">
       <div className="mx-auto max-w-3xl">
-        <p className="text-xs font-semibold uppercase tracking-widest text-teal-400">
+        <p className="text-xs font-semibold uppercase tracking-widest text-cyan-400">
           FAQ
         </p>
         <h2 className="mt-4 text-3xl font-bold text-white sm:text-4xl">
@@ -1511,15 +1549,15 @@ function FAQ() {
           {faqs.map((faq, i) => (
             <div
               key={i}
-              className="rounded-xl border border-white/5 bg-[#111111] overflow-hidden"
+              className="rounded-xl border border-white/5 bg-[#0d1a2e] overflow-hidden"
             >
               <button
                 onClick={() => setOpen(open === i ? null : i)}
-                className="flex w-full items-center justify-between px-6 py-5 text-left transition hover:bg-[#161616]"
+                className="flex w-full items-center justify-between px-6 py-5 text-left transition hover:bg-[#102338]"
               >
                 <span className="text-sm font-semibold text-white">{faq.q}</span>
                 {open === i ? (
-                  <Minus className="h-4 w-4 flex-shrink-0 text-teal-400" strokeWidth={2} />
+                  <Minus className="h-4 w-4 flex-shrink-0 text-cyan-400" strokeWidth={2} />
                 ) : (
                   <Plus className="h-4 w-4 flex-shrink-0 text-gray-500" strokeWidth={2} />
                 )}
@@ -1538,15 +1576,52 @@ function FAQ() {
 }
 
 // ---------------------------------------------------------------------------
+// Mini CTA — compact booking prompt with sweeping light animation
+// ---------------------------------------------------------------------------
+function MiniCta() {
+  return (
+    <section className="relative overflow-hidden bg-[#0d1a2e] px-6 py-20">
+      {/* Sweeping light beam */}
+      <div className="pointer-events-none absolute inset-0 overflow-hidden">
+        <div
+          className="absolute -inset-y-10 -left-1/2 w-1/2 animate-[sweep_6s_ease-in-out_infinite] opacity-30 blur-2xl"
+          style={{
+            background:
+              'linear-gradient(90deg, transparent, #22d3ee 50%, transparent)',
+          }}
+        />
+      </div>
+      <div className="relative mx-auto flex max-w-4xl flex-col items-center gap-6 text-center md:flex-row md:justify-between md:text-left">
+        <div>
+          <h3 className="text-2xl font-bold text-white sm:text-3xl">
+            Gotów odzyskać kontrol nad grafikiem?
+          </h3>
+          <p className="mt-2 text-base text-gray-400">
+            15 minut rozmowy — pokazujemy dokładnie, gdzie Twoja klinika traci pieniądze.
+          </p>
+        </div>
+        <a
+          href="mailto:kontakt@practiceflow.pl?subject=Pro%C5%9Bba%20o%20audyt%20grafiku"
+          className="inline-flex flex-shrink-0 items-center gap-2 rounded-full bg-sky-500 px-7 py-3.5 text-sm font-semibold text-black transition hover:bg-sky-400"
+        >
+          Umów bezpłatny audyt
+          <ArrowRight className="h-4 w-4" />
+        </a>
+      </div>
+    </section>
+  );
+}
+
+// ---------------------------------------------------------------------------
 // Audit CTA + Booking
 // ---------------------------------------------------------------------------
 function AuditCta() {
   return (
-    <section id="book" className="relative overflow-hidden bg-[#111111] px-6 py-32">
+    <section id="book" className="relative overflow-hidden bg-[#0d1a2e] px-6 py-32">
       {/* Gradient glow */}
       <div
         className="pointer-events-none absolute left-1/2 top-1/2 h-[400px] w-[600px] -translate-x-1/2 -translate-y-1/2 animate-pulse rounded-full opacity-10 blur-3xl"
-        style={{ background: 'radial-gradient(ellipse, #fbbf24 0%, transparent 70%)' }}
+        style={{ background: 'radial-gradient(ellipse, #0ea5e9 0%, transparent 70%)' }}
       />
       <div className="relative mx-auto max-w-3xl text-center">
         <h2 className="text-4xl font-bold text-white sm:text-5xl">
@@ -1559,7 +1634,7 @@ function AuditCta() {
 
         <a
           href="mailto:kontakt@practiceflow.pl?subject=Pro%C5%9Bba%20o%20audyt%20grafiku"
-          className="mt-10 inline-flex items-center gap-2 rounded-full bg-amber-400 px-8 py-4 text-base font-semibold text-black transition hover:bg-amber-300"
+          className="mt-10 inline-flex items-center gap-2 rounded-full bg-sky-500 px-8 py-4 text-base font-semibold text-black transition hover:bg-sky-400"
         >
           Umów audyt grafiku
           <ArrowRight className="h-4 w-4" />
@@ -1596,7 +1671,7 @@ function Footer() {
 // ---------------------------------------------------------------------------
 function App() {
   return (
-    <div className="min-h-screen bg-[#0a0a0a] text-white antialiased">
+    <div className="min-h-screen bg-[#0a1628] text-white antialiased">
       <Nav />
       <Hero />
       <Reveal>
@@ -1615,6 +1690,9 @@ function App() {
         <BeforeAfter />
       </Reveal>
       <Reveal>
+        <MiniCta />
+      </Reveal>
+      <Reveal>
         <CaseStudy />
       </Reveal>
       <Reveal>
@@ -1630,10 +1708,10 @@ function App() {
         <FounderNote />
       </Reveal>
       <Reveal>
-        <FAQ />
+        <AuditCta />
       </Reveal>
       <Reveal>
-        <AuditCta />
+        <FAQ />
       </Reveal>
       <Footer />
       <LeadMagnetModal />
