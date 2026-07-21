@@ -13,6 +13,9 @@ type Dict = typeof translations.pl;
 const translations = {
   pl: {
     nav: {
+      calc: 'Kalkulator',
+      system: 'Jak to działa',
+      cases: 'Case study',
       book: 'Umów rozmowę',
     },
     langLabel: 'EN',
@@ -202,11 +205,11 @@ const translations = {
       role: 'Założyciel, PracticeFlow',
     },
     audit: {
-      title: 'Porozmawiajmy o Twoim grafiku.',
+      title: 'Porozmawiajmy o Twoim kalendarzu.',
       desc: 'Krótka rozmowa o tym, gdzie Twój gabinet traci czas i dochody — i jak możemy to zautomatyzować. Bez zobowiązań.',
       stats: [
         { value: '15 min', label: 'rozmowy' },
-        { value: '12h', label: 'odzyskane / m-c' },
+        { value: '40h', label: 'odzyskane / m-c' },
         { value: '1 tydzień', label: 'do wdrożenia' },
       ],
       cta: 'Umów audyt grafiku',
@@ -233,9 +236,9 @@ const translations = {
     },
     form: {
       name: 'Imię',
-      namePh: 'Jak masz na imię?',
+      namePh: 'Imię',
       phone: 'Telefon',
-      phonePh: 'Twój numer telefonu',
+      phonePh: 'Numer telefonu',
       email: 'E-mail',
       emailPh: 'twój@email.pl',
       submit: 'Wyślij',
@@ -251,6 +254,9 @@ const translations = {
   },
   en: {
     nav: {
+      calc: 'Calculator',
+      system: 'How it works',
+      cases: 'Case study',
       book: 'Book a call',
     },
     langLabel: 'PL',
@@ -444,7 +450,7 @@ const translations = {
       desc: 'A short conversation about where your clinic loses time and revenue — and how we can automate it. No commitment.',
       stats: [
         { value: '15 min', label: 'call' },
-        { value: '12h', label: 'saved / month' },
+        { value: '40h', label: 'saved / month' },
         { value: '1 week', label: 'to deploy' },
       ],
       cta: 'Book a schedule audit',
@@ -471,9 +477,9 @@ const translations = {
     },
     form: {
       name: 'Name',
-      namePh: 'Your name',
+      namePh: 'Name',
       phone: 'Phone',
-      phonePh: 'Your phone number',
+      phonePh: 'Phone number',
       email: 'Email',
       emailPh: 'your@email.com',
       submit: 'Send',

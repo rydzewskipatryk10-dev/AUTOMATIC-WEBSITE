@@ -332,6 +332,11 @@ function Nav() {
         >
           PracticeFlow
         </a>
+        <nav className="hidden items-center gap-7 md:flex">
+          <a href="#diagnoza" className="text-sm font-medium text-gray-300 transition hover:text-cyan-300">{t.nav.calc}</a>
+          <a href="#system" className="text-sm font-medium text-gray-300 transition hover:text-cyan-300">{t.nav.system}</a>
+          <a href="#case-study" className="text-sm font-medium text-gray-300 transition hover:text-cyan-300">{t.nav.cases}</a>
+        </nav>
         <div className="flex items-center gap-3">
           <LanguageToggle />
           <a
@@ -352,7 +357,7 @@ function Nav() {
 function CaseStudy() {
   const { t } = useI18n();
   return (
-    <section className="bg-[#f7f7f5] px-6 py-24">
+    <section id="case-study" className="bg-[#f7f7f5] px-6 py-24">
       <div className="mx-auto max-w-5xl">
         <div className="mb-12 text-center">
           <p className="text-xs font-semibold uppercase tracking-widest text-cyan-600">
@@ -535,7 +540,7 @@ function Hero() {
             {t.hero.subtitle}
           </p>
           <MagneticButton
-            href="#book"
+            href="#diagnoza"
             className="mt-10 rounded-full bg-gradient-to-r from-sky-500 to-cyan-400 px-9 py-5 text-lg font-bold text-black shadow-xl shadow-cyan-500/40 transition hover:scale-105 hover:shadow-2xl hover:shadow-cyan-400/50"
           >
             {t.hero.cta}
@@ -966,7 +971,7 @@ function SystemDiagram() {
   }, [t]);
 
   return (
-    <section ref={sectionRef} className="bg-[#f7f7f5] px-6 py-24">
+    <section id="system" ref={sectionRef} className="bg-[#f7f7f5] px-6 py-24">
       <div className="mx-auto max-w-5xl">
         <p className="text-xs font-semibold uppercase tracking-widest text-cyan-600">
           {t.system.eyebrow}
@@ -1364,34 +1369,30 @@ function AuditCta() {
   const { t } = useI18n();
   return (
     <section id="book" className="relative overflow-hidden bg-[#0d1a2e] px-6 py-32">
-      <div
-        className="pointer-events-none absolute left-1/2 top-1/2 h-[400px] w-[600px] -translate-x-1/2 -translate-y-1/2 animate-pulse rounded-full opacity-10 blur-3xl"
-        style={{ background: 'radial-gradient(ellipse, #0ea5e9 0%, transparent 70%)' }}
-      />
       <div className="relative mx-auto max-w-3xl text-center">
-        <h2 className="text-4xl font-bold text-white sm:text-5xl">
+        <h2 className="text-5xl font-bold text-white sm:text-6xl">
           {t.audit.title}
         </h2>
-        <p className="mx-auto mt-6 max-w-xl text-lg text-gray-300">
+        <p className="mx-auto mt-8 max-w-xl text-xl text-gray-300">
           {t.audit.desc}
         </p>
 
-        <div className="mx-auto mt-10 flex max-w-lg flex-wrap items-center justify-center gap-4">
+        <div className="mx-auto mt-12 flex max-w-lg flex-wrap items-center justify-center gap-4">
           {t.audit.stats.map((stat) => (
             <div
               key={stat.label}
-              className="flex flex-col items-center rounded-xl border border-white/10 bg-white/[0.03] px-5 py-3"
+              className="flex flex-col items-center rounded-xl border border-white/10 bg-white/[0.03] px-6 py-4"
             >
-              <span className="text-xl font-bold text-cyan-300">{stat.value}</span>
-              <span className="text-xs text-gray-400">{stat.label}</span>
+              <span className="text-2xl font-bold text-cyan-300">{stat.value}</span>
+              <span className="text-sm text-gray-400">{stat.label}</span>
             </div>
           ))}
         </div>
 
-        <div className="mx-auto mt-12 max-w-md rounded-2xl border border-white/10 bg-[#0a1628]/60 p-6 text-left backdrop-blur-sm sm:p-8">
+        <div className="mx-auto mt-14 max-w-md rounded-2xl border border-white/10 bg-[#0a1628]/60 p-6 text-left backdrop-blur-sm sm:p-8">
           <LeadForm source="audit-cta" variant="booking" />
         </div>
-        <p className="mt-4 text-sm text-gray-400">{t.audit.noCommit}</p>
+        <p className="mt-4 text-base text-gray-400">{t.audit.noCommit}</p>
 
         <p className="mt-6 flex items-center justify-center gap-2 text-sm text-gray-400">
           <Mail className="h-4 w-4" />
