@@ -187,7 +187,7 @@ function ExitIntentPopup() {
 
   useEffect(() => {
     if (dismissed) return;
-    const timer = setTimeout(() => setOpen(true), 10000);
+    const timer = setTimeout(() => setOpen(true), 15000);
     return () => clearTimeout(timer);
   }, [dismissed]);
 
@@ -277,7 +277,7 @@ function StickyMobileCta() {
     >
       <a
         href="#diagnoza"
-        className="flex items-center justify-center gap-2 rounded-full bg-gradient-to-r from-sky-500 to-cyan-400 px-6 py-3 text-sm font-bold text-black shadow-lg shadow-cyan-500/40"
+        className="flex items-center justify-center gap-2 rounded-full bg-gradient-to-r from-sky-500 to-cyan-400 px-8 py-4 text-base font-bold text-black shadow-lg shadow-cyan-500/40"
       >
         Umów rozmowę
         <ArrowRight className="h-4 w-4" />
@@ -312,7 +312,7 @@ function Nav() {
         </span>
         <a
           href="#diagnoza"
-          className="rounded-full bg-gradient-to-r from-sky-500 to-cyan-400 px-5 py-2 text-sm font-semibold text-black shadow-lg shadow-cyan-500/40 transition hover:scale-105 hover:shadow-xl hover:shadow-cyan-400/50"
+          className="rounded-full bg-gradient-to-r from-sky-500 to-cyan-400 px-7 py-3 text-base font-bold text-black shadow-lg shadow-cyan-500/40 transition hover:scale-105 hover:shadow-xl hover:shadow-cyan-400/50"
         >
           Umów rozmowę
         </a>
@@ -508,10 +508,10 @@ function Hero() {
           </p>
           <MagneticButton
             href="#diagnoza"
-            className="mt-10 rounded-full bg-gradient-to-r from-sky-500 to-cyan-400 px-7 py-3.5 text-base font-bold text-black shadow-xl shadow-cyan-500/40 transition hover:scale-105 hover:shadow-2xl hover:shadow-cyan-400/50"
+            className="mt-10 rounded-full bg-gradient-to-r from-sky-500 to-cyan-400 px-9 py-5 text-lg font-bold text-black shadow-xl shadow-cyan-500/40 transition hover:scale-105 hover:shadow-2xl hover:shadow-cyan-400/50"
           >
             Sprawdź potencjał swoich zysków
-            <ArrowRight className="h-4 w-4" />
+            <ArrowRight className="h-5 w-5" />
           </MagneticButton>
         </div>
 
@@ -665,9 +665,8 @@ const DIAGNOSIS_OPTIONS = {
 
 // Stałe wartości kalkulatora
 const AVG_REVENUE_PER_VISIT = 500; // zł — średni zysk z wizyty
-const HOURS_SAVED_PER_STAFF = 12; // h/tydzień — oszczędność czasu na jedną osobę
+const HOURS_SAVED_PER_STAFF_MONTHLY = 20; // h/miesiąc — oszczędność czasu na jedną osobę w recepcji
 const HOURLY_COST = 37; // zł brutto — koszt godziny pracy
-const WEEKS_PER_MONTH = 4.33;
 
 function RangeSlider({ value, min, max, onChange }: { value: number; min: number; max: number; onChange: (v: number) => void }) {
   const trackRef = useRef<HTMLDivElement>(null);
@@ -706,7 +705,7 @@ function RangeSlider({ value, min, max, onChange }: { value: number; min: number
 }
 
 function Calculator() {
-  const [cancellations, setCancellations] = useState(3);
+  const [cancellations, setCancellations] = useState(10);
   const [staff, setStaff] = useState(2);
   const [step, setStep] = useState(0);
   const [answers, setAnswers] = useState<DiagnosisAnswers>({
@@ -714,13 +713,11 @@ function Calculator() {
     emptySlots: '',
     dropOff: '',
   });
-  const savedHoursWeekly = staff * HOURS_SAVED_PER_STAFF;
 
   const [showResult, setShowResult] = useState(false);
-  const cancellationsMonthly = cancellations * WEEKS_PER_MONTH;
-  const recoveredRevenueMonthly = Math.round(cancellationsMonthly * AVG_REVENUE_PER_VISIT);
-  const savedHoursMonthly = Math.round(savedHoursWeekly * WEEKS_PER_MONTH);
-  const savedCostMonthly = Math.round(savedHoursWeekly * HOURLY_COST * WEEKS_PER_MONTH);
+  const recoveredRevenueMonthly = Math.round(cancellations * AVG_REVENUE_PER_VISIT);
+  const savedHoursMonthly = Math.round(staff * HOURS_SAVED_PER_STAFF_MONTHLY);
+  const savedCostMonthly = Math.round(savedHoursMonthly * HOURLY_COST);
   const totalMonthly = recoveredRevenueMonthly + savedCostMonthly;
 
   const questions = [
@@ -750,14 +747,14 @@ function Calculator() {
 
     // Predefiniuj suwaki na podstawie odpowiedzi diagnozy (realistyczne mapowanie)
     if (key === 'cancellations') {
-      if (value === '0-2') setCancellations(2);
-      else if (value === '3-5') setCancellations(4);
-      else if (value === '>5') setCancellations(7);
+      if (value === '0-2') setCancellations(5);
+      else if (value === '3-5') setCancellations(10);
+      else if (value === '>5') setCancellations(18);
     }
     if (key === 'emptySlots') {
-      if (value === '0') setCancellations((c) => Math.max(c, 1));
-      else if (value === '1-3') setCancellations((c) => Math.max(c, 3));
-      else if (value === '>3') setCancellations((c) => Math.max(c, 5));
+      if (value === '0') setCancellations((c) => Math.max(c, 5));
+      else if (value === '1-3') setCancellations((c) => Math.max(c, 8));
+      else if (value === '>3') setCancellations((c) => Math.max(c, 12));
     }
 
     if (step < questions.length - 1) {
@@ -794,9 +791,9 @@ function Calculator() {
                     <CalendarClock className="h-4 w-4 text-cyan-400" />
                     Odwołane wizyty miesięcznie
                   </label>
-                  <span className="text-lg font-bold text-cyan-300">{Math.round(cancellations * WEEKS_PER_MONTH)}</span>
+                  <span className="text-lg font-bold text-cyan-300">{cancellations}</span>
                 </div>
-                <RangeSlider value={cancellations} min={1} max={10} onChange={setCancellations} />
+                <RangeSlider value={cancellations} min={1} max={30} onChange={setCancellations} />
               </div>
 
               <div>
@@ -917,10 +914,10 @@ function Calculator() {
                 <div className="mt-auto pt-8">
                   <MagneticButton
                     href="#book"
-                    className="rounded-full bg-gradient-to-r from-sky-500 to-cyan-400 px-7 py-3.5 text-base font-bold text-black shadow-xl shadow-cyan-500/40 transition hover:scale-105 hover:shadow-2xl hover:shadow-cyan-400/50"
+                    className="rounded-full bg-gradient-to-r from-sky-500 to-cyan-400 px-8 py-4 text-lg font-bold text-black shadow-xl shadow-cyan-500/40 transition hover:scale-105 hover:shadow-2xl hover:shadow-cyan-400/50"
                   >
                     Umów rozmowę
-                    <ArrowRight className="h-4 w-4" />
+                    <ArrowRight className="h-5 w-5" />
                   </MagneticButton>
                   <p className="mt-3 text-xs text-gray-400">15 min, bez zobowiązań</p>
                 </div>
