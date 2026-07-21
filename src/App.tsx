@@ -547,17 +547,18 @@ function Hero() {
 
   return (
     <section className="relative overflow-hidden px-6 pb-32 pt-40">
-      {/* Dental clinic background image */}
-      <div className="absolute inset-0">
-        <img
-          src="https://images.pexels.com/photos/6628076/pexels-photo-6628076.jpeg?auto=compress&cs=tinysrgb&w=2400"
-          alt="Modern dental clinic"
-          className="h-full w-full object-cover opacity-60"
-          loading="eager"
-        />
-        <div className="absolute inset-0 bg-gradient-to-r from-[#0a1628] via-[#0a1628]/75 to-[#0a1628]/25" />
-        <div className="absolute inset-0 bg-gradient-to-b from-[#0a1628]/30 via-transparent to-[#0a1628]" />
-      </div>
+      {/* Clean clinical background — deep navy with subtle dental pattern */}
+      <div className="absolute inset-0 bg-gradient-to-br from-[#0a1628] via-[#0c1c34] to-[#0a1628]" />
+      <div
+        className="absolute inset-0 opacity-[0.04]"
+        style={{
+          backgroundImage:
+            "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 24 24' fill='none' stroke='%2360d4e8' stroke-width='1.2'%3E%3Cpath d='M12 5.5c-1.5-1-3-1.5-4.5-1.5C5 4 3.5 5.5 3.5 8c0 2 .5 4 1 6 .5 2 1 4.5 2.5 4.5 1.5 0 1.5-2 2-3.5 .5-1.5 1-2.5 3-2.5s2.5 1 3 2.5c.5 1.5 .5 3.5 2 3.5 1.5 0 2-2.5 2.5-4.5 .5-2 1-4 1-6 0-2.5-1.5-4-4-4-1.5 0-3 .5-4.5 1.5z'/%3E%3C/svg%3E\")",
+          backgroundSize: '180px 180px',
+        }}
+      />
+      <div className="pointer-events-none absolute -right-40 top-20 h-96 w-96 rounded-full bg-cyan-500/5 blur-3xl" />
+      <div className="pointer-events-none absolute -left-40 bottom-0 h-80 w-80 rounded-full bg-sky-500/5 blur-3xl" />
 
       <div className="relative mx-auto grid max-w-6xl items-center gap-12 lg:grid-cols-[1.15fr_0.85fr]">
         <div className="max-w-xl mx-auto text-center lg:text-left">
@@ -1311,39 +1312,50 @@ function FounderNote() {
 function MiniCta() {
   const { t } = useI18n();
   return (
-    <section className="bg-white px-6 py-20">
-      <div className="mx-auto max-w-4xl">
-        <div className="relative overflow-hidden rounded-3xl border-2 border-cyan-500/40 bg-gradient-to-br from-[#0d1a2e] via-[#0d1a2e] to-[#102540] p-12 text-center shadow-2xl shadow-cyan-500/20 sm:p-16">
-          <div
-            className="pointer-events-none absolute -left-24 -top-24 h-56 w-56 rounded-full bg-cyan-400/20 blur-3xl"
-            style={{ animation: 'pulse 6s ease-in-out infinite' }}
-          />
-          <div
-            className="pointer-events-none absolute -bottom-24 -right-24 h-56 w-56 rounded-full bg-sky-400/15 blur-3xl"
-            style={{ animation: 'pulse 8s ease-in-out 2s infinite' }}
-          />
-          <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-transparent via-cyan-400 to-transparent" />
-
-          <div className="relative">
-            <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-cyan-500/20 ring-1 ring-cyan-400/40 transition-transform duration-500 hover:scale-110">
-              <CalendarClock className="h-8 w-8 text-cyan-400" strokeWidth={1.5} />
+    <section className="bg-[#f4f8fb] px-6 py-24">
+      <div className="mx-auto max-w-5xl">
+        <div className="grid overflow-hidden rounded-3xl bg-white shadow-xl shadow-slate-300/40 md:grid-cols-[0.9fr_1.1fr]">
+          {/* Left — clinical info panel */}
+          <div className="flex flex-col justify-center bg-gradient-to-br from-cyan-600 to-teal-600 p-10 text-white sm:p-12">
+            <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-white/15 ring-1 ring-white/25 backdrop-blur-sm">
+              <CalendarClock className="h-7 w-7 text-white" strokeWidth={1.5} />
             </div>
-
-            <p className="mt-6 text-sm font-semibold uppercase tracking-[0.2em] text-cyan-400">
+            <p className="mt-8 text-sm font-semibold uppercase tracking-[0.18em] text-cyan-100">
               {t.miniCta.eyebrow}
             </p>
-            <h3 className="mx-auto mt-3 max-w-xl text-3xl font-bold text-white sm:text-4xl">
+            <h3 className="mt-3 text-3xl font-bold leading-snug sm:text-4xl">
               {t.miniCta.title}
             </h3>
+            <div className="mt-8 space-y-3">
+              {[
+                { icon: Clock, text: t.miniCta.noCommit },
+                { icon: ShieldCheck, text: 'Bez zobowiązań' },
+                { icon: Video, text: 'Rozmowa online' },
+              ].map((item, i) => (
+                <div key={i} className="flex items-center gap-3 text-sm text-cyan-50">
+                  <item.icon className="h-5 w-5 flex-shrink-0 text-white/90" strokeWidth={1.5} />
+                  <span>{item.text}</span>
+                </div>
+              ))}
+            </div>
+          </div>
 
+          {/* Right — clean white CTA panel */}
+          <div className="flex flex-col justify-center p-10 sm:p-12">
+            <p className="text-sm font-medium text-slate-500">
+              {t.audit.desc}
+            </p>
             <a
               href="#book"
-              className="group mt-10 inline-flex items-center gap-3 rounded-full bg-gradient-to-r from-sky-500 to-cyan-400 px-12 py-5 text-lg font-bold text-black shadow-xl shadow-cyan-500/40 transition hover:scale-105 hover:shadow-2xl hover:shadow-cyan-400/50"
+              className="group mt-8 inline-flex items-center justify-center gap-3 rounded-xl bg-cyan-600 px-8 py-4 text-base font-bold text-white shadow-lg shadow-cyan-600/25 transition hover:bg-cyan-700 hover:shadow-xl"
             >
               {t.miniCta.cta}
               <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
             </a>
-            <p className="mt-4 text-sm text-gray-400">{t.miniCta.noCommit}</p>
+            <div className="mt-6 flex items-center gap-2 text-xs text-slate-400">
+              <Mail className="h-4 w-4" />
+              <span>kontakt@fullschedule.pl</span>
+            </div>
           </div>
         </div>
       </div>
