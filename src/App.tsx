@@ -129,7 +129,7 @@ function StatCounter({
 }) {
   const { ref, value: display } = useCountUp(value);
   return (
-    <span ref={ref} translate="no" className={`notranslate ${className}`}>
+    <span ref={ref} className={className}>
       {prefix}
       {display.toLocaleString('pl-PL')}
       {suffix}
@@ -212,7 +212,6 @@ function ExitIntentPopup() {
         className={`relative w-full max-w-md overflow-hidden rounded-2xl border border-cyan-400/20 bg-[#0d1a2e] p-8 shadow-2xl shadow-black/60 transition-all duration-300 ${
           open ? 'scale-100 translate-y-0' : 'scale-95 translate-y-4'
         }`}
-        translate="no"
       >
         <button
           onClick={close}
@@ -222,7 +221,7 @@ function ExitIntentPopup() {
           <X className="h-5 w-5" />
         </button>
 
-        <div className="flex flex-col items-center text-center notranslate" translate="no">
+        <div className="flex flex-col items-center text-center">
           <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-cyan-400/15">
             <CalendarClock className="h-7 w-7 text-cyan-400" strokeWidth={1.5} />
           </div>
@@ -715,9 +714,10 @@ function Calculator() {
   });
 
   const [showResult, setShowResult] = useState(false);
-  const recoveredRevenueMonthly = cancellations * AVG_REVENUE_PER_VISIT + staff * REVENUE_PER_STAFF_MONTHLY;
+  const recoveredRevenueMonthly = cancellations * AVG_REVENUE_PER_VISIT;
   const savedHoursMonthly = staff * HOURS_SAVED_PER_STAFF_MONTHLY;
-  const totalMonthly = recoveredRevenueMonthly;
+  const staffCostMonthly = staff * REVENUE_PER_STAFF_MONTHLY;
+  const totalMonthly = recoveredRevenueMonthly + staffCostMonthly;
 
   const questions = [
     {
@@ -811,7 +811,7 @@ function Calculator() {
               <div className="flex items-center justify-between">
                 <span className="text-sm text-gray-300">Odzyskane dochody z wizyt / miesiąc</span>
                 <span className="text-xl font-bold text-white">
-                  <StatCounter value={recoveredRevenueMonthly} suffix=" zł" />
+                  {recoveredRevenueMonthly.toLocaleString('pl-PL')} zł
                 </span>
               </div>
               <div className="flex items-center justify-between">
@@ -824,9 +824,13 @@ function Calculator() {
                     Potencjał miesięczny (łącznie)
                   </span>
                   <span className="text-2xl font-bold text-cyan-200">
-                    <StatCounter value={totalMonthly} suffix=" zł" />
+                    {totalMonthly.toLocaleString('pl-PL')} zł
                   </span>
                 </div>
+              </div>
+              <div className="mt-2 flex flex-wrap gap-x-5 gap-y-1 text-xs text-gray-400">
+                <span>Osoba w recepcji — 40h, 37 zł/h</span>
+                <span>Odwołana wizyta — 500 zł</span>
               </div>
             </div>
           </div>
