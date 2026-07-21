@@ -277,7 +277,7 @@ function StickyMobileCta() {
     >
       <a
         href="#diagnoza"
-        className="flex items-center justify-center gap-2 rounded-full bg-sky-500 px-6 py-3 text-sm font-semibold text-black"
+        className="flex items-center justify-center gap-2 rounded-full bg-gradient-to-r from-sky-500 to-cyan-400 px-6 py-3 text-sm font-bold text-black shadow-lg shadow-cyan-500/40"
       >
         Umów rozmowę
         <ArrowRight className="h-4 w-4" />
@@ -312,7 +312,7 @@ function Nav() {
         </span>
         <a
           href="#diagnoza"
-          className="rounded-full bg-sky-500 px-5 py-2 text-sm font-semibold text-black transition hover:bg-sky-400"
+          className="rounded-full bg-gradient-to-r from-sky-500 to-cyan-400 px-5 py-2 text-sm font-semibold text-black shadow-lg shadow-cyan-500/40 transition hover:scale-105 hover:shadow-xl hover:shadow-cyan-400/50"
         >
           Umów rozmowę
         </a>
@@ -508,7 +508,7 @@ function Hero() {
           </p>
           <MagneticButton
             href="#diagnoza"
-            className="mt-10 rounded-full bg-sky-500 px-7 py-3.5 text-base font-semibold text-black transition hover:bg-sky-400"
+            className="mt-10 rounded-full bg-gradient-to-r from-sky-500 to-cyan-400 px-7 py-3.5 text-base font-bold text-black shadow-xl shadow-cyan-500/40 transition hover:scale-105 hover:shadow-2xl hover:shadow-cyan-400/50"
           >
             Sprawdź potencjał swoich zysków
             <ArrowRight className="h-4 w-4" />
@@ -669,6 +669,42 @@ const HOURS_SAVED_PER_STAFF = 12; // h/tydzień — oszczędność czasu na jedn
 const HOURLY_COST = 37; // zł brutto — koszt godziny pracy
 const WEEKS_PER_MONTH = 4.33;
 
+function RangeSlider({ value, min, max, onChange }: { value: number; min: number; max: number; onChange: (v: number) => void }) {
+  const trackRef = useRef<HTMLDivElement>(null);
+  const pct = ((value - min) / (max - min)) * 100;
+
+  const setFromClientX = (clientX: number) => {
+    const el = trackRef.current;
+    if (!el) return;
+    const rect = el.getBoundingClientRect();
+    const ratio = Math.min(1, Math.max(0, (clientX - rect.left) / rect.width));
+    onChange(Math.round(min + ratio * (max - min)));
+  };
+
+  return (
+    <div
+      ref={trackRef}
+      onPointerDown={(e) => {
+        e.currentTarget.setPointerCapture(e.pointerId);
+        setFromClientX(e.clientX);
+      }}
+      onPointerMove={(e) => {
+        if (e.buttons !== 1) return;
+        setFromClientX(e.clientX);
+      }}
+      className="mt-3 flex h-6 cursor-pointer touch-none items-center"
+    >
+      <div className="relative h-2 w-full rounded-full bg-white/10">
+        <div className="absolute inset-y-0 left-0 rounded-full bg-gradient-to-r from-sky-500 to-cyan-400" style={{ width: `${pct}%` }} />
+        <div
+          className="absolute top-1/2 h-5 w-5 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-cyan-400 bg-white shadow-lg shadow-cyan-500/40"
+          style={{ left: `${pct}%` }}
+        />
+      </div>
+    </div>
+  );
+}
+
 function Calculator() {
   const [cancellations, setCancellations] = useState(3);
   const [staff, setStaff] = useState(2);
@@ -760,14 +796,7 @@ function Calculator() {
                   </label>
                   <span className="text-lg font-bold text-cyan-300">{Math.round(cancellations * WEEKS_PER_MONTH)}</span>
                 </div>
-                <input
-                  type="range"
-                  min={1}
-                  max={10}
-                  value={cancellations}
-                  onChange={(e) => setCancellations(Number(e.target.value))}
-                  className="mt-3 w-full accent-cyan-400"
-                />
+                <RangeSlider value={cancellations} min={1} max={10} onChange={setCancellations} />
               </div>
 
               <div>
@@ -778,14 +807,7 @@ function Calculator() {
                   </label>
                   <span className="text-lg font-bold text-cyan-300">{staff}</span>
                 </div>
-                <input
-                  type="range"
-                  min={1}
-                  max={10}
-                  value={staff}
-                  onChange={(e) => setStaff(Number(e.target.value))}
-                  className="mt-3 w-full accent-cyan-400"
-                />
+                <RangeSlider value={staff} min={1} max={10} onChange={setStaff} />
               </div>
             </div>
 
@@ -895,7 +917,7 @@ function Calculator() {
                 <div className="mt-auto pt-8">
                   <MagneticButton
                     href="#book"
-                    className="rounded-full bg-sky-500 px-7 py-3.5 text-base font-semibold text-black transition hover:bg-sky-400"
+                    className="rounded-full bg-gradient-to-r from-sky-500 to-cyan-400 px-7 py-3.5 text-base font-bold text-black shadow-xl shadow-cyan-500/40 transition hover:scale-105 hover:shadow-2xl hover:shadow-cyan-400/50"
                   >
                     Umów rozmowę
                     <ArrowRight className="h-4 w-4" />
@@ -1466,7 +1488,7 @@ function AuditCta() {
 
         <a
           href="mailto:kontakt@practiceflow.pl?subject=Pro%C5%9Bba%20o%20audyt%20grafiku"
-          className="mt-10 inline-flex items-center gap-2 rounded-full bg-sky-500 px-8 py-4 text-base font-semibold text-black transition hover:bg-sky-400"
+          className="mt-10 inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-sky-500 to-cyan-400 px-8 py-4 text-base font-bold text-black shadow-xl shadow-cyan-500/40 transition hover:scale-105 hover:shadow-2xl hover:shadow-cyan-400/50"
         >
           Umów audyt grafiku
           <ArrowRight className="h-4 w-4" />
