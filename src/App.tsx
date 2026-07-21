@@ -576,11 +576,11 @@ function Hero() {
               {[
                 { time: '09:00', label: 'A. Kowalska', status: 'booked' },
                 { time: '09:30', label: 'M. Nowak', status: 'booked' },
-                { time: '10:00', label: 'Auto-filled', status: 'filled' },
+                { time: '10:00', label: 'Auto-obsadzone', status: 'filled' },
                 { time: '10:30', label: 'J. Wiśniewski', status: 'booked' },
-                { time: '11:00', label: 'SMS reminder', status: 'reminder' },
+                { time: '11:00', label: 'Przypomnienie SMS', status: 'reminder' },
                 { time: '11:30', label: 'K. Lewandowska', status: 'booked' },
-                { time: '12:00', label: 'Online booking', status: 'filled' },
+                { time: '12:00', label: 'Rezerwacja online', status: 'filled' },
               ].map((slot, i) => (
                 <div
                   key={i}
