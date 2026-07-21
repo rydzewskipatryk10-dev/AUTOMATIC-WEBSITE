@@ -16,7 +16,6 @@ import {
   CalendarClock,
   Bell,
   Database,
-  Workflow,
   Sparkles,
   Star,
   Quote,
@@ -26,10 +25,11 @@ import {
   Rocket,
   ShieldCheck,
   X,
+  Loader2,
+  Languages,
 } from 'lucide-react';
-
-// Path to the downloadable PDF guide (place the file in /public)
-const GUIDE_PDF_PATH = '/practiceflow-przewodnik.pdf';
+import { I18nProvider, useI18n, type Lang } from './lib/i18n';
+import { LeadForm } from './lib/LeadForm';
 
 // ---------------------------------------------------------------------------
 // Scroll-reveal hook — fades children in when they enter the viewport
@@ -179,9 +179,28 @@ function MagneticButton({
 }
 
 // ---------------------------------------------------------------------------
-// Exit-intent popup — single popup, appears after 10 seconds
+// Language toggle button
+// ---------------------------------------------------------------------------
+function LanguageToggle({ className = '' }: { className?: string }) {
+  const { lang, setLang, t } = useI18n();
+  const next: Lang = lang === 'pl' ? 'en' : 'pl';
+  return (
+    <button
+      onClick={() => setLang(next)}
+      aria-label={lang === 'pl' ? 'Switch to English' : 'Przełącz na polski'}
+      className={`inline-flex items-center gap-1.5 rounded-full border border-white/15 px-3 py-2 text-xs font-bold text-gray-300 transition hover:border-cyan-400/50 hover:text-white ${className}`}
+    >
+      <Languages className="h-3.5 w-3.5" strokeWidth={1.5} />
+      {t.langLabel}
+    </button>
+  );
+}
+
+// ---------------------------------------------------------------------------
+// Exit-intent popup — appears after 15 seconds, collects email via LeadForm
 // ---------------------------------------------------------------------------
 function ExitIntentPopup() {
+  const { t } = useI18n();
   const [open, setOpen] = useState(false);
   const [dismissed, setDismissed] = useState(false);
 
@@ -215,7 +234,7 @@ function ExitIntentPopup() {
       >
         <button
           onClick={close}
-          aria-label="Zamknij"
+          aria-label="Close"
           className="absolute right-4 top-4 text-gray-500 transition hover:text-white"
         >
           <X className="h-5 w-5" />
@@ -226,29 +245,22 @@ function ExitIntentPopup() {
             <CalendarClock className="h-7 w-7 text-cyan-400" strokeWidth={1.5} />
           </div>
           <p className="mt-5 text-xs font-semibold uppercase tracking-widest text-cyan-400">
-            Zanim odejdziesz
+            {t.exitPopup.eyebrow}
           </p>
           <h3 className="mt-3 text-xl font-bold text-white">
-            Pobierz darmowy przewodnik
+            {t.exitPopup.title}
           </h3>
           <p className="mt-3 text-sm leading-relaxed text-gray-400">
-            Zanim odejdziesz — zabierz krótki przewodnik: 5 sygnałów, że Twój
-            gabinet traci na ręcznej obsłudze. PDF, bez podawania e-maila.
+            {t.exitPopup.desc}
           </p>
-          <a
-            href={GUIDE_PDF_PATH}
-            download
-            onClick={close}
-            className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-full bg-sky-500 px-6 py-3.5 text-base font-semibold text-black transition hover:bg-sky-400"
-          >
-            Pobierz darmowy przewodnik
-            <ArrowRight className="h-4 w-4" />
-          </a>
+          <div className="mt-6 w-full">
+            <LeadForm source="exit-intent" onSubmitted={close} />
+          </div>
           <button
             onClick={close}
             className="mt-3 text-xs text-gray-500 transition hover:text-gray-300"
           >
-            Nie, dziękuję
+            {t.exitPopup.decline}
           </button>
         </div>
       </div>
@@ -260,6 +272,7 @@ function ExitIntentPopup() {
 // Sticky mobile CTA bar
 // ---------------------------------------------------------------------------
 function StickyMobileCta() {
+  const { t } = useI18n();
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
@@ -278,7 +291,7 @@ function StickyMobileCta() {
         href="#diagnoza"
         className="flex items-center justify-center gap-2 rounded-full bg-gradient-to-r from-sky-500 to-cyan-400 px-8 py-4 text-base font-bold text-black shadow-lg shadow-cyan-500/40"
       >
-        Umów rozmowę
+        {t.sticky}
         <ArrowRight className="h-4 w-4" />
       </a>
     </div>
@@ -289,6 +302,7 @@ function StickyMobileCta() {
 // Sticky Navigation (appears after scrolling past hero)
 // ---------------------------------------------------------------------------
 function Nav() {
+  const { t } = useI18n();
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
@@ -309,12 +323,15 @@ function Nav() {
         <span className="text-base font-semibold tracking-tight text-white">
           PracticeFlow
         </span>
-        <a
-          href="#diagnoza"
-          className="rounded-full bg-gradient-to-r from-sky-500 to-cyan-400 px-7 py-3 text-base font-bold text-black shadow-lg shadow-cyan-500/40 transition hover:scale-105 hover:shadow-xl hover:shadow-cyan-400/50"
-        >
-          Umów rozmowę
-        </a>
+        <div className="flex items-center gap-3">
+          <LanguageToggle />
+          <a
+            href="#diagnoza"
+            className="rounded-full bg-gradient-to-r from-sky-500 to-cyan-400 px-7 py-3 text-base font-bold text-black shadow-lg shadow-cyan-500/40 transition hover:scale-105 hover:shadow-xl hover:shadow-cyan-400/50"
+          >
+            {t.nav.book}
+          </a>
+        </div>
       </div>
     </header>
   );
@@ -324,18 +341,19 @@ function Nav() {
 // Case Study — concrete before/after with numbers
 // ---------------------------------------------------------------------------
 function CaseStudy() {
+  const { t } = useI18n();
   return (
     <section className="bg-[#f7f7f5] px-6 py-24">
       <div className="mx-auto max-w-5xl">
         <div className="mb-12 text-center">
           <p className="text-xs font-semibold uppercase tracking-widest text-cyan-600">
-            Case study
+            {t.caseStudy.eyebrow}
           </p>
           <h2 className="mt-3 text-3xl font-bold text-gray-900 sm:text-4xl">
-            Gabinet Stomatologiczny „Uśmiech"
+            {t.caseStudy.title}
           </h2>
           <p className="mt-4 text-gray-600">
-            3 fotele, 6 higienistek, 4 dentystów. Wdrożenie: 14 dni.
+            {t.caseStudy.desc}
           </p>
         </div>
 
@@ -343,7 +361,7 @@ function CaseStudy() {
         <div className="mb-8 overflow-hidden rounded-2xl border border-gray-200 shadow-lg">
           <img
             src="https://images.pexels.com/photos/6812532/pexels-photo-6812532.jpeg?auto=compress&cs=tinysrgb&w=1200"
-            alt="Dentysta pracujący z pacjentem w nowoczesnej klinice"
+            alt="Dental clinic"
             className="h-64 w-full object-cover sm:h-80"
             loading="lazy"
           />
@@ -352,44 +370,44 @@ function CaseStudy() {
         <div className="grid gap-6 md:grid-cols-2">
           {/* Before */}
           <div className="rounded-2xl border border-red-500/20 bg-white p-8 shadow-sm">
-            <p className="text-sm font-semibold text-red-600">Przed wdrożeniem</p>
+            <p className="text-sm font-semibold text-red-600">{t.caseStudy.before}</p>
             <div className="mt-6 space-y-4">
               <div>
                 <p className="text-3xl font-bold text-gray-900">12%</p>
-                <p className="text-sm text-gray-600">wskaźnik no-shows</p>
+                <p className="text-sm text-gray-600">{t.caseStudy.noshowLabel}</p>
               </div>
               <div>
                 <p className="text-3xl font-bold text-gray-900">12h/tyg.</p>
-                <p className="text-sm text-gray-600">czas recepcji na telefon i przypomnienia</p>
+                <p className="text-sm text-gray-600">{t.caseStudy.timeLabel}</p>
               </div>
               <div>
                 <p className="text-3xl font-bold text-gray-900">~14 000 zł</p>
-                <p className="text-sm text-gray-600">stracone zyski / miesiąc (puste sloty)</p>
+                <p className="text-sm text-gray-600">{t.caseStudy.lostLabel}</p>
               </div>
             </div>
           </div>
 
           {/* After */}
           <div className="rounded-2xl border border-cyan-500/20 bg-white p-8 shadow-sm">
-            <p className="text-sm font-semibold text-cyan-600">Po wdrożeniu</p>
+            <p className="text-sm font-semibold text-cyan-600">{t.caseStudy.after}</p>
             <div className="mt-6 space-y-4">
               <div>
                 <p className="text-3xl font-bold text-gray-900">
                   <StatCounter value={3} suffix="%" />
                 </p>
-                <p className="text-sm text-gray-600">wskaźnik no-shows</p>
+                <p className="text-sm text-gray-600">{t.caseStudy.noshowLabel}</p>
               </div>
               <div>
                 <p className="text-3xl font-bold text-gray-900">
                   <StatCounter value={4} suffix="h/tyg." />
                 </p>
-                <p className="text-sm text-gray-600">czas recepcji na telefon i przypomnienia</p>
+                <p className="text-sm text-gray-600">{t.caseStudy.timeLabel}</p>
               </div>
               <div>
                 <p className="text-3xl font-bold text-gray-900">
                   <StatCounter value={21000} suffix=" zł" />
                 </p>
-                <p className="text-sm text-gray-600">odzyskane zyski / miesiąc</p>
+                <p className="text-sm text-gray-600">{t.caseStudy.recoveredLabel}</p>
               </div>
             </div>
           </div>
@@ -397,12 +415,12 @@ function CaseStudy() {
 
         <div className="mt-8 rounded-2xl border border-gray-200 bg-white p-6 text-center shadow-sm">
           <p className="text-lg font-semibold text-gray-900">
-            ROI wdrożenia: <span className="text-cyan-600">3,2x</span> w pierwszym miesiącu
+            {t.caseStudy.roi}
           </p>
           <p className="mt-2 text-sm text-gray-600">
-            „Przestaliśmy gonić pacjentów telefonem. Teraz to oni rezerwują sami, a my skupiamy się na leczeniu."
+            {t.caseStudy.quote}
           </p>
-          <p className="mt-3 text-xs text-gray-500">— Anna K., właścicielka gabinetu „Uśmiech"</p>
+          <p className="mt-3 text-xs text-gray-500">{t.caseStudy.author}</p>
         </div>
       </div>
     </section>
@@ -413,14 +431,15 @@ function CaseStudy() {
 // Comparison Table — PracticeFlow vs. ręczna obsługa vs. typowy system
 // ---------------------------------------------------------------------------
 function ComparisonTable() {
+  const { t } = useI18n();
   const features = [
-    { label: 'Rezerwacja online 24/7', pf: true, manual: false, other: true },
-    { label: 'Automatyczne przypomnienia SMS', pf: true, manual: false, other: 'Częściowo' },
-    { label: 'Samoobsługowa zmiana terminu', pf: true, manual: false, other: false },
-    { label: 'Inteligentne wypełnianie pustych slotów', pf: true, manual: false, other: false },
-    { label: 'Lista oczekujących z auto-powiadomieniem', pf: true, manual: false, other: 'Ręcznie' },
-    { label: 'Mniej niż 15 min obsługi / tyg.', pf: true, manual: false, other: false },
-    { label: 'Wdrożenie w 14 dni', pf: true, manual: false, other: false },
+    { pf: true, manual: false, other: true },
+    { pf: true, manual: false, other: t.comparison.partial },
+    { pf: true, manual: false, other: false },
+    { pf: true, manual: false, other: false },
+    { pf: true, manual: false, other: t.comparison.manual2 },
+    { pf: true, manual: false, other: false },
+    { pf: true, manual: false, other: false },
   ];
 
   const renderCell = (val: boolean | string) => {
@@ -435,10 +454,10 @@ function ComparisonTable() {
       <div className="mx-auto max-w-4xl">
         <div className="mb-12 text-center">
           <p className="text-xs font-semibold uppercase tracking-widest text-cyan-600">
-            Porównanie
+            {t.comparison.eyebrow}
           </p>
           <h2 className="mt-3 text-3xl font-bold text-gray-900 sm:text-4xl">
-            Dlaczego PracticeFlow?
+            {t.comparison.title}
           </h2>
         </div>
 
@@ -448,23 +467,23 @@ function ComparisonTable() {
               <tr className="border-b border-gray-200 bg-gray-50">
                 <th className="py-5 pl-6 pr-4 text-left text-sm font-medium text-gray-500" />
                 <th className="py-5 px-6 text-center text-sm font-bold text-cyan-600">
-                  PracticeFlow
+                  {t.comparison.pf}
                 </th>
                 <th className="py-5 px-6 text-center text-sm font-medium text-gray-500">
-                  Ręczna obsługa
+                  {t.comparison.manual}
                 </th>
                 <th className="py-5 px-6 text-center text-sm font-medium text-gray-500">
-                  Typowy system
+                  {t.comparison.other}
                 </th>
               </tr>
             </thead>
             <tbody>
               {features.map((f, i) => (
                 <tr
-                  key={f.label}
+                  key={i}
                   className={`border-b border-gray-100 ${i % 2 === 0 ? 'bg-gray-50/50' : ''}`}
                 >
-                  <td className="py-5 pl-6 pr-4 text-left text-sm text-gray-900">{f.label}</td>
+                  <td className="py-5 pl-6 pr-4 text-left text-sm text-gray-900">{t.comparison.features[i]}</td>
                   <td className="py-5 px-6 text-center">{renderCell(f.pf)}</td>
                   <td className="py-5 px-6 text-center">{renderCell(f.manual)}</td>
                   <td className="py-5 px-6 text-center">{renderCell(f.other)}</td>
@@ -482,6 +501,7 @@ function ComparisonTable() {
 // Hero — asymmetric, with dashboard mockup on the right
 // ---------------------------------------------------------------------------
 function Hero() {
+  const { t } = useI18n();
   const [scrollY, setScrollY] = useState(0);
 
   useEffect(() => {
@@ -500,16 +520,16 @@ function Hero() {
       <div className="relative mx-auto grid max-w-6xl items-center gap-12 lg:grid-cols-2">
         <div className="max-w-2xl">
           <h1 className="text-4xl font-bold leading-tight text-white sm:text-5xl md:text-6xl">
-            Puste fotele codziennie palą Twoje pieniądze.
+            {t.hero.title}
           </h1>
           <p className="mt-6 text-lg text-gray-300">
-            Automatycznie wypełnimy każdą dziurę w grafiku, zanim stracisz tysiące złotych.
+            {t.hero.subtitle}
           </p>
           <MagneticButton
             href="#diagnoza"
             className="mt-10 rounded-full bg-gradient-to-r from-sky-500 to-cyan-400 px-9 py-5 text-lg font-bold text-black shadow-xl shadow-cyan-500/40 transition hover:scale-105 hover:shadow-2xl hover:shadow-cyan-400/50"
           >
-            Sprawdź potencjał swoich zysków
+            {t.hero.cta}
             <ArrowRight className="h-5 w-5" />
           </MagneticButton>
         </div>
@@ -523,12 +543,12 @@ function Hero() {
           <div className="absolute -right-6 -top-8 z-10 w-44 overflow-hidden rounded-xl border border-white/15 shadow-2xl shadow-black/60 transition-transform duration-500 hover:scale-105">
             <img
               src="https://images.pexels.com/photos/6812532/pexels-photo-6812532.jpeg?auto=compress&cs=tinysrgb&w=400"
-              alt="Nowoczesna klinika dentystyczna"
+              alt="Dental clinic"
               className="h-28 w-full object-cover"
               loading="lazy"
             />
             <div className="bg-[#0d1a2e] px-2 py-1.5">
-              <p className="text-[10px] font-semibold text-cyan-400">Twoja klinika</p>
+              <p className="text-[10px] font-semibold text-cyan-400">{t.hero.yourClinic}</p>
             </div>
           </div>
           <div className="rounded-2xl border border-white/15 bg-[#0d1a2e] p-5 shadow-2xl shadow-black/50">
@@ -540,19 +560,19 @@ function Hero() {
                 <div className="h-3 w-3 rounded-full bg-cyan-400/60" />
               </div>
               <span className="text-xs font-medium text-gray-400">
-                Kalendarz — 9:00–14:00
+                {t.hero.calendarLabel}
               </span>
             </div>
             {/* Mock calendar grid */}
             <div className="mt-4 space-y-2">
               {[
-                { time: '09:00', label: 'A. Kowalska — Kontrola', status: 'booked' },
-                { time: '09:30', label: 'M. Nowak — Higienizacja', status: 'booked' },
-                { time: '10:00', label: 'Wolny slot — auto-obsadzone', status: 'filled' },
-                { time: '10:30', label: 'J. Wiśniewski — Leczenie', status: 'booked' },
-                { time: '11:00', label: 'Przypomnienie SMS wysłane', status: 'reminder' },
-                { time: '11:30', label: 'K. Lewandowska — Konsultacja', status: 'booked' },
-                { time: '12:00', label: 'Rezerwacja online — 24/7', status: 'filled' },
+                { time: '09:00', label: 'A. Kowalska', status: 'booked' },
+                { time: '09:30', label: 'M. Nowak', status: 'booked' },
+                { time: '10:00', label: 'Auto-filled', status: 'filled' },
+                { time: '10:30', label: 'J. Wiśniewski', status: 'booked' },
+                { time: '11:00', label: 'SMS reminder', status: 'reminder' },
+                { time: '11:30', label: 'K. Lewandowska', status: 'booked' },
+                { time: '12:00', label: 'Online booking', status: 'filled' },
               ].map((slot, i) => (
                 <div
                   key={i}
@@ -591,15 +611,15 @@ function Hero() {
             {/* Mock footer stats */}
             <div className="mt-4 grid grid-cols-3 gap-3 border-t border-white/15 pt-4">
               <div>
-                <p className="text-xs text-gray-400">Obsadzone</p>
+                <p className="text-xs text-gray-400">{t.hero.booked}</p>
                 <p className="text-sm font-bold text-cyan-300">94%</p>
               </div>
               <div>
-                <p className="text-xs text-gray-400">No-shows</p>
+                <p className="text-xs text-gray-400">{t.hero.noshow}</p>
                 <p className="text-sm font-bold text-sky-300">2%</p>
               </div>
               <div>
-                <p className="text-xs text-gray-400">Odzyskany czas</p>
+                <p className="text-xs text-gray-400">{t.hero.saved}</p>
                 <p className="text-sm font-bold text-white">14h</p>
               </div>
             </div>
@@ -614,11 +634,12 @@ function Hero() {
 // Social Proof — logos strip
 // ---------------------------------------------------------------------------
 function SocialProof() {
+  const { t } = useI18n();
   return (
     <section className="border-y border-white/10 bg-[#0d1a2e] px-6 py-12">
       <div className="mx-auto max-w-6xl">
         <p className="text-center text-xs font-semibold uppercase tracking-widest text-gray-400">
-          Zaufały nam gabinety stomatologiczne w całej Polsce
+          {t.socialProof.label}
         </p>
         <div className="mt-8 flex flex-wrap items-center justify-center gap-x-12 gap-y-6">
           {['DentalCare', 'WhiteSmile', 'OrthoLine', 'MediDent', 'SmilePro'].map((name) => (
@@ -644,28 +665,9 @@ type DiagnosisAnswers = {
   dropOff: string;
 };
 
-const DIAGNOSIS_OPTIONS = {
-  cancellations: [
-    { value: '10-15', label: '10–15 wizyt' },
-    { value: '16-25', label: '16–25 wizyt' },
-    { value: '>25', label: 'Powyżej 25' },
-  ],
-  emptySlots: [
-    { value: '<5', label: 'Poniżej 5' },
-    { value: '5-10', label: '5–10' },
-    { value: '>10', label: 'Powyżej 10' },
-  ],
-  dropOff: [
-    { value: 'unknown', label: 'Nie wiem' },
-    { value: '<20%', label: 'Poniżej 20%' },
-    { value: '>20%', label: 'Powyżej 20%' },
-  ],
-};
-
-// Stałe wartości kalkulatora
-const AVG_REVENUE_PER_VISIT = 500; // zł — średni zysk z jednej odwołanej wizyty
-const REVENUE_PER_STAFF_MONTHLY = 1480; // zł/miesiąc — odzyskane dochody z jednej osoby w recepcji
-const HOURS_SAVED_PER_STAFF_MONTHLY = 40; // h/miesiąc — odzyskany czas z jednej osoby w recepcji
+const AVG_REVENUE_PER_VISIT = 500;
+const REVENUE_PER_STAFF_MONTHLY = 1480;
+const HOURS_SAVED_PER_STAFF_MONTHLY = 40;
 
 function RangeSlider({ value, min, max, onChange }: { value: number; min: number; max: number; onChange: (v: number) => void }) {
   const pct = ((value - min) / (max - min)) * 100;
@@ -683,6 +685,7 @@ function RangeSlider({ value, min, max, onChange }: { value: number; min: number
 }
 
 function Calculator() {
+  const { t } = useI18n();
   const [cancellations, setCancellations] = useState(10);
   const [staff, setStaff] = useState(2);
   const [step, setStep] = useState(0);
@@ -704,54 +707,38 @@ function Calculator() {
     (answers.dropOff === '>20%' ? 2 : answers.dropOff === '<20%' ? 1 : 0);
 
   const diagnosisLevel =
-    diagnosisScore >= 6
-      ? {
-          title: 'Twój gabinet traci znaczną część dochodu.',
-          desc: 'Wysoki odsetek odwołań i pustych slotów wskazuje na wyraźną potrzebę automatyzacji recepcji.',
-          recommendations: [
-            'Eliminacja pustych slotów w kalendarzu',
-            'Pełna automatyzacja przypomnień o wizytach',
-            'Samoobsługowa rezerwacja 24/7',
-            'Automatyczne przepunktowywanie odwołanych wizyt',
-          ],
-        }
-      : diagnosisScore >= 3
-      ? {
-          title: 'Twój gabinet ma wyraźny potencjał automatyzacji.',
-          desc: 'Część wizyt jest odwoływana, a grafik nie jest w pełni obsadzony — to można zautomatyzować.',
-          recommendations: [
-            'Eliminacja pustych slotów w kalendarzu',
-            'Pełna automatyzacja przypomnień o wizytach',
-            'Samoobsługowa rezerwacja 24/7',
-          ],
-        }
-      : {
-          title: 'Twój gabinet działa sprawnie, ale można więcej.',
-          desc: 'Automatyzacja pomoże utrzymać obecny poziom i zapobiec problemom w przyszłości.',
-          recommendations: [
-            'Pełna automatyzacja przypomnień o wizytach',
-            'Samoobsługowa rezerwacja 24/7',
-          ],
-        };
+    diagnosisScore >= 6 ? t.calc.level.high : diagnosisScore >= 3 ? t.calc.level.mid : t.calc.level.low;
 
   const questions = [
     {
       key: 'cancellations' as const,
       icon: Phone,
-      title: 'Ile wizyt miesięcznie jest odwoływanych w Twoim gabinecie?',
-      options: DIAGNOSIS_OPTIONS.cancellations,
+      title: t.calc.q1,
+      options: [
+        { value: '10-15', label: t.calc.opt.c1 },
+        { value: '16-25', label: t.calc.opt.c2 },
+        { value: '>25', label: t.calc.opt.c3 },
+      ],
     },
     {
       key: 'emptySlots' as const,
       icon: CalendarClock,
-      title: 'Ile średnio "pustych slotów" w grafiku pojawia się w Twoim gabinecie w ciągu miesiąca?',
-      options: DIAGNOSIS_OPTIONS.emptySlots,
+      title: t.calc.q2,
+      options: [
+        { value: '<5', label: t.calc.opt.e1 },
+        { value: '5-10', label: t.calc.opt.e2 },
+        { value: '>10', label: t.calc.opt.e3 },
+      ],
     },
     {
       key: 'dropOff' as const,
       icon: TrendingUp,
-      title: 'Jaki procent nowych pacjentów rezygnuje z wizyty przez trudności z zapisem?',
-      options: DIAGNOSIS_OPTIONS.dropOff,
+      title: t.calc.q3,
+      options: [
+        { value: 'unknown', label: t.calc.opt.d1 },
+        { value: '<20%', label: t.calc.opt.d2 },
+        { value: '>20%', label: t.calc.opt.d3 },
+      ],
     },
   ];
 
@@ -759,7 +746,6 @@ function Calculator() {
     const newAnswers = { ...answers, [key]: value };
     setAnswers(newAnswers);
 
-    // Predefiniuj suwaki na podstawie odpowiedzi diagnozy (miesięczne wartości)
     if (key === 'cancellations') {
       if (value === '10-15') setCancellations(12);
       else if (value === '16-25') setCancellations(20);
@@ -782,20 +768,20 @@ function Calculator() {
     <section id="diagnoza" className="px-6 py-20">
       <div className="mx-auto max-w-5xl">
         <p className="text-xs font-semibold uppercase tracking-widest text-cyan-400">
-          Diagnoza Twojego gabinetu
+          {t.calc.eyebrow}
         </p>
         <h2 className="mt-4 max-w-2xl text-3xl font-bold text-white sm:text-4xl">
-          Zobacz, ile czasu i dochodu odzyska Twój gabinet.
+          {t.calc.title}
         </h2>
 
         <div className="mt-10 grid gap-6 lg:grid-cols-2">
           {/* Calculator */}
           <div className="rounded-2xl border border-white/15 bg-[#0d1a2e] p-6">
             <h3 className="text-lg font-semibold text-white">
-              Kalkulator automatyzacji
+              {t.calc.calculatorTitle}
             </h3>
             <p className="mt-2 text-sm text-gray-300">
-              Szacunkowy potencjał odzyskanych dochodów i oszczędności.
+              {t.calc.calculatorDesc}
             </p>
 
             <div className="mt-8 space-y-8">
@@ -803,7 +789,7 @@ function Calculator() {
                 <div className="flex items-center justify-between">
                   <label className="flex items-center gap-2 text-sm font-medium text-gray-100">
                     <CalendarClock className="h-4 w-4 text-cyan-400" />
-                    Odwołane wizyty miesięcznie
+                    {t.calc.cancellations}
                   </label>
                   <span className="text-lg font-bold text-cyan-300">{cancellations}</span>
                 </div>
@@ -814,7 +800,7 @@ function Calculator() {
                 <div className="flex items-center justify-between">
                   <label className="flex items-center gap-2 text-sm font-medium text-gray-100">
                     <Users className="h-4 w-4 text-cyan-400" />
-                    Osoby w recepcji
+                    {t.calc.staff}
                   </label>
                   <span className="text-lg font-bold text-cyan-300">{staff}</span>
                 </div>
@@ -824,19 +810,19 @@ function Calculator() {
 
             <div className="mt-10 space-y-4 border-t border-white/15 pt-8">
               <div className="flex items-center justify-between">
-                <span className="text-sm text-gray-300">Odzyskane dochody z wizyt / miesiąc</span>
+                <span className="text-sm text-gray-300">{t.calc.recoveredRevenue}</span>
                 <span className="text-xl font-bold text-white">
                   {recoveredRevenueMonthly.toLocaleString('pl-PL')} zł
                 </span>
               </div>
               <div className="flex items-center justify-between">
-                <span className="text-sm text-gray-300">Odzyskany czas / miesiąc</span>
+                <span className="text-sm text-gray-300">{t.calc.savedHours}</span>
                 <span className="text-xl font-bold text-white">{savedHoursMonthly}h</span>
               </div>
               <div className="rounded-lg bg-cyan-400/10 px-4 py-3">
                 <div className="flex items-center justify-between">
                   <span className="text-sm font-medium text-cyan-200">
-                    Potencjał miesięczny (łącznie)
+                    {t.calc.totalPotential}
                   </span>
                   <span className="text-2xl font-bold text-cyan-200">
                     {totalMonthly.toLocaleString('pl-PL')} zł
@@ -844,8 +830,8 @@ function Calculator() {
                 </div>
               </div>
               <div className="mt-2 flex flex-wrap gap-x-5 gap-y-1 text-xs text-gray-400">
-                <span>Osoba w recepcji — 40h, 37 zł/h</span>
-                <span>Odwołana wizyta — 500 zł</span>
+                <span>{t.calc.staffHint}</span>
+                <span>{t.calc.visitHint}</span>
               </div>
             </div>
           </div>
@@ -856,7 +842,7 @@ function Calculator() {
               <>
                 <div className="flex items-center justify-between">
                   <h3 className="text-lg font-semibold text-white">
-                    Diagnoza stanu automatyzacji
+                    {t.calc.diagnosisTitle}
                   </h3>
                   <span className="text-sm text-gray-400">
                     {step + 1} / {questions.length}
@@ -877,7 +863,7 @@ function Calculator() {
                       return <Icon className="h-5 w-5" strokeWidth={1.5} />;
                     })()}
                     <span className="text-xs font-semibold uppercase tracking-widest">
-                      Pytanie {step + 1}
+                      {t.calc.question} {step + 1}
                     </span>
                   </div>
                   <p className="mt-3 text-base font-medium text-white">
@@ -903,20 +889,21 @@ function Calculator() {
                 <div className="flex items-center gap-2 text-cyan-400">
                   <Sparkles className="h-5 w-5" />
                   <span className="text-xs font-semibold uppercase tracking-widest">
-                    Wynik diagnozy
+                    {t.calc.resultEyebrow}
                   </span>
                 </div>
                 <h3 className="mt-4 text-2xl font-bold text-white">
                   {diagnosisLevel.title}
                 </h3>
                 <p className="mt-3 text-sm text-gray-300">
-                  {diagnosisLevel.desc} Na podstawie Twoich odpowiedzi i kalkulatora, możesz odzyskać
-                  do <span className="font-semibold text-cyan-200">{savedHoursMonthly}h miesięcznie</span> i
-                  <span className="font-semibold text-cyan-200"> {totalMonthly.toLocaleString('pl-PL')} zł miesięcznie</span>.
+                  {diagnosisLevel.desc} {t.calc.resultBase}{' '}
+                  <span className="font-semibold text-cyan-200">{savedHoursMonthly}{t.calc.hoursMonthly}</span>{' '}
+                  {t.calc.and}{' '}
+                  <span className="font-semibold text-cyan-200">{totalMonthly.toLocaleString('pl-PL')} {t.calc.plnMonthly}</span>
                 </p>
 
                 <div className="mt-6 space-y-3">
-                  {diagnosisLevel.recommendations.map((goal) => (
+                  {diagnosisLevel.recs.map((goal) => (
                     <div key={goal} className="flex items-center gap-3">
                       <CheckCircle className="h-5 w-5 flex-shrink-0 text-cyan-400" strokeWidth={1.5} />
                       <span className="text-sm text-gray-200">{goal}</span>
@@ -929,10 +916,10 @@ function Calculator() {
                     href="#book"
                     className="rounded-full bg-gradient-to-r from-sky-500 to-cyan-400 px-8 py-4 text-lg font-bold text-black shadow-xl shadow-cyan-500/40 transition hover:scale-105 hover:shadow-2xl hover:shadow-cyan-400/50"
                   >
-                    Umów rozmowę
+                    {t.calc.bookCta}
                     <ArrowRight className="h-5 w-5" />
                   </MagneticButton>
-                  <p className="mt-3 text-xs text-gray-400">15 min, bez zobowiązań</p>
+                  <p className="mt-3 text-xs text-gray-400">{t.calc.noCommit}</p>
                 </div>
               </div>
             )}
@@ -947,15 +934,11 @@ function Calculator() {
 // System Diagram (scroll-reveal) — light section
 // ---------------------------------------------------------------------------
 function SystemDiagram() {
+  const { t } = useI18n();
   const sectionRef = useRef<HTMLDivElement>(null);
   const [visibleSteps, setVisibleSteps] = useState(0);
 
-  const steps = [
-    { icon: Phone, title: 'Obsługa pacjenta', text: 'Automatyczne odbieranie połączeń i odpowiedzi na pytania.' },
-    { icon: Calendar, title: 'Rezerwacja wizyty', text: 'Samoobsługowy kalendarz dostępny 24/7.' },
-    { icon: Bell, title: 'Przypomnienia', text: 'SMS i e-mail redukujące no-shows.' },
-    { icon: Database, title: 'Grafik kliniki', text: 'Pełna synchronizacja z systemem gabinetu.' },
-  ];
+  const steps = t.system.steps;
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -971,16 +954,16 @@ function SystemDiagram() {
     if (sectionRef.current) observer.observe(sectionRef.current);
     return () => observer.disconnect();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [t]);
 
   return (
     <section ref={sectionRef} className="bg-[#f7f7f5] px-6 py-24">
       <div className="mx-auto max-w-5xl">
         <p className="text-xs font-semibold uppercase tracking-widest text-cyan-600">
-          Jak działa system
+          {t.system.eyebrow}
         </p>
         <h2 className="mt-4 text-3xl font-bold text-gray-900 sm:text-4xl">
-          Od połączenia do obsadzonego grafiku.
+          {t.system.title}
         </h2>
 
         <div className="relative mt-14">
@@ -1009,12 +992,7 @@ function SystemDiagram() {
                       : 'bg-white border-gray-200 scale-90'
                   }`}
                 >
-                  <step.icon
-                    className={`h-7 w-7 transition-colors duration-500 ${
-                      visibleSteps > i ? 'text-white' : 'text-gray-400'
-                    }`}
-                    strokeWidth={1.5}
-                  />
+                  <StepIcon index={i} visible={visibleSteps > i} />
                 </div>
                 <h3
                   className={`mt-4 text-base font-semibold transition-colors duration-500 ${
@@ -1045,27 +1023,27 @@ function SystemDiagram() {
                   <Bell className="h-3.5 w-3.5 text-cyan-400" strokeWidth={1.5} />
                   <span className="text-[10px] font-bold uppercase tracking-wider text-cyan-400">SMS</span>
                 </div>
-                <p className="mt-1.5 text-xs text-gray-300">Przypominamy o wizycie jutro 9:00. Odpowiedz TAK.</p>
+                <p className="mt-1.5 text-xs text-gray-300">{t.system.sms}</p>
               </div>
               <div className="rounded-xl border border-green-400/30 bg-green-400/10 p-3">
                 <div className="flex items-center gap-2">
                   <CheckCircle className="h-3.5 w-3.5 text-green-400" strokeWidth={1.5} />
-                  <span className="text-[10px] font-bold uppercase tracking-wider text-green-400">Potwierdzone</span>
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-green-400">✓</span>
                 </div>
-                <p className="mt-1.5 text-xs text-gray-300">Pacjent potwierdził wizytę automatycznie.</p>
+                <p className="mt-1.5 text-xs text-gray-300">{t.system.confirmed}</p>
               </div>
               <div className="rounded-xl border border-sky-400/30 bg-sky-400/10 p-3">
                 <div className="flex items-center gap-2">
                   <Calendar className="h-3.5 w-3.5 text-sky-400" strokeWidth={1.5} />
-                  <span className="text-[10px] font-bold uppercase tracking-wider text-sky-400">Kalendarz</span>
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-sky-400">📅</span>
                 </div>
-                <p className="mt-1.5 text-xs text-gray-300">Slot 9:00 obsadzony — 24/7.</p>
+                <p className="mt-1.5 text-xs text-gray-300">{t.system.calendar}</p>
               </div>
             </div>
           </div>
           <div className="max-w-xs text-center sm:text-left">
-            <p className="text-sm font-semibold text-gray-900">Wszystko dzieje się automatycznie</p>
-            <p className="mt-2 text-sm text-gray-600">Pacjent dostaje SMS, potwierdza jedną odpowiedzią, a system aktualizuje grafik — bez telefonu od recepcji.</p>
+            <p className="text-sm font-semibold text-gray-900">{t.system.autoTitle}</p>
+            <p className="mt-2 text-sm text-gray-600">{t.system.autoText}</p>
           </div>
         </div>
       </div>
@@ -1073,10 +1051,22 @@ function SystemDiagram() {
   );
 }
 
+function StepIcon({ index, visible }: { index: number; visible: boolean }) {
+  const icons = [Phone, Calendar, Bell, Database];
+  const Icon = icons[index];
+  return (
+    <Icon
+      className={`h-7 w-7 transition-colors duration-500 ${visible ? 'text-white' : 'text-gray-400'}`}
+      strokeWidth={1.5}
+    />
+  );
+}
+
 // ---------------------------------------------------------------------------
 // Before / After Comparison — realistic calendar mockups
 // ---------------------------------------------------------------------------
 function BeforeAfter() {
+  const { t } = useI18n();
   const sectionRef = useRef<HTMLDivElement>(null);
   const [visible, setVisible] = useState(false);
 
@@ -1091,29 +1081,23 @@ function BeforeAfter() {
     return () => observer.disconnect();
   }, []);
 
-  const beforeSlots = [
-    { time: '09:00', label: '??? — brak potwierdzenia', gap: true },
-    { time: '09:30', label: 'Odwołano — pusty slot', gap: true },
-    { time: '10:00', label: 'Telefon — pacjent nie odbiera', warn: true },
-    { time: '10:30', label: 'Notatka na kartce', warn: true },
-    { time: '11:00', label: 'Puste — brak rezerwacji', gap: true },
-  ];
-  const afterSlots = [
-    { time: '09:00', label: 'A. Kowalska — potwierdzony SMS' },
-    { time: '09:30', label: 'Auto-obsadzone: M. Nowak' },
-    { time: '10:00', label: 'Rezerwacja online — potwierdzona' },
-    { time: '10:30', label: 'J. Wiśniewski — przypomnienie wysłane' },
-    { time: '11:00', label: 'K. Lewandowska — zapis 24/7' },
-  ];
+  const beforeSlots = t.beforeAfter.beforeSlots.map((label, i) => ({
+    time: ['09:00', '09:30', '10:00', '10:30', '11:00'][i],
+    label,
+  }));
+  const afterSlots = t.beforeAfter.afterSlots.map((label, i) => ({
+    time: ['09:00', '09:30', '10:00', '10:30', '11:00'][i],
+    label,
+  }));
 
   return (
     <section ref={sectionRef} className="px-6 py-24">
       <div className="mx-auto max-w-5xl">
         <p className="text-xs font-semibold uppercase tracking-widest text-cyan-400">
-          Przed / Po
+          {t.beforeAfter.eyebrow}
         </p>
         <h2 className="mt-4 text-3xl font-bold text-white sm:text-4xl">
-          Chaos administracyjny vs. czysty, zautomatyzowany kalendarz.
+          {t.beforeAfter.title}
         </h2>
 
         <div className="relative mt-12 grid items-stretch gap-6 md:grid-cols-2">
@@ -1133,7 +1117,7 @@ function BeforeAfter() {
             <div className="flex items-center gap-2 border-b border-red-500/15 pb-3">
               <XCircle className="h-4 w-4 text-red-400" strokeWidth={1.5} />
               <span className="text-xs font-semibold uppercase tracking-widest text-red-400/80">
-                Przed — chaos w grafiku
+                {t.beforeAfter.beforeLabel}
               </span>
             </div>
             <div className="mt-4 space-y-2">
@@ -1151,7 +1135,7 @@ function BeforeAfter() {
             </div>
             <div className="mt-5 border-t border-red-500/15 pt-4">
               <div className="flex items-center justify-between">
-                <span className="text-xs text-red-400/60">No-shows</span>
+                <span className="text-xs text-red-400/60">{t.beforeAfter.noshow}</span>
                 <span className="text-lg font-bold text-red-400">12%</span>
               </div>
               <div className="mt-2 h-1.5 w-full overflow-hidden rounded-full bg-white/5">
@@ -1170,7 +1154,7 @@ function BeforeAfter() {
             <div className="relative flex items-center gap-2 border-b border-cyan-400/20 pb-3">
               <CheckCircle className="h-4 w-4 text-cyan-400" strokeWidth={1.5} />
               <span className="text-xs font-semibold uppercase tracking-widest text-cyan-400">
-                Po — zautomatyzowany kalendarz
+                {t.beforeAfter.afterLabel}
               </span>
             </div>
             <div className="relative mt-4 space-y-2">
@@ -1187,7 +1171,7 @@ function BeforeAfter() {
             </div>
             <div className="relative mt-5 border-t border-cyan-400/20 pt-4">
               <div className="flex items-center justify-between">
-                <span className="text-xs text-cyan-300/70">No-shows</span>
+                <span className="text-xs text-cyan-300/70">{t.beforeAfter.noshow}</span>
                 <span className="text-lg font-bold text-cyan-300">3%</span>
               </div>
               <div className="mt-2 h-1.5 w-full overflow-hidden rounded-full bg-white/5">
@@ -1205,46 +1189,33 @@ function BeforeAfter() {
 // Implementation — how it works in practice (1 week to working system)
 // ---------------------------------------------------------------------------
 function Implementation() {
-  const phases = [
-    {
-      icon: Wrench,
-      title: 'Dzień 1–2: Audyt',
-      text: 'Analizujemy Twój obecny grafik, identyfikujemy luki i straty dochodów.',
-    },
-    {
-      icon: Rocket,
-      title: 'Dzień 3–5: Konfiguracja',
-      text: 'Integrujemy system z Twoim kalendarzem, SMS i e-mail. Zero zmian w sprzęcie.',
-    },
-    {
-      icon: ShieldCheck,
-      title: 'Tydzień 1: Działający system',
-      text: 'Przypomnienia, samoobsługowa rezerwacja i auto-obsadzanie działają na żywo.',
-    },
-  ];
-
+  const { t } = useI18n();
+  const icons = [Wrench, Rocket, ShieldCheck];
   return (
     <section className="bg-[#0d1a2e] px-6 py-24">
       <div className="mx-auto max-w-5xl">
         <p className="text-xs font-semibold uppercase tracking-widest text-cyan-400">
-          Jak to wygląda w praktyce
+          {t.implementation.eyebrow}
         </p>
         <h2 className="mt-4 text-3xl font-bold text-white sm:text-4xl">
-          Od audytu do działającego systemu w tydzień.
+          {t.implementation.title}
         </h2>
         <div className="mt-12 grid gap-6 md:grid-cols-3">
-          {phases.map((phase) => (
-            <div
-              key={phase.title}
-              className="rounded-xl border border-white/10 bg-[#0d1a2e] p-6 transition hover:border-cyan-400/30"
-            >
-              <phase.icon className="h-6 w-6 text-cyan-400" strokeWidth={1.5} />
-              <h3 className="mt-4 text-base font-semibold text-white">
-                {phase.title}
-              </h3>
-              <p className="mt-2 text-sm text-gray-300">{phase.text}</p>
-            </div>
-          ))}
+          {t.implementation.phases.map((phase, i) => {
+            const Icon = icons[i];
+            return (
+              <div
+                key={phase.title}
+                className="rounded-xl border border-white/10 bg-[#0d1a2e] p-6 transition hover:border-cyan-400/30"
+              >
+                <Icon className="h-6 w-6 text-cyan-400" strokeWidth={1.5} />
+                <h3 className="mt-4 text-base font-semibold text-white">
+                  {phase.title}
+                </h3>
+                <p className="mt-2 text-sm text-gray-300">{phase.text}</p>
+              </div>
+            );
+          })}
         </div>
       </div>
     </section>
@@ -1255,34 +1226,18 @@ function Implementation() {
 // Testimonials
 // ---------------------------------------------------------------------------
 function Testimonials() {
-  const reviews = [
-    {
-      quote:
-        'Od wdrożenia PracticeFlow no-shows spadły z 12% do 3%. Recepcja odzyskała kilkanaście godzin tygodniowo.',
-      author: 'dr n. med. Anna Kowalczyk',
-      role: 'Właścicielka, WhiteSmile Clinic',
-      result: 'No-shows: 12% → 3%',
-    },
-    {
-      quote:
-        'Puste sloty po odwołaniach wypełniają się same. Widzę różnicę w przychodach już po pierwszym miesiącu.',
-      author: 'lek. dent. Piotr Zieliński',
-      role: 'Dyrektor, OrthoLine',
-      result: '+38% przychodów / m-c',
-    },
-  ];
-
+  const { t } = useI18n();
   return (
     <section className="px-6 py-24">
       <div className="mx-auto max-w-5xl">
         <p className="text-xs font-semibold uppercase tracking-widest text-cyan-400">
-          Opinie gabinetów
+          {t.testimonials.eyebrow}
         </p>
         <h2 className="mt-4 text-3xl font-bold text-white sm:text-4xl">
-          Co mówią nasi klienci.
+          {t.testimonials.title}
         </h2>
         <div className="mt-12 grid gap-6 md:grid-cols-2">
-          {reviews.map((review) => (
+          {t.testimonials.reviews.map((review) => (
             <div
               key={review.author}
               className="rounded-2xl border border-white/10 bg-[#0d1a2e] p-8"
@@ -1321,26 +1276,24 @@ function Testimonials() {
 // Founder Note — light section
 // ---------------------------------------------------------------------------
 function FounderNote() {
+  const { t } = useI18n();
   return (
     <section className="bg-[#f7f7f5] px-6 py-24">
       <div className="mx-auto max-w-3xl">
         <div className="rounded-2xl border border-gray-200 bg-white p-10 shadow-lg">
           <p className="text-xs font-semibold uppercase tracking-widest text-cyan-600">
-            Notatka założyciela
+            {t.founder.eyebrow}
           </p>
           <p className="mt-6 text-lg leading-relaxed text-gray-700">
-            "Kliniki dentystyczne tracą dochody nie przez brak pacjentów, ale
-            przez procesy, których nikt nie audytuje. Stworzyliśmy PracticeFlow,
-            żeby to zmienić — z systemem, który sam wypełnia grafik i odzyskuje
-            Twój czas."
+            {t.founder.quote}
           </p>
           <div className="mt-6 flex items-center gap-3">
             <div className="flex h-10 w-10 items-center justify-center rounded-full bg-cyan-600/10 text-sm font-bold text-cyan-700">
               P
             </div>
             <div>
-              <p className="text-sm font-semibold text-gray-900">Patryk</p>
-              <p className="text-xs text-gray-500">Założyciel, PracticeFlow</p>
+              <p className="text-sm font-semibold text-gray-900">{t.founder.name}</p>
+              <p className="text-xs text-gray-500">{t.founder.role}</p>
             </div>
           </div>
         </div>
@@ -1350,41 +1303,113 @@ function FounderNote() {
 }
 
 // ---------------------------------------------------------------------------
+// Mini CTA — compact booking prompt
+// ---------------------------------------------------------------------------
+function MiniCta() {
+  const { t } = useI18n();
+  return (
+    <section className="bg-white px-6 py-20">
+      <div className="mx-auto max-w-4xl">
+        <div className="relative overflow-hidden rounded-3xl border-2 border-cyan-500/40 bg-gradient-to-br from-[#0d1a2e] via-[#0d1a2e] to-[#102540] p-12 text-center shadow-2xl shadow-cyan-500/20 sm:p-16">
+          <div
+            className="pointer-events-none absolute -left-24 -top-24 h-56 w-56 rounded-full bg-cyan-400/20 blur-3xl"
+            style={{ animation: 'pulse 6s ease-in-out infinite' }}
+          />
+          <div
+            className="pointer-events-none absolute -bottom-24 -right-24 h-56 w-56 rounded-full bg-sky-400/15 blur-3xl"
+            style={{ animation: 'pulse 8s ease-in-out 2s infinite' }}
+          />
+          <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-transparent via-cyan-400 to-transparent" />
+
+          <div className="relative">
+            <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-cyan-500/20 ring-1 ring-cyan-400/40 transition-transform duration-500 hover:scale-110">
+              <CalendarClock className="h-8 w-8 text-cyan-400" strokeWidth={1.5} />
+            </div>
+
+            <p className="mt-6 text-sm font-semibold uppercase tracking-[0.2em] text-cyan-400">
+              {t.miniCta.eyebrow}
+            </p>
+            <h3 className="mx-auto mt-3 max-w-xl text-3xl font-bold text-white sm:text-4xl">
+              {t.miniCta.title}
+            </h3>
+
+            <a
+              href="#book"
+              className="group mt-10 inline-flex items-center gap-3 rounded-full bg-gradient-to-r from-sky-500 to-cyan-400 px-12 py-5 text-lg font-bold text-black shadow-xl shadow-cyan-500/40 transition hover:scale-105 hover:shadow-2xl hover:shadow-cyan-400/50"
+            >
+              {t.miniCta.cta}
+              <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
+            </a>
+            <p className="mt-4 text-sm text-gray-400">{t.miniCta.noCommit}</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// ---------------------------------------------------------------------------
+// Audit CTA + Booking (with LeadForm)
+// ---------------------------------------------------------------------------
+function AuditCta() {
+  const { t } = useI18n();
+  return (
+    <section id="book" className="relative overflow-hidden bg-[#0d1a2e] px-6 py-32">
+      <div
+        className="pointer-events-none absolute left-1/2 top-1/2 h-[400px] w-[600px] -translate-x-1/2 -translate-y-1/2 animate-pulse rounded-full opacity-10 blur-3xl"
+        style={{ background: 'radial-gradient(ellipse, #0ea5e9 0%, transparent 70%)' }}
+      />
+      <div className="relative mx-auto max-w-3xl text-center">
+        <h2 className="text-4xl font-bold text-white sm:text-5xl">
+          {t.audit.title}
+        </h2>
+        <p className="mx-auto mt-6 max-w-xl text-lg text-gray-300">
+          {t.audit.desc}
+        </p>
+
+        <div className="mx-auto mt-10 flex max-w-lg flex-wrap items-center justify-center gap-4">
+          {t.audit.stats.map((stat) => (
+            <div
+              key={stat.label}
+              className="flex flex-col items-center rounded-xl border border-white/10 bg-white/[0.03] px-5 py-3"
+            >
+              <span className="text-xl font-bold text-cyan-300">{stat.value}</span>
+              <span className="text-xs text-gray-400">{stat.label}</span>
+            </div>
+          ))}
+        </div>
+
+        <div className="mx-auto mt-12 max-w-md text-left">
+          <LeadForm source="audit-cta" />
+        </div>
+
+        <p className="mt-6 flex items-center justify-center gap-2 text-sm text-gray-400">
+          <Mail className="h-4 w-4" />
+          kontakt@practiceflow.pl
+        </p>
+      </div>
+    </section>
+  );
+}
+
+// ---------------------------------------------------------------------------
 // FAQ
 // ---------------------------------------------------------------------------
 function FAQ() {
+  const { t } = useI18n();
   const [open, setOpen] = useState<number | null>(0);
-
-  const faqs = [
-    {
-      q: 'Czy muszę zmieniać obecny system rejestracji?',
-      a: 'Nie. PracticeFlow integruje się z większością popularnych systemów dla gabinetów stomatologicznych. Konfiguracja trwa 1–2 dni i nie wymaga wymiany sprzętu.',
-    },
-    {
-      q: 'Ile trwa wdrożenie?',
-      a: 'Od audytu do działającego systemu mija zwykle tydzień. Pierwsze przypomnienia i samoobsługowa rezerwacja są aktywne już w pierwszych dniach.',
-    },
-    {
-      q: 'Czy pacjenci muszą instalować aplikację?',
-      a: 'Nie. Pacjenci korzystają z przypomnień SMS/e-mail oraz linku do rezerwacji online — bez żadnej aplikacji do pobrania.',
-    },
-    {
-      q: 'Co jeśli mam pytania po wdrożeniu?',
-      a: 'Oferujemy wsparcie po wdrożeniu. Możesz skontaktować się z nami w każdej chwili — odpowiadamy zwykle tego samego dnia.',
-    },
-  ];
 
   return (
     <section className="px-6 py-24">
       <div className="mx-auto max-w-3xl">
         <p className="text-xs font-semibold uppercase tracking-widest text-cyan-400">
-          FAQ
+          {t.faq.eyebrow}
         </p>
         <h2 className="mt-4 text-3xl font-bold text-white sm:text-4xl">
-          Najczęstsze pytania.
+          {t.faq.title}
         </h2>
         <div className="mt-10 space-y-3">
-          {faqs.map((faq, i) => (
+          {t.faq.items.map((faq, i) => (
             <div
               key={i}
               className="rounded-xl border border-white/10 bg-[#0d1a2e] overflow-hidden"
@@ -1414,116 +1439,16 @@ function FAQ() {
 }
 
 // ---------------------------------------------------------------------------
-// Mini CTA — compact booking prompt with sweeping light animation
-// ---------------------------------------------------------------------------
-function MiniCta() {
-  return (
-    <section className="bg-white px-6 py-20">
-      <div className="mx-auto max-w-4xl">
-        <div className="relative overflow-hidden rounded-3xl border-2 border-cyan-500/40 bg-gradient-to-br from-[#0d1a2e] via-[#0d1a2e] to-[#102540] p-12 text-center shadow-2xl shadow-cyan-500/20 sm:p-16">
-          {/* Soft ambient glow */}
-          <div
-            className="pointer-events-none absolute -left-24 -top-24 h-56 w-56 rounded-full bg-cyan-400/20 blur-3xl"
-            style={{ animation: 'pulse 6s ease-in-out infinite' }}
-          />
-          <div
-            className="pointer-events-none absolute -bottom-24 -right-24 h-56 w-56 rounded-full bg-sky-400/15 blur-3xl"
-            style={{ animation: 'pulse 8s ease-in-out 2s infinite' }}
-          />
-          {/* Top accent bar */}
-          <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-transparent via-cyan-400 to-transparent" />
-
-          <div className="relative">
-            <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-cyan-500/20 ring-1 ring-cyan-400/40 transition-transform duration-500 hover:scale-110">
-              <CalendarClock className="h-8 w-8 text-cyan-400" strokeWidth={1.5} />
-            </div>
-
-            <p className="mt-6 text-sm font-semibold uppercase tracking-[0.2em] text-cyan-400">
-              Bezpłatna konsultacja
-            </p>
-            <h3 className="mx-auto mt-3 max-w-xl text-3xl font-bold text-white sm:text-4xl">
-              Odkryj, ile Twój gabinet traci co tydzień.
-            </h3>
-
-            <a
-              href="mailto:kontakt@practiceflow.pl?subject=Pro%C5%9Bba%20o%20audyt%20grafiku"
-              className="group mt-10 inline-flex items-center gap-3 rounded-full bg-gradient-to-r from-sky-500 to-cyan-400 px-12 py-5 text-lg font-bold text-black shadow-xl shadow-cyan-500/40 transition hover:scale-105 hover:shadow-2xl hover:shadow-cyan-400/50"
-            >
-              Umów bezpłatny audyt
-              <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
-            </a>
-            <p className="mt-4 text-sm text-gray-400">15 min, bez zobowiązań</p>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-// ---------------------------------------------------------------------------
-// Audit CTA + Booking
-// ---------------------------------------------------------------------------
-function AuditCta() {
-  return (
-    <section id="book" className="relative overflow-hidden bg-[#0d1a2e] px-6 py-32">
-      {/* Gradient glow */}
-      <div
-        className="pointer-events-none absolute left-1/2 top-1/2 h-[400px] w-[600px] -translate-x-1/2 -translate-y-1/2 animate-pulse rounded-full opacity-10 blur-3xl"
-        style={{ background: 'radial-gradient(ellipse, #0ea5e9 0%, transparent 70%)' }}
-      />
-      <div className="relative mx-auto max-w-3xl text-center">
-        <h2 className="text-4xl font-bold text-white sm:text-5xl">
-          Porozmawiajmy o Twoim grafiku.
-        </h2>
-        <p className="mx-auto mt-6 max-w-xl text-lg text-gray-300">
-          Krótka rozmowa o tym, gdzie Twój gabinet traci czas i dochody — i jak
-          możemy to zautomatyzować. Bez zobowiązań.
-        </p>
-
-        <div className="mx-auto mt-10 flex max-w-lg flex-wrap items-center justify-center gap-4">
-          {[
-            { value: '15 min', label: 'rozmowy' },
-            { value: '12h', label: 'odzyskane / m-c' },
-            { value: '1 tydzień', label: 'do wdrożenia' },
-          ].map((stat) => (
-            <div
-              key={stat.label}
-              className="flex flex-col items-center rounded-xl border border-white/10 bg-white/[0.03] px-5 py-3"
-            >
-              <span className="text-xl font-bold text-cyan-300">{stat.value}</span>
-              <span className="text-xs text-gray-400">{stat.label}</span>
-            </div>
-          ))}
-        </div>
-
-        <a
-          href="mailto:kontakt@practiceflow.pl?subject=Pro%C5%9Bba%20o%20audyt%20grafiku"
-          className="mt-10 inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-sky-500 to-cyan-400 px-8 py-4 text-base font-bold text-black shadow-xl shadow-cyan-500/40 transition hover:scale-105 hover:shadow-2xl hover:shadow-cyan-400/50"
-        >
-          Umów audyt grafiku
-          <ArrowRight className="h-4 w-4" />
-        </a>
-        <p className="mt-3 text-sm text-gray-400">15 min, bez zobowiązań</p>
-
-        <p className="mt-6 flex items-center justify-center gap-2 text-sm text-gray-400">
-          <Mail className="h-4 w-4" />
-          kontakt@practiceflow.pl
-        </p>
-      </div>
-    </section>
-  );
-}
-
-// ---------------------------------------------------------------------------
 // Footer
 // ---------------------------------------------------------------------------
 function Footer() {
+  const { t } = useI18n();
   return (
     <footer className="px-6 py-12">
       <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 sm:flex-row">
         <span className="text-sm font-semibold text-white">PracticeFlow</span>
         <p className="text-xs text-gray-600">
-          © 2025 PracticeFlow. Automatyzacja dla gabinetów stomatologicznych.
+          {t.footer}
         </p>
       </div>
     </footer>
@@ -1533,7 +1458,7 @@ function Footer() {
 // ---------------------------------------------------------------------------
 // App
 // ---------------------------------------------------------------------------
-function App() {
+function AppContent() {
   return (
     <div className="min-h-screen bg-[#0a1628] text-white antialiased">
       <Nav />
@@ -1579,6 +1504,14 @@ function App() {
       <StickyMobileCta />
       <ExitIntentPopup />
     </div>
+  );
+}
+
+function App() {
+  return (
+    <I18nProvider>
+      <AppContent />
+    </I18nProvider>
   );
 }
 
