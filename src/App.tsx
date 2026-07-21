@@ -15,6 +15,8 @@ import {
   Mail,
   CalendarClock,
   Bell,
+  Clock,
+  Video,
   Database,
   Sparkles,
   Star,
