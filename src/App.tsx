@@ -646,14 +646,14 @@ type DiagnosisAnswers = {
 
 const DIAGNOSIS_OPTIONS = {
   cancellations: [
-    { value: '0-2', label: '0–2 wizyty' },
-    { value: '3-5', label: '3–5 wizyt' },
-    { value: '>5', label: 'Powyżej 5' },
+    { value: '10-15', label: '10–15 wizyt' },
+    { value: '16-25', label: '16–25 wizyt' },
+    { value: '>25', label: 'Powyżej 25' },
   ],
   emptySlots: [
-    { value: '0', label: 'Brak' },
-    { value: '1-3', label: '1–3' },
-    { value: '>3', label: 'Powyżej 3' },
+    { value: '<5', label: 'Poniżej 5' },
+    { value: '5-10', label: '5–10' },
+    { value: '>10', label: 'Powyżej 10' },
   ],
   dropOff: [
     { value: 'unknown', label: 'Nie wiem' },
@@ -719,17 +719,53 @@ function Calculator() {
   const staffCostMonthly = staff * REVENUE_PER_STAFF_MONTHLY;
   const totalMonthly = recoveredRevenueMonthly + staffCostMonthly;
 
+  const diagnosisScore =
+    (answers.cancellations === '10-15' ? 1 : answers.cancellations === '16-25' ? 2 : answers.cancellations === '>25' ? 3 : 0) +
+    (answers.emptySlots === '<5' ? 1 : answers.emptySlots === '5-10' ? 2 : answers.emptySlots === '>10' ? 3 : 0) +
+    (answers.dropOff === '>20%' ? 2 : answers.dropOff === '<20%' ? 1 : 0);
+
+  const diagnosisLevel =
+    diagnosisScore >= 6
+      ? {
+          title: 'Twój gabinet traci znaczną część dochodu.',
+          desc: 'Wysoki odsetek odwołań i pustych slotów wskazuje na wyraźną potrzebę automatyzacji recepcji.',
+          recommendations: [
+            'Eliminacja pustych slotów w kalendarzu',
+            'Pełna automatyzacja przypomnień o wizytach',
+            'Samoobsługowa rezerwacja 24/7',
+            'Automatyczne przepunktowywanie odwołanych wizyt',
+          ],
+        }
+      : diagnosisScore >= 3
+      ? {
+          title: 'Twój gabinet ma wyraźny potencjał automatyzacji.',
+          desc: 'Część wizyt jest odwoływana, a grafik nie jest w pełni obsadzony — to można zautomatyzować.',
+          recommendations: [
+            'Eliminacja pustych slotów w kalendarzu',
+            'Pełna automatyzacja przypomnień o wizytach',
+            'Samoobsługowa rezerwacja 24/7',
+          ],
+        }
+      : {
+          title: 'Twój gabinet działa sprawnie, ale można więcej.',
+          desc: 'Automatyzacja pomoże utrzymać obecny poziom i zapobiec problemom w przyszłości.',
+          recommendations: [
+            'Pełna automatyzacja przypomnień o wizytach',
+            'Samoobsługowa rezerwacja 24/7',
+          ],
+        };
+
   const questions = [
     {
       key: 'cancellations' as const,
       icon: Phone,
-      title: 'Ile wizyt tygodniowo jest odwoływanych w Twoim gabinecie?',
+      title: 'Ile wizyt miesięcznie jest odwoływanych w Twoim gabinecie?',
       options: DIAGNOSIS_OPTIONS.cancellations,
     },
     {
       key: 'emptySlots' as const,
       icon: CalendarClock,
-      title: 'Ile średnio "pustych slotów" w grafiku pojawia się w Twoim gabinecie w ciągu tygodnia?',
+      title: 'Ile średnio "pustych slotów" w grafiku pojawia się w Twoim gabinecie w ciągu miesiąca?',
       options: DIAGNOSIS_OPTIONS.emptySlots,
     },
     {
@@ -744,16 +780,16 @@ function Calculator() {
     const newAnswers = { ...answers, [key]: value };
     setAnswers(newAnswers);
 
-    // Predefiniuj suwaki na podstawie odpowiedzi diagnozy (realistyczne mapowanie)
+    // Predefiniuj suwaki na podstawie odpowiedzi diagnozy (miesięczne wartości)
     if (key === 'cancellations') {
-      if (value === '0-2') setCancellations(5);
-      else if (value === '3-5') setCancellations(10);
-      else if (value === '>5') setCancellations(18);
+      if (value === '10-15') setCancellations(12);
+      else if (value === '16-25') setCancellations(20);
+      else if (value === '>25') setCancellations(28);
     }
     if (key === 'emptySlots') {
-      if (value === '0') setCancellations((c) => Math.max(c, 5));
-      else if (value === '1-3') setCancellations((c) => Math.max(c, 8));
-      else if (value === '>3') setCancellations((c) => Math.max(c, 12));
+      if (value === '<5') setCancellations((c) => Math.max(c, 10));
+      else if (value === '5-10') setCancellations((c) => Math.max(c, 16));
+      else if (value === '>10') setCancellations((c) => Math.max(c, 24));
     }
 
     if (step < questions.length - 1) {
@@ -892,21 +928,16 @@ function Calculator() {
                   </span>
                 </div>
                 <h3 className="mt-4 text-2xl font-bold text-white">
-                  Twój gabinet ma wyraźny potencjał automatyzacji.
+                  {diagnosisLevel.title}
                 </h3>
                 <p className="mt-3 text-sm text-gray-300">
-                  Na podstawie Twoich odpowiedzi i kalkulatora, możesz odzyskać
+                  {diagnosisLevel.desc} Na podstawie Twoich odpowiedzi i kalkulatora, możesz odzyskać
                   do <span className="font-semibold text-cyan-200">{savedHoursMonthly}h miesięcznie</span> i
-                  <span className="font-semibold text-cyan-200"> {totalMonthly.toLocaleString('pl-PL')} zł miesięcznie</span> —
-                  z odzyskanych wizyt i oszczędności na recepcji.
+                  <span className="font-semibold text-cyan-200"> {totalMonthly.toLocaleString('pl-PL')} zł miesięcznie</span>.
                 </p>
 
                 <div className="mt-6 space-y-3">
-                  {[
-                    'Eliminacja pustych slotów w kalendarzu',
-                    'Pełna automatyzacja przypomnień o wizytach',
-                    'Samoobsługowa rezerwacja 24/7',
-                  ].map((goal) => (
+                  {diagnosisLevel.recommendations.map((goal) => (
                     <div key={goal} className="flex items-center gap-3">
                       <CheckCircle className="h-5 w-5 flex-shrink-0 text-cyan-400" strokeWidth={1.5} />
                       <span className="text-sm text-gray-200">{goal}</span>
