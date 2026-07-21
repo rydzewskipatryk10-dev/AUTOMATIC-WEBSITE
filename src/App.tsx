@@ -522,8 +522,8 @@ function Hero() {
           {/* Floating clinic photo card */}
           <div className="absolute -right-6 -top-8 z-10 w-44 overflow-hidden rounded-xl border border-white/15 shadow-2xl shadow-black/60 transition-transform duration-500 hover:scale-105">
             <img
-              src="https://images.pexels.com/photos/6812532/pexels-photo-6812532.jpeg?auto=compress&cs=tinysrgb&w=400"
-              alt="Nowoczesna klinika dentystyczna"
+              src="https://images.pexels.com/photos/6627359/pexels-photo-6627359.jpeg?auto=compress&cs=tinysrgb&w=400"
+              alt="Dentysta z laptopem w nowoczesnej klinice"
               className="h-28 w-full object-cover"
               loading="lazy"
             />
@@ -1543,6 +1543,7 @@ function App() {
       <Footer />
 
       <StickyMobileCta />
+      <ExitIntentPopup />
     </div>
   );
 }
