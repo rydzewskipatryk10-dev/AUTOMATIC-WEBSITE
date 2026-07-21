@@ -18,7 +18,6 @@ import {
   Database,
   Workflow,
   Sparkles,
-  ChevronDown,
   Star,
   Quote,
   Plus,
@@ -743,7 +742,7 @@ function Hero() {
               </div>
               <div>
                 <p className="text-xs text-gray-400">Odzyskany czas</p>
-                <p className="text-sm font-bold text-white">18h</p>
+                <p className="text-sm font-bold text-white">14h</p>
               </div>
             </div>
           </div>
@@ -807,7 +806,7 @@ const DIAGNOSIS_OPTIONS = {
 
 // Stałe wartości kalkulatora
 const AVG_REVENUE_PER_VISIT = 500; // zł — średni zysk z wizyty
-const HOURS_SAVED_PER_STAFF = 10; // h/tydzień — oszczędność czasu na jedną osobę
+const HOURS_SAVED_PER_STAFF = 12; // h/tydzień — oszczędność czasu na jedną osobę
 const HOURLY_COST = 37; // zł brutto — koszt godziny pracy
 const WEEKS_PER_MONTH = 4.33;
 
@@ -881,7 +880,7 @@ function Calculator() {
           Diagnoza Twojego gabinetu
         </p>
         <h2 className="mt-4 max-w-2xl text-3xl font-bold text-white sm:text-4xl">
-          Zobacz, ile czasu i zysków odzyska Twój gabinet.
+          Zobacz, ile czasu i dochodu odzyska Twój gabinet.
         </h2>
 
         <div className="mt-10 grid gap-6 lg:grid-cols-2">
@@ -1108,14 +1107,25 @@ function SystemDiagram() {
           Od połączenia do obsadzonego grafiku.
         </h2>
 
-        <div className="mt-14 flex flex-col gap-6 md:flex-row md:items-stretch">
+        <div className="relative mt-14 flex flex-col gap-8 md:flex-row md:items-stretch md:gap-4">
           {steps.map((step, i) => (
-            <div key={step.title} className="flex flex-1 flex-col items-center text-center">
+            <div key={step.title} className="relative flex flex-1 flex-col items-center text-center">
+              {/* Number badge */}
+              <div
+                className={`absolute -top-3 z-10 flex h-7 items-center rounded-full px-3 text-xs font-bold tracking-wider transition-all duration-500 ${
+                  visibleSteps > i
+                    ? 'bg-cyan-500 text-white shadow-lg shadow-cyan-500/30'
+                    : 'bg-gray-300 text-gray-500'
+                }`}
+              >
+                {String(i + 1).padStart(2, '0')}
+              </div>
+
               <div
                 className={`flex h-16 w-16 items-center justify-center rounded-2xl border transition-all duration-500 ${
                   visibleSteps > i
-                    ? 'border-cyan-500/40 bg-cyan-500/10 opacity-100'
-                    : 'border-gray-200 bg-white opacity-40'
+                    ? 'border-cyan-500/40 bg-cyan-500/10 opacity-100 scale-100'
+                    : 'border-gray-200 bg-white opacity-40 scale-90'
                 }`}
               >
                 <step.icon
@@ -1154,7 +1164,19 @@ function SystemDiagram() {
 // Before / After Comparison — realistic calendar mockups
 // ---------------------------------------------------------------------------
 function BeforeAfter() {
-  const [position, setPosition] = useState(50);
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) setVisible(true);
+      },
+      { threshold: 0.2 }
+    );
+    if (sectionRef.current) observer.observe(sectionRef.current);
+    return () => observer.disconnect();
+  }, []);
 
   const beforeSlots = [
     { time: '09:00', label: '??? — brak potwierdzenia', gap: true },
@@ -1172,7 +1194,7 @@ function BeforeAfter() {
   ];
 
   return (
-    <section className="px-6 py-24">
+    <section ref={sectionRef} className="px-6 py-24">
       <div className="mx-auto max-w-5xl">
         <p className="text-xs font-semibold uppercase tracking-widest text-cyan-400">
           Przed / Po
@@ -1181,116 +1203,84 @@ function BeforeAfter() {
           Chaos administracyjny vs. czysty, zautomatyzowany kalendarz.
         </h2>
 
-        {/* Slider visual — realistic calendar mockups */}
-        <div className="relative mt-12 h-80 overflow-hidden rounded-2xl border border-white/5">
-          {/* Before (left) — chaotic calendar */}
-          <div className="absolute inset-0 flex flex-col bg-[#1a1410]">
-            <div className="flex items-center gap-2 border-b border-amber-400/10 px-4 py-3">
-              <XCircle className="h-4 w-4 text-amber-400/60" strokeWidth={1.5} />
-              <span className="text-xs font-semibold uppercase tracking-widest text-amber-400/70">
+        <div className="relative mt-12 grid items-stretch gap-6 md:grid-cols-2">
+          {/* VS divider */}
+          <div className="pointer-events-none absolute left-1/2 top-1/2 z-10 hidden -translate-x-1/2 -translate-y-1/2 md:block">
+            <div className="flex h-12 w-12 items-center justify-center rounded-full border border-white/20 bg-[#0a1628] text-xs font-bold text-gray-400 shadow-lg">
+              VS
+            </div>
+          </div>
+
+          {/* Before — chaotic calendar */}
+          <div
+            className={`rounded-2xl border border-white/10 bg-[#0d1a2e] p-6 transition-all duration-700 ${
+              visible ? 'translate-x-0 opacity-100' : '-translate-x-8 opacity-0'
+            }`}
+          >
+            <div className="flex items-center gap-2 border-b border-white/10 pb-3">
+              <XCircle className="h-4 w-4 text-gray-500" strokeWidth={1.5} />
+              <span className="text-xs font-semibold uppercase tracking-widest text-gray-500">
                 Przed — chaos w grafiku
               </span>
             </div>
-            <div className="flex-1 space-y-1.5 overflow-hidden p-3">
+            <div className="mt-4 space-y-2">
               {beforeSlots.map((slot, i) => (
                 <div
                   key={i}
-                  className={`flex items-center gap-3 rounded-lg border px-3 py-2.5 text-xs ${
-                    slot.gap
-                      ? 'border-amber-400/20 bg-amber-400/5'
-                      : 'border-amber-400/15 bg-amber-400/[0.03]'
-                  }`}
+                  className="flex items-center gap-3 rounded-lg border border-white/5 bg-white/[0.02] px-3 py-2.5 text-xs"
                 >
-                  <span className="w-12 font-mono text-gray-400">{slot.time}</span>
-                  <span
-                    className={`flex-1 font-medium text-amber-300/70`}
-                  >
+                  <span className="w-12 font-mono text-gray-500">{slot.time}</span>
+                  <span className="flex-1 font-medium text-gray-500 line-through decoration-gray-700">
                     {slot.label}
                   </span>
                 </div>
               ))}
             </div>
+            <div className="mt-5 border-t border-white/10 pt-4">
+              <div className="flex items-center justify-between">
+                <span className="text-xs text-gray-500">No-shows</span>
+                <span className="text-lg font-bold text-gray-600">12%</span>
+              </div>
+              <div className="mt-2 h-1.5 w-full overflow-hidden rounded-full bg-white/5">
+                <div className="h-full w-[12%] rounded-full bg-gray-600" />
+              </div>
+            </div>
           </div>
-          {/* After (right) — clean calendar, clipped by slider */}
+
+          {/* After — clean calendar */}
           <div
-            className="absolute inset-0 flex flex-col overflow-hidden bg-[#0a1a18]"
-            style={{ clipPath: `inset(0 0 0 ${position}%)` }}
+            className={`relative overflow-hidden rounded-2xl border border-cyan-400/30 bg-gradient-to-br from-[#0a1a18] to-[#0d1a2e] p-6 shadow-lg shadow-cyan-500/10 transition-all delay-150 duration-700 ${
+              visible ? 'translate-x-0 opacity-100' : 'translate-x-8 opacity-0'
+            }`}
           >
-            <div className="flex items-center gap-2 border-b border-cyan-400/10 px-4 py-3">
+            <div className="pointer-events-none absolute -right-12 -top-12 h-32 w-32 rounded-full bg-cyan-400/10 blur-2xl" />
+            <div className="relative flex items-center gap-2 border-b border-cyan-400/20 pb-3">
               <CheckCircle className="h-4 w-4 text-cyan-400" strokeWidth={1.5} />
               <span className="text-xs font-semibold uppercase tracking-widest text-cyan-400">
                 Po — zautomatyzowany kalendarz
               </span>
             </div>
-            <div className="flex-1 space-y-1.5 overflow-hidden p-3">
+            <div className="relative mt-4 space-y-2">
               {afterSlots.map((slot, i) => (
                 <div
                   key={i}
-                  className="flex items-center gap-3 rounded-lg border border-cyan-400/20 bg-cyan-400/5 px-3 py-2.5 text-xs"
+                  className="flex items-center gap-3 rounded-lg border border-cyan-400/20 bg-cyan-400/5 px-3 py-2.5 text-xs transition-transform hover:translate-x-1"
                 >
                   <span className="w-12 font-mono text-gray-400">{slot.time}</span>
-                  <span className="flex-1 font-medium text-cyan-300">{slot.label}</span>
+                  <span className="flex-1 font-medium text-cyan-200">{slot.label}</span>
                   <CheckCircle className="h-3.5 w-3.5 text-cyan-400/70" strokeWidth={1.5} />
                 </div>
               ))}
             </div>
-          </div>
-          {/* Divider handle */}
-          <div
-            className="absolute top-0 z-10 h-full w-0.5 bg-cyan-400"
-            style={{ left: `${position}%` }}
-          >
-            <div className="absolute top-1/2 left-1/2 flex h-8 w-8 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-cyan-400 bg-[#0a1628]">
-              <ChevronDown className="h-4 w-4 rotate-90 text-cyan-400" />
+            <div className="relative mt-5 border-t border-cyan-400/20 pt-4">
+              <div className="flex items-center justify-between">
+                <span className="text-xs text-cyan-300/70">No-shows</span>
+                <span className="text-lg font-bold text-cyan-300">3%</span>
+              </div>
+              <div className="mt-2 h-1.5 w-full overflow-hidden rounded-full bg-white/5">
+                <div className="h-full w-[3%] rounded-full bg-cyan-400" />
+              </div>
             </div>
-          </div>
-          <input
-            type="range"
-            min={0}
-            max={100}
-            value={position}
-            onChange={(e) => setPosition(Number(e.target.value))}
-            className="absolute inset-0 z-20 w-full cursor-ew-resize opacity-0"
-          />
-        </div>
-
-        {/* Lists */}
-        <div className="mt-10 grid gap-6 md:grid-cols-2">
-          <div className="rounded-xl border border-amber-400/10 bg-[#1a1410]/40 p-6">
-            <h3 className="text-sm font-semibold uppercase tracking-widest text-amber-400/70">
-              Przed
-            </h3>
-            <ul className="mt-4 space-y-3">
-              {[
-                'Ręczne potwierdzanie wizyt telefonicznie',
-                'Papierowe grafiki i notatki',
-                'Przepełniona skrzynka mailowa',
-                'Puste sloty po odwołaniach',
-              ].map((item) => (
-                <li key={item} className="flex items-start gap-3">
-                  <XCircle className="mt-0.5 h-5 w-5 flex-shrink-0 text-amber-400/50" strokeWidth={1.5} />
-                  <span className="text-sm text-gray-300">{item}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-          <div className="rounded-xl border border-cyan-400/10 bg-[#0a1a18]/40 p-6">
-            <h3 className="text-sm font-semibold uppercase tracking-widest text-cyan-400">
-              Po
-            </h3>
-            <ul className="mt-4 space-y-3">
-              {[
-                'Automatyczne przypomnienia SMS i e-mail',
-                'Cyfrowy kalendarz zsynchronizowany 24/7',
-                'Samoobsługowa rezerwacja pacjenta',
-                'Inteligentne obsadzanie wolnych slotów',
-              ].map((item) => (
-                <li key={item} className="flex items-start gap-3">
-                  <CheckCircle className="mt-0.5 h-5 w-5 flex-shrink-0 text-cyan-400" strokeWidth={1.5} />
-                  <span className="text-sm text-gray-200">{item}</span>
-                </li>
-              ))}
-            </ul>
           </div>
         </div>
       </div>
@@ -1514,11 +1504,15 @@ function MiniCta() {
         <div className="relative overflow-hidden rounded-3xl border border-gray-200 bg-gradient-to-br from-[#f7f7f5] to-white p-10 text-center shadow-xl shadow-gray-200/50 sm:p-14">
           {/* Animated glow orbs */}
           <div
-            className="pointer-events-none absolute -left-20 -top-20 h-48 w-48 animate-pulse rounded-full bg-cyan-400/15 blur-3xl"
+            className="pointer-events-none absolute -left-32 -top-32 h-64 w-64 animate-pulse rounded-full bg-cyan-400/25 blur-3xl"
           />
           <div
-            className="pointer-events-none absolute -bottom-20 -right-20 h-48 w-48 rounded-full bg-sky-400/10 blur-3xl"
+            className="pointer-events-none absolute -bottom-32 -right-32 h-64 w-64 rounded-full bg-sky-400/20 blur-3xl"
             style={{ animation: 'pulse 4s ease-in-out 1s infinite' }}
+          />
+          <div
+            className="pointer-events-none absolute left-1/2 top-1/2 h-72 w-72 -translate-x-1/2 -translate-y-1/2 rounded-full bg-cyan-300/10 blur-3xl"
+            style={{ animation: 'pulse 6s ease-in-out infinite' }}
           />
 
           <div className="relative">
