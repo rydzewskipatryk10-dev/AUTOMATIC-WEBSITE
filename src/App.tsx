@@ -330,7 +330,11 @@ function Nav() {
           href="#top"
           className="text-base font-semibold tracking-tight text-white transition hover:text-cyan-300"
         >
-          PracticeFlow
+          <img
+            src="/Projekt_bez_nazwy_-_2026-07-21T160459.162-removebg-preview.png"
+            alt="FullSchedule"
+            className="h-8 w-auto"
+          />
         </a>
         <nav className="hidden items-center gap-7 md:flex">
           <a href="#diagnoza" className="text-sm font-medium text-gray-300 transition hover:text-cyan-300">{t.nav.calc}</a>
@@ -442,7 +446,7 @@ function CaseStudy() {
 }
 
 // ---------------------------------------------------------------------------
-// Comparison Table — PracticeFlow vs. ręczna obsługa vs. typowy system
+// Comparison Table — FullSchedule vs. ręczna obsługa vs. typowy system
 // ---------------------------------------------------------------------------
 function ComparisonTable() {
   const { t } = useI18n();
@@ -525,7 +529,7 @@ function Hero() {
   }, []);
 
   return (
-    <section className="relative overflow-hidden px-6 py-32">
+    <section className="relative overflow-hidden px-6 pb-32 pt-40">
       {/* Subtle radial glow */}
       <div
         className="pointer-events-none absolute -right-40 -top-40 h-[500px] w-[500px] rounded-full opacity-20 blur-3xl"
@@ -582,7 +586,7 @@ function Hero() {
               {[
                 { time: '09:00', label: 'A. Kowalska', status: 'booked' },
                 { time: '09:30', label: 'M. Nowak', status: 'booked' },
-                { time: '10:00', label: 'Auto-obsadzone', status: 'filled' },
+                { time: '10:00', label: 'Wolne → zajęte', status: 'filled' },
                 { time: '10:30', label: 'J. Wiśniewski', status: 'booked' },
                 { time: '11:00', label: 'Przypomnienie SMS', status: 'reminder' },
                 { time: '11:30', label: 'K. Lewandowska', status: 'booked' },
@@ -1457,7 +1461,7 @@ function Footer() {
   return (
     <footer className="px-6 py-12">
       <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 sm:flex-row">
-        <span className="text-sm font-semibold text-white">PracticeFlow</span>
+        <span className="text-sm font-semibold text-white">FullSchedule</span>
         <p className="text-xs text-gray-600">
           {t.footer}
         </p>

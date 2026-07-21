@@ -164,8 +164,8 @@ const translations = {
     },
     comparison: {
       eyebrow: 'Porównanie',
-      title: 'Dlaczego PracticeFlow?',
-      pf: 'PracticeFlow',
+      title: 'Dlaczego FullSchedule?',
+      pf: 'FullSchedule',
       manual: 'Ręczna obsługa',
       other: 'Typowy system',
       features: [
@@ -185,7 +185,7 @@ const translations = {
       title: 'Co mówią nasi klienci.',
       reviews: [
         {
-          quote: 'Od wdrożenia PracticeFlow no-shows spadły z 12% do 3%. Recepcja odzyskała kilkanaście godzin tygodniowo.',
+          quote: 'Od wdrożenia FullSchedule no-shows spadły z 12% do 3%. Recepcja odzyskała kilkanaście godzin tygodniowo.',
           author: 'dr n. med. Anna Kowalczyk',
           role: 'Właścicielka, WhiteSmile Clinic',
           result: 'No-shows: 12% → 3%',
@@ -200,9 +200,9 @@ const translations = {
     },
     founder: {
       eyebrow: 'Notatka założyciela',
-      quote: '„Kliniki dentystyczne tracą dochody nie przez brak pacjentów, ale przez procesy, których nikt nie audytuje. Stworzyliśmy PracticeFlow, żeby to zmienić — z systemem, który sam wypełnia grafik i odzyskuje Twój czas."',
+      quote: '„Kliniki dentystyczne tracą dochody nie przez brak pacjentów, ale przez procesy, których nikt nie audytuje. Stworzyliśmy FullSchedule, żeby to zmienić — z systemem, który sam wypełnia grafik i odzyskuje Twój czas."',
       name: 'Patryk',
-      role: 'Założyciel, PracticeFlow',
+      role: 'Założyciel, FullSchedule',
     },
     audit: {
       title: 'Porozmawiajmy o Twoim kalendarzu.',
@@ -220,19 +220,19 @@ const translations = {
       eyebrow: 'FAQ',
       title: 'Najczęstsze pytania.',
       items: [
-        { q: 'Czy muszę zmieniać obecny system rejestracji?', a: 'Nie. PracticeFlow integruje się z większością popularnych systemów dla gabinetów stomatologicznych. Konfiguracja trwa 1–2 dni i nie wymaga wymiany sprzętu.' },
+        { q: 'Czy muszę zmieniać obecny system rejestracji?', a: 'Nie. FullSchedule integruje się z większością popularnych systemów dla gabinetów stomatologicznych. Konfiguracja trwa 1–2 dni i nie wymaga wymiany sprzętu.' },
         { q: 'Ile trwa wdrożenie?', a: 'Od audytu do działającego systemu mija zwykle tydzień. Pierwsze przypomnienia i samoobsługowa rezerwacja są aktywne już w pierwszych dniach.' },
         { q: 'Czy pacjenci muszą instalować aplikację?', a: 'Nie. Pacjenci korzystają z przypomnień SMS/e-mail oraz linku do rezerwacji online — bez żadnej aplikacji do pobrania.' },
         { q: 'Co jeśli mam pytania po wdrożeniu?', a: 'Oferujemy wsparcie po wdrożeniu. Możesz skontaktować się z nami w każdej chwili — odpowiadamy zwykle tego samego dnia.' },
       ],
     },
-    footer: '© 2025 PracticeFlow. Automatyzacja dla gabinetów stomatologicznych.',
+    footer: '© 2025 FullSchedule. Automatyzacja dla gabinetów stomatologicznych.',
     exitPopup: {
       eyebrow: 'Zanim odejdziesz',
-      title: 'Odbierz darmowy raport',
-      desc: 'Zostaw e-mail, a wyślemy Ci raport: 5 sygnałów, że Twój gabinet traci na ręcznej obsłudze.',
+      title: 'Odbierz Feedback',
+      desc: 'Jak twój gabinet traci na ręcznej obsłudze?',
       decline: 'Nie, dziękuję',
-      download: 'Pobierz raport',
+      download: 'Pobierz za darmo',
     },
     form: {
       name: 'Imię',
@@ -405,8 +405,8 @@ const translations = {
     },
     comparison: {
       eyebrow: 'Comparison',
-      title: 'Why PracticeFlow?',
-      pf: 'PracticeFlow',
+      title: 'Why FullSchedule?',
+      pf: 'FullSchedule',
       manual: 'Manual handling',
       other: 'Typical system',
       features: [
@@ -426,7 +426,7 @@ const translations = {
       title: 'What our clients say.',
       reviews: [
         {
-          quote: 'Since deploying PracticeFlow, no-shows dropped from 12% to 3%. The front desk recovered dozens of hours weekly.',
+          quote: 'Since deploying FullSchedule, no-shows dropped from 12% to 3%. The front desk recovered dozens of hours weekly.',
           author: 'dr n. med. Anna Kowalczyk',
           role: 'Owner, WhiteSmile Clinic',
           result: 'No-shows: 12% → 3%',
@@ -441,9 +441,9 @@ const translations = {
     },
     founder: {
       eyebrow: 'Founder note',
-      quote: '"Dental clinics lose revenue not from a lack of patients, but from processes nobody audits. We built PracticeFlow to change that — with a system that fills your schedule and recovers your time."',
+      quote: '"Dental clinics lose revenue not from a lack of patients, but from processes nobody audits. We built FullSchedule to change that — with a system that fills your schedule and recovers your time."',
       name: 'Patryk',
-      role: 'Founder, PracticeFlow',
+      role: 'Founder, FullSchedule',
     },
     audit: {
       title: "Let's talk about your schedule.",
@@ -461,19 +461,19 @@ const translations = {
       eyebrow: 'FAQ',
       title: 'Frequently asked questions.',
       items: [
-        { q: 'Do I need to change my current booking system?', a: 'No. PracticeFlow integrates with most popular systems for dental clinics. Setup takes 1–2 days and requires no hardware changes.' },
+        { q: 'Do I need to change my current booking system?', a: 'No. FullSchedule integrates with most popular systems for dental clinics. Setup takes 1–2 days and requires no hardware changes.' },
         { q: 'How long does deployment take?', a: 'From audit to a working system usually takes a week. The first reminders and self-service booking are active within the first few days.' },
         { q: 'Do patients need to install an app?', a: 'No. Patients use SMS/email reminders and an online booking link — no app to download.' },
         { q: 'What if I have questions after deployment?', a: 'We offer post-deployment support. You can contact us anytime — we usually reply the same day.' },
       ],
     },
-    footer: '© 2025 PracticeFlow. Automation for dental clinics.',
+    footer: '© 2025 FullSchedule. Automation for dental clinics.',
     exitPopup: {
       eyebrow: 'Before you go',
-      title: 'Get a free report',
-      desc: 'Leave your email and we\'ll send you a report: 5 signs your clinic is losing money on manual handling.',
+      title: 'Get Feedback',
+      desc: 'How your clinic loses money on manual handling.',
       decline: 'No, thanks',
-      download: 'Download report',
+      download: 'Download for free',
     },
     form: {
       name: 'Name',
