@@ -175,7 +175,7 @@ function StatCounter({
 }) {
   const { ref, value: display } = useCountUp(value);
   return (
-    <span ref={ref} className={className}>
+    <span ref={ref} translate="no" className={`notranslate ${className}`}>
       {prefix}
       {display.toLocaleString('pl-PL')}
       {suffix}
@@ -299,13 +299,8 @@ function ExitIntentPopup() {
 
   useEffect(() => {
     if (dismissed) return;
-    const handleMouseLeave = (e: MouseEvent) => {
-      if (e.clientY <= 0) {
-        setOpen(true);
-      }
-    };
-    document.addEventListener('mouseleave', handleMouseLeave);
-    return () => document.removeEventListener('mouseleave', handleMouseLeave);
+    const timer = setTimeout(() => setOpen(true), 10000);
+    return () => clearTimeout(timer);
   }, [dismissed]);
 
   const close = () => {
@@ -449,7 +444,7 @@ const HERO_PHRASES = [
 function TypewriterHeadline() {
   const { displayed, phase } = useRotatingTypewriter(HERO_PHRASES);
   return (
-    <>
+    <span translate="no" className="notranslate">
       {displayed}
       <span
         className={`inline-block w-[3px] -mb-1 ml-1 self-stretch bg-cyan-400 transition-opacity duration-100 ${
@@ -457,7 +452,7 @@ function TypewriterHeadline() {
         }`}
         style={{ height: '0.9em' }}
       />
-    </>
+    </span>
   );
 }
 
