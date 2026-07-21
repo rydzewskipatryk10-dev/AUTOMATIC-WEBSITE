@@ -246,7 +246,7 @@ function ExitIntentPopup() {
           <img
             src="/Projekt_bez_nazwy_-_2026-07-21T160459.162-removebg-preview copy.png"
             alt="FullSchedule"
-            className="mb-5 h-12 w-auto"
+            className="mb-5 h-24 w-auto"
           />
           <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-cyan-400/15">
             <CalendarClock className="h-7 w-7 text-cyan-400" strokeWidth={1.5} />
@@ -341,7 +341,7 @@ function Nav() {
           <img
             src="/Projekt_bez_nazwy_-_2026-07-21T160459.162-removebg-preview copy.png"
             alt="FullSchedule"
-            className="h-20 w-auto"
+            className="h-28 w-auto"
           />
         </a>
         <nav className="hidden items-center gap-7 md:flex">
@@ -550,35 +550,35 @@ function Hero() {
       {/* Dental clinic background image */}
       <div className="absolute inset-0">
         <img
-          src="https://images.pexels.com/photos/6628076/pexels-photo-6628076.jpeg?auto=compress&cs=tinysrgb&w=1920"
-          alt="Dental clinic"
-          className="h-full w-full object-cover opacity-40"
+          src="https://images.pexels.com/photos/6628076/pexels-photo-6628076.jpeg?auto=compress&cs=tinysrgb&w=2400"
+          alt="Modern dental clinic"
+          className="h-full w-full object-cover opacity-50"
           loading="eager"
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-[#0a1628] via-[#0a1628]/80 to-[#0a1628]/40" />
-        <div className="absolute inset-0 bg-gradient-to-b from-[#0a1628]/50 via-transparent to-[#0a1628]" />
+        <div className="absolute inset-0 bg-gradient-to-r from-[#0a1628] via-[#0a1628]/80 to-[#0a1628]/30" />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#0a1628]/40 via-transparent to-[#0a1628]" />
       </div>
 
-      <div className="relative mx-auto grid max-w-6xl items-center gap-12 lg:grid-cols-2">
-        <div className="max-w-2xl">
-          <h1 className="text-4xl font-bold leading-tight text-white sm:text-5xl md:text-6xl">
+      <div className="relative mx-auto grid max-w-6xl items-center gap-12 lg:grid-cols-[1.15fr_0.85fr]">
+        <div className="max-w-xl mx-auto text-center lg:text-left">
+          <h1 className="pf-hero-fade-in text-4xl font-bold leading-tight text-white sm:text-5xl md:text-6xl">
             {t.hero.title}
           </h1>
-          <p className="mt-6 text-lg text-gray-300">
+          <p className="pf-hero-fade-in-delayed mt-6 text-lg text-gray-300">
             {t.hero.subtitle}
           </p>
           <a
             href="#diagnoza"
-            className="mt-10 inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-sky-500 to-cyan-400 px-9 py-5 text-lg font-bold text-black shadow-xl shadow-cyan-500/40 transition hover:bg-cyan-400"
+            className="pf-hero-fade-in-delayed-2 mt-10 inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-sky-500 to-cyan-400 px-9 py-5 text-lg font-bold text-black shadow-xl shadow-cyan-500/40 transition hover:bg-cyan-400"
           >
             {t.hero.cta}
             <ArrowRight className="h-5 w-5" />
           </a>
         </div>
 
-        {/* Dashboard mockup with clinic photo */}
-        <div className="relative hidden md:block">
-          <div className="rounded-2xl border border-white/15 bg-[#0d1a2e] p-5 shadow-2xl shadow-black/50">
+        {/* Dashboard mockup — smaller, pushed to the side */}
+        <div className="relative hidden md:block lg:justify-self-end">
+          <div className="rounded-2xl border border-white/15 bg-[#0d1a2e]/95 p-4 shadow-2xl shadow-black/50 backdrop-blur-sm w-full max-w-sm lg:ml-auto">
             {/* Mock header */}
             <div className="flex items-center justify-between border-b border-white/15 pb-4">
               <div className="flex items-center gap-2">
@@ -594,12 +594,14 @@ function Hero() {
             <div className="mt-4 space-y-2">
               {[
                 { time: '09:00', label: 'A. Kowalska', status: 'booked' },
-                { time: '09:30', label: 'M. Nowak', status: 'booked' },
-                { time: '10:00', label: 'Wolne → zajęte', status: 'filled' },
-                { time: '10:30', label: 'J. Wiśniewski', status: 'booked' },
-                { time: '11:00', label: 'Przypomnienie SMS', status: 'reminder' },
-                { time: '11:30', label: 'K. Lewandowska', status: 'booked' },
-                { time: '12:00', label: 'Rezerwacja online', status: 'filled' },
+                { time: '10:30', label: 'M. Nowak', status: 'booked' },
+                { time: '11:00', label: 'Wolne → zajęte', status: 'filled' },
+                { time: '12:30', label: 'J. Wiśniewski', status: 'booked' },
+                { time: '13:00', label: 'Przypomnienie SMS', status: 'reminder' },
+                { time: '14:30', label: 'K. Lewandowska', status: 'booked' },
+                { time: '15:00', label: 'Rezerwacja online', status: 'filled' },
+                { time: '16:30', label: 'P. Zieliński', status: 'booked' },
+                { time: '17:00', label: 'Wolne → zajęte', status: 'filled' },
               ].map((slot, i) => (
                 <div
                   key={i}
@@ -1473,7 +1475,11 @@ function Footer() {
   return (
     <footer className="px-6 py-12">
       <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 sm:flex-row">
-        <span className="text-sm font-semibold text-white">FullSchedule</span>
+        <img
+          src="/Projekt_bez_nazwy_-_2026-07-21T160459.162-removebg-preview copy.png"
+          alt="FullSchedule"
+          className="h-16 w-auto"
+        />
         <p className="text-xs text-gray-600">
           {t.footer}
         </p>
