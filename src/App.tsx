@@ -658,13 +658,13 @@ function Hero() {
 
         {/* Dashboard mockup with clinic photo */}
         <div
-          className="relative hidden lg:block"
+          className="relative hidden md:block"
           style={{ transform: `translateY(${scrollY * 0.08}px)` }}
         >
           {/* Floating clinic photo card */}
           <div className="absolute -right-6 -top-8 z-10 w-44 overflow-hidden rounded-xl border border-white/15 shadow-2xl shadow-black/60 transition-transform duration-500 hover:scale-105">
             <img
-              src="https://images.pexels.com/photos/305568/pexels-photo-305568.jpeg?auto=compress&cs=tinysrgb&w=400"
+              src="https://images.pexels.com/photos/6812532/pexels-photo-6812532.jpeg?auto=compress&cs=tinysrgb&w=400"
               alt="Nowoczesna klinika dentystyczna"
               className="h-28 w-full object-cover"
               loading="lazy"
@@ -819,14 +819,13 @@ function Calculator() {
     emptySlots: '',
     dropOff: '',
   });
-  const [showResult, setShowResult] = useState(false);
-
-  // Wyniki kalkulatora
-  const recoveredRevenuePLN = cancellations * AVG_REVENUE_PER_VISIT; // /tydzień
-  const recoveredRevenueMonthly = Math.round(recoveredRevenuePLN * WEEKS_PER_MONTH);
   const savedHoursWeekly = staff * HOURS_SAVED_PER_STAFF;
-  const savedCostWeekly = savedHoursWeekly * HOURLY_COST;
-  const savedCostMonthly = Math.round(savedCostWeekly * WEEKS_PER_MONTH);
+
+  const [showResult, setShowResult] = useState(false);
+  const cancellationsMonthly = cancellations * WEEKS_PER_MONTH;
+  const recoveredRevenueMonthly = Math.round(cancellationsMonthly * AVG_REVENUE_PER_VISIT);
+  const savedHoursMonthly = Math.round(savedHoursWeekly * WEEKS_PER_MONTH);
+  const savedCostMonthly = Math.round(savedHoursWeekly * HOURLY_COST * WEEKS_PER_MONTH);
   const totalMonthly = recoveredRevenueMonthly + savedCostMonthly;
 
   const questions = [
@@ -890,7 +889,7 @@ function Calculator() {
               Kalkulator automatyzacji
             </h3>
             <p className="mt-2 text-sm text-gray-300">
-              Suwaki pokazują szacunkowy potencjał odzyskanych dochodów i oszczędności.
+              Szacunkowy potencjał odzyskanych dochodów i oszczędności.
             </p>
 
             <div className="mt-8 space-y-8">
@@ -898,9 +897,9 @@ function Calculator() {
                 <div className="flex items-center justify-between">
                   <label className="flex items-center gap-2 text-sm font-medium text-gray-100">
                     <CalendarClock className="h-4 w-4 text-cyan-400" />
-                    Odwołane wizyty tygodniowo
+                    Odwołane wizyty miesięcznie
                   </label>
-                  <span className="text-lg font-bold text-cyan-300">{cancellations}</span>
+                  <span className="text-lg font-bold text-cyan-300">{Math.round(cancellations * WEEKS_PER_MONTH)}</span>
                 </div>
                 <input
                   type="range"
@@ -933,31 +932,17 @@ function Calculator() {
 
             <div className="mt-10 space-y-4 border-t border-white/15 pt-8">
               <div className="flex items-center justify-between">
-                <span className="text-sm text-gray-300">Odzyskane dochody z wizyt / tydzień</span>
+                <span className="text-sm text-gray-300">Odzyskane dochody z wizyt / miesiąc</span>
                 <span className="text-xl font-bold text-white">
-                  <StatCounter value={recoveredRevenuePLN} suffix=" zł" />
+                  <StatCounter value={recoveredRevenueMonthly} suffix=" zł" />
                 </span>
               </div>
               <div className="flex items-center justify-between">
-                <span className="text-sm text-gray-300">Oszczędność na recepcji / tydzień</span>
-                <span className="text-xl font-bold text-white">
-                  <StatCounter value={savedCostWeekly} suffix=" zł" />
-                </span>
-              </div>
-              <div className="flex items-center justify-between">
-                <span className="text-sm text-gray-300">Odzyskany czas / tydzień</span>
-                <span className="text-xl font-bold text-white">{savedHoursWeekly}h</span>
+                <span className="text-sm text-gray-300">Odzyskany czas / miesiąc</span>
+                <span className="text-xl font-bold text-white">{savedHoursMonthly}h</span>
               </div>
               <div className="rounded-lg bg-cyan-400/10 px-4 py-3">
                 <div className="flex items-center justify-between">
-                  <span className="text-sm font-medium text-cyan-200">
-                    Potencjał tygodniowy (łącznie)
-                  </span>
-                  <span className="text-lg font-bold text-cyan-200">
-                    {(recoveredRevenuePLN + savedCostWeekly).toLocaleString('pl-PL')} zł
-                  </span>
-                </div>
-                <div className="mt-2 flex items-center justify-between border-t border-cyan-400/20 pt-2">
                   <span className="text-sm font-medium text-cyan-200">
                     Potencjał miesięczny (łącznie)
                   </span>
@@ -1030,7 +1015,7 @@ function Calculator() {
                 </h3>
                 <p className="mt-3 text-sm text-gray-300">
                   Na podstawie Twoich odpowiedzi i kalkulatora, możesz odzyskać
-                  do <span className="font-semibold text-cyan-200">{savedHoursWeekly}h tygodniowo</span> i
+                  do <span className="font-semibold text-cyan-200">{savedHoursMonthly}h miesięcznie</span> i
                   <span className="font-semibold text-cyan-200"> {totalMonthly.toLocaleString('pl-PL')} zł miesięcznie</span> —
                   z odzyskanych wizyt i oszczędności na recepcji.
                 </p>
@@ -1107,49 +1092,90 @@ function SystemDiagram() {
           Od połączenia do obsadzonego grafiku.
         </h2>
 
-        <div className="relative mt-14 flex flex-col items-center gap-2 md:flex-row md:items-stretch md:gap-2">
-          {steps.map((step, i) => (
-            <div key={step.title} className="flex flex-1 flex-col items-center text-center">
-              <div
-                className={`flex h-16 w-16 items-center justify-center rounded-2xl border transition-all duration-500 ${
-                  visibleSteps > i
-                    ? 'border-cyan-500/40 bg-cyan-500/10 opacity-100 scale-100'
-                    : 'border-gray-200 bg-white opacity-40 scale-90'
-                }`}
-              >
-                <step.icon
-                  className={`h-7 w-7 transition-colors duration-500 ${
-                    visibleSteps > i ? 'text-cyan-600' : 'text-gray-400'
+        <div className="relative mt-14">
+          {/* Horizontal progress line behind icons (desktop) */}
+          <div className="absolute left-0 right-0 top-8 hidden h-0.5 bg-gray-200 md:block">
+            <div
+              className="h-full bg-gradient-to-r from-cyan-500 to-cyan-400 transition-all duration-1000 ease-out"
+              style={{ width: `${(visibleSteps / steps.length) * 100}%` }}
+            />
+          </div>
+          {/* Vertical progress line (mobile) */}
+          <div className="absolute left-8 top-0 bottom-0 w-0.5 bg-gray-200 md:hidden">
+            <div
+              className="w-full bg-gradient-to-b from-cyan-500 to-cyan-400 transition-all duration-1000 ease-out"
+              style={{ height: `${(visibleSteps / steps.length) * 100}%` }}
+            />
+          </div>
+
+          <div className="flex flex-col gap-10 md:flex-row md:items-start md:gap-4">
+            {steps.map((step, i) => (
+              <div key={step.title} className="relative flex flex-1 flex-col items-center text-center md:items-center">
+                <div
+                  className={`relative z-10 flex h-16 w-16 items-center justify-center rounded-full border-4 border-[#f7f7f5] transition-all duration-500 ${
+                    visibleSteps > i
+                      ? 'bg-cyan-500 scale-100'
+                      : 'bg-white border-gray-200 scale-90'
                   }`}
-                  strokeWidth={1.5}
-                />
-              </div>
-              <h3
-                className={`mt-4 text-base font-semibold transition-colors duration-500 ${
-                  visibleSteps > i ? 'text-gray-900' : 'text-gray-400'
-                }`}
-              >
-                {step.title}
-              </h3>
-              <p
-                className={`mt-2 text-sm transition-colors duration-500 ${
-                  visibleSteps > i ? 'text-gray-600' : 'text-gray-400'
-                }`}
-              >
-                {step.text}
-              </p>
-              {i < steps.length - 1 && (
-                <div className="mt-4 flex items-center justify-center md:mt-0 md:flex-1 md:items-center">
-                  <ArrowRight
-                    className={`h-5 w-5 transition-colors duration-500 ${
-                      visibleSteps > i ? 'text-cyan-400/50' : 'text-gray-300'
+                >
+                  <step.icon
+                    className={`h-7 w-7 transition-colors duration-500 ${
+                      visibleSteps > i ? 'text-white' : 'text-gray-400'
                     }`}
                     strokeWidth={1.5}
                   />
                 </div>
-              )}
+                <h3
+                  className={`mt-4 text-base font-semibold transition-colors duration-500 ${
+                    visibleSteps > i ? 'text-gray-900' : 'text-gray-400'
+                  }`}
+                >
+                  {step.title}
+                </h3>
+                <p
+                  className={`mt-2 max-w-[14rem] text-sm transition-colors duration-500 ${
+                    visibleSteps > i ? 'text-gray-600' : 'text-gray-400'
+                  }`}
+                >
+                  {step.text}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Phone mockup — system in action */}
+        <div className="mt-16 flex flex-col items-center gap-8 sm:flex-row sm:justify-center">
+          <div className="relative w-64 rounded-[2rem] border-[6px] border-gray-800 bg-[#0d1a2e] p-3 shadow-2xl">
+            <div className="absolute left-1/2 top-1.5 h-1 w-12 -translate-x-1/2 rounded-full bg-gray-700" />
+            <div className="mt-5 space-y-2">
+              <div className="rounded-xl border border-cyan-400/30 bg-cyan-400/10 p-3">
+                <div className="flex items-center gap-2">
+                  <Bell className="h-3.5 w-3.5 text-cyan-400" strokeWidth={1.5} />
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-cyan-400">SMS</span>
+                </div>
+                <p className="mt-1.5 text-xs text-gray-300">Przypominamy o wizycie jutro 9:00. Odpowiedz TAK.</p>
+              </div>
+              <div className="rounded-xl border border-green-400/30 bg-green-400/10 p-3">
+                <div className="flex items-center gap-2">
+                  <CheckCircle className="h-3.5 w-3.5 text-green-400" strokeWidth={1.5} />
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-green-400">Potwierdzone</span>
+                </div>
+                <p className="mt-1.5 text-xs text-gray-300">Pacjent potwierdził wizytę automatycznie.</p>
+              </div>
+              <div className="rounded-xl border border-sky-400/30 bg-sky-400/10 p-3">
+                <div className="flex items-center gap-2">
+                  <Calendar className="h-3.5 w-3.5 text-sky-400" strokeWidth={1.5} />
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-sky-400">Kalendarz</span>
+                </div>
+                <p className="mt-1.5 text-xs text-gray-300">Slot 9:00 obsadzony — 24/7.</p>
+              </div>
             </div>
-          ))}
+          </div>
+          <div className="max-w-xs text-center sm:text-left">
+            <p className="text-sm font-semibold text-gray-900">Wszystko dzieje się automatycznie</p>
+            <p className="mt-2 text-sm text-gray-600">Pacjent dostaje SMS, potwierdza jedną odpowiedzią, a system aktualizuje grafik — bez telefonu od recepcji.</p>
+          </div>
         </div>
       </div>
     </section>
@@ -1344,12 +1370,14 @@ function Testimonials() {
         'Od wdrożenia PracticeFlow no-shows spadły z 12% do 3%. Recepcja odzyskała kilkanaście godzin tygodniowo.',
       author: 'dr n. med. Anna Kowalczyk',
       role: 'Właścicielka, WhiteSmile Clinic',
+      result: 'No-shows: 12% → 3%',
     },
     {
       quote:
         'Puste sloty po odwołaniach wypełniają się same. Widzę różnicę w przychodach już po pierwszym miesiącu.',
       author: 'lek. dent. Piotr Zieliński',
       role: 'Dyrektor, OrthoLine',
+      result: '+38% przychodów / m-c',
     },
   ];
 
@@ -1377,6 +1405,10 @@ function Testimonials() {
               <p className="mt-4 text-base leading-relaxed text-gray-300">
                 {review.quote}
               </p>
+              <div className="mt-4 inline-flex items-center gap-2 rounded-full bg-cyan-400/10 px-3 py-1.5">
+                <TrendingUp className="h-3.5 w-3.5 text-cyan-400" strokeWidth={1.5} />
+                <span className="text-xs font-semibold text-cyan-300">{review.result}</span>
+              </div>
               <div className="mt-6 flex items-center gap-3">
                 <div className="flex h-10 w-10 items-center justify-center rounded-full bg-cyan-400/10 text-sm font-bold text-cyan-300">
                   {review.author.split(' ').slice(-1)[0][0]}
@@ -1555,6 +1587,22 @@ function AuditCta() {
           Krótka rozmowa o tym, gdzie Twój gabinet traci czas i dochody — i jak
           możemy to zautomatyzować. Bez zobowiązań.
         </p>
+
+        <div className="mx-auto mt-10 flex max-w-lg flex-wrap items-center justify-center gap-4">
+          {[
+            { value: '15 min', label: 'rozmowy' },
+            { value: '12h', label: 'odzyskane / m-c' },
+            { value: '1 tydzień', label: 'do wdrożenia' },
+          ].map((stat) => (
+            <div
+              key={stat.label}
+              className="flex flex-col items-center rounded-xl border border-white/10 bg-white/[0.03] px-5 py-3"
+            >
+              <span className="text-xl font-bold text-cyan-300">{stat.value}</span>
+              <span className="text-xs text-gray-400">{stat.label}</span>
+            </div>
+          ))}
+        </div>
 
         <a
           href="mailto:kontakt@practiceflow.pl?subject=Pro%C5%9Bba%20o%20audyt%20grafiku"
