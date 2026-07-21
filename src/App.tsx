@@ -664,9 +664,9 @@ const DIAGNOSIS_OPTIONS = {
 };
 
 // Stałe wartości kalkulatora
-const AVG_REVENUE_PER_VISIT = 500; // zł — średni zysk z wizyty
-const HOURS_SAVED_PER_STAFF_MONTHLY = 40; // h/miesiąc — oszczędność czasu na jedną osobę w recepcji
-const HOURLY_COST = 37; // zł brutto — koszt godziny pracy
+const AVG_REVENUE_PER_VISIT = 500; // zł — średni zysk z jednej odwołanej wizyty
+const REVENUE_PER_STAFF_MONTHLY = 1480; // zł/miesiąc — odzyskane dochody z jednej osoby w recepcji
+const HOURS_SAVED_PER_STAFF_MONTHLY = 40; // h/miesiąc — odzyskany czas z jednej osoby w recepcji
 
 function RangeSlider({ value, min, max, onChange }: { value: number; min: number; max: number; onChange: (v: number) => void }) {
   const trackRef = useRef<HTMLDivElement>(null);
@@ -715,10 +715,9 @@ function Calculator() {
   });
 
   const [showResult, setShowResult] = useState(false);
-  const recoveredRevenueMonthly = Math.round(cancellations * AVG_REVENUE_PER_VISIT);
-  const savedHoursMonthly = Math.round(staff * HOURS_SAVED_PER_STAFF_MONTHLY);
-  const savedCostMonthly = Math.round(savedHoursMonthly * HOURLY_COST);
-  const totalMonthly = recoveredRevenueMonthly + savedCostMonthly;
+  const recoveredRevenueMonthly = cancellations * AVG_REVENUE_PER_VISIT + staff * REVENUE_PER_STAFF_MONTHLY;
+  const savedHoursMonthly = staff * HOURS_SAVED_PER_STAFF_MONTHLY;
+  const totalMonthly = recoveredRevenueMonthly;
 
   const questions = [
     {
