@@ -246,7 +246,7 @@ function ExitIntentPopup() {
           <img
             src="/Projekt_bez_nazwy_-_2026-07-21T160459.162-removebg-preview copy.png"
             alt="FullSchedule"
-            className="mb-5 h-24 w-auto"
+            className="mb-5 h-20 w-auto"
           />
           <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-cyan-400/15">
             <CalendarClock className="h-7 w-7 text-cyan-400" strokeWidth={1.5} />
@@ -341,7 +341,7 @@ function Nav() {
           <img
             src="/Projekt_bez_nazwy_-_2026-07-21T160459.162-removebg-preview copy.png"
             alt="FullSchedule"
-            className="h-28 w-auto"
+            className="h-16 w-auto"
           />
         </a>
         <nav className="hidden items-center gap-7 md:flex">
@@ -552,24 +552,24 @@ function Hero() {
         <img
           src="https://images.pexels.com/photos/6628076/pexels-photo-6628076.jpeg?auto=compress&cs=tinysrgb&w=2400"
           alt="Modern dental clinic"
-          className="h-full w-full object-cover opacity-50"
+          className="h-full w-full object-cover opacity-60"
           loading="eager"
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-[#0a1628] via-[#0a1628]/80 to-[#0a1628]/30" />
-        <div className="absolute inset-0 bg-gradient-to-b from-[#0a1628]/40 via-transparent to-[#0a1628]" />
+        <div className="absolute inset-0 bg-gradient-to-r from-[#0a1628] via-[#0a1628]/75 to-[#0a1628]/25" />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#0a1628]/30 via-transparent to-[#0a1628]" />
       </div>
 
       <div className="relative mx-auto grid max-w-6xl items-center gap-12 lg:grid-cols-[1.15fr_0.85fr]">
         <div className="max-w-xl mx-auto text-center lg:text-left">
-          <h1 className="pf-hero-fade-in text-4xl font-bold leading-tight text-white sm:text-5xl md:text-6xl">
+          <h1 className="pf-hero-fade-in text-4xl font-bold leading-tight text-white sm:text-5xl md:text-7xl">
             {t.hero.title}
           </h1>
-          <p className="pf-hero-fade-in-delayed mt-6 text-lg text-gray-300">
+          <p className="pf-hero-fade-in-delayed mt-6 text-xl text-gray-300">
             {t.hero.subtitle}
           </p>
           <a
             href="#diagnoza"
-            className="pf-hero-fade-in-delayed-2 mt-10 inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-sky-500 to-cyan-400 px-9 py-5 text-lg font-bold text-black shadow-xl shadow-cyan-500/40 transition hover:bg-cyan-400"
+            className="pf-hero-fade-in-delayed-2 mt-10 inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-sky-500 to-cyan-400 px-10 py-6 text-xl font-bold text-black shadow-xl shadow-cyan-500/40 transition hover:bg-cyan-400"
           >
             {t.hero.cta}
             <ArrowRight className="h-5 w-5" />
@@ -578,7 +578,7 @@ function Hero() {
 
         {/* Dashboard mockup — smaller, pushed to the side */}
         <div className="relative hidden md:block lg:justify-self-end">
-          <div className="rounded-2xl border border-white/15 bg-[#0d1a2e]/95 p-4 shadow-2xl shadow-black/50 backdrop-blur-sm w-full max-w-sm lg:ml-auto">
+          <div className="rounded-2xl border border-white/15 bg-[#0d1a2e]/95 p-4 shadow-2xl shadow-black/50 backdrop-blur-sm w-full max-w-md lg:ml-auto">
             {/* Mock header */}
             <div className="flex items-center justify-between border-b border-white/15 pb-4">
               <div className="flex items-center gap-2">
@@ -653,32 +653,6 @@ function Hero() {
               </div>
             </div>
           </div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-// ---------------------------------------------------------------------------
-// Social Proof — logos strip
-// ---------------------------------------------------------------------------
-function SocialProof() {
-  const { t } = useI18n();
-  return (
-    <section className="border-y border-white/10 bg-[#0d1a2e] px-6 py-12">
-      <div className="mx-auto max-w-6xl">
-        <p className="text-center text-xs font-semibold uppercase tracking-widest text-gray-400">
-          {t.socialProof.label}
-        </p>
-        <div className="mt-8 flex flex-wrap items-center justify-center gap-x-12 gap-y-6">
-          {['DentalCare', 'WhiteSmile', 'OrthoLine', 'MediDent', 'SmilePro'].map((name) => (
-            <span
-              key={name}
-              className="text-lg font-bold tracking-tight text-gray-500 transition hover:text-gray-300"
-            >
-              {name}
-            </span>
-          ))}
         </div>
       </div>
     </section>
@@ -1478,7 +1452,7 @@ function Footer() {
         <img
           src="/Projekt_bez_nazwy_-_2026-07-21T160459.162-removebg-preview copy.png"
           alt="FullSchedule"
-          className="h-16 w-auto"
+          className="h-12 w-auto"
         />
         <p className="text-xs text-gray-600">
           {t.footer}
@@ -1496,9 +1470,6 @@ function AppContent() {
     <div id="top" className="min-h-screen bg-[#0a1628] text-white antialiased">
       <Nav />
       <Hero />
-      <Reveal>
-        <SocialProof />
-      </Reveal>
       <Reveal>
         <SystemDiagram />
       </Reveal>
