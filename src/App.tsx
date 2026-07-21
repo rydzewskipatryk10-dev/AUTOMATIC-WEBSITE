@@ -29,7 +29,6 @@ import {
   Languages,
 } from 'lucide-react';
 import { I18nProvider, useI18n, type Lang } from './lib/i18n';
-import { LeadForm } from './lib/LeadForm';
 
 // ---------------------------------------------------------------------------
 // Scroll-reveal hook — fades children in when they enter the viewport
@@ -197,7 +196,7 @@ function LanguageToggle({ className = '' }: { className?: string }) {
 }
 
 // ---------------------------------------------------------------------------
-// Exit-intent popup — appears after 15 seconds, collects email via LeadForm
+// Exit-intent popup — appears after 15 seconds, offers a free report download
 // ---------------------------------------------------------------------------
 function ExitIntentPopup() {
   const { t } = useI18n();
@@ -253,9 +252,15 @@ function ExitIntentPopup() {
           <p className="mt-3 text-sm leading-relaxed text-gray-400">
             {t.exitPopup.desc}
           </p>
-          <div className="mt-6 w-full">
-            <LeadForm source="exit-intent" onSubmitted={close} />
-          </div>
+          <a
+            href="/practiceflow-przewodnik.pdf"
+            download
+            onClick={close}
+            className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-full bg-sky-500 px-6 py-3.5 text-base font-semibold text-black transition hover:bg-sky-400"
+          >
+            {t.exitPopup.download}
+            <ArrowRight className="h-4 w-4" />
+          </a>
           <button
             onClick={close}
             className="mt-3 text-xs text-gray-500 transition hover:text-gray-300"
@@ -320,9 +325,12 @@ function Nav() {
       }`}
     >
       <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
-        <span className="text-base font-semibold tracking-tight text-white">
+        <a
+          href="#top"
+          className="text-base font-semibold tracking-tight text-white transition hover:text-cyan-300"
+        >
           PracticeFlow
-        </span>
+        </a>
         <div className="flex items-center gap-3">
           <LanguageToggle />
           <a
@@ -1349,7 +1357,7 @@ function MiniCta() {
 }
 
 // ---------------------------------------------------------------------------
-// Audit CTA + Booking (with LeadForm)
+// Audit CTA + Booking
 // ---------------------------------------------------------------------------
 function AuditCta() {
   const { t } = useI18n();
@@ -1379,9 +1387,15 @@ function AuditCta() {
           ))}
         </div>
 
-        <div className="mx-auto mt-12 max-w-md text-left">
-          <LeadForm source="audit-cta" />
-        </div>
+        <a
+          href="/practiceflow-przewodnik.pdf"
+          download
+          className="group mt-12 inline-flex items-center gap-3 rounded-full bg-gradient-to-r from-sky-500 to-cyan-400 px-12 py-5 text-lg font-bold text-black shadow-xl shadow-cyan-500/40 transition hover:scale-105 hover:shadow-2xl hover:shadow-cyan-400/50"
+        >
+          {t.audit.download}
+          <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
+        </a>
+        <p className="mt-4 text-sm text-gray-400">{t.audit.noCommit}</p>
 
         <p className="mt-6 flex items-center justify-center gap-2 text-sm text-gray-400">
           <Mail className="h-4 w-4" />
@@ -1460,7 +1474,7 @@ function Footer() {
 // ---------------------------------------------------------------------------
 function AppContent() {
   return (
-    <div className="min-h-screen bg-[#0a1628] text-white antialiased">
+    <div id="top" className="min-h-screen bg-[#0a1628] text-white antialiased">
       <Nav />
       <Hero />
       <Reveal>

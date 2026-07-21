@@ -210,6 +210,7 @@ const translations = {
         { value: '1 tydzień', label: 'do wdrożenia' },
       ],
       cta: 'Umów audyt grafiku',
+      download: 'Pobierz darmowy raport',
       noCommit: '15 min, bez zobowiązań',
     },
     faq: {
@@ -228,6 +229,7 @@ const translations = {
       title: 'Odbierz darmowy raport',
       desc: 'Zostaw e-mail, a wyślemy Ci raport: 5 sygnałów, że Twój gabinet traci na ręcznej obsłudze.',
       decline: 'Nie, dziękuję',
+      download: 'Pobierz raport',
     },
     form: {
       name: 'Imię',
@@ -442,6 +444,7 @@ const translations = {
         { value: '1 week', label: 'to deploy' },
       ],
       cta: 'Book a schedule audit',
+      download: 'Download free report',
       noCommit: '15 min, no commitment',
     },
     faq: {
@@ -460,6 +463,7 @@ const translations = {
       title: 'Get a free report',
       desc: 'Leave your email and we\'ll send you a report: 5 signs your clinic is losing money on manual handling.',
       decline: 'No, thanks',
+      download: 'Download report',
     },
     form: {
       name: 'Name',

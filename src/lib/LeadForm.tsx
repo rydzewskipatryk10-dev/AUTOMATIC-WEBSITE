@@ -38,6 +38,11 @@ export function LeadForm({
     setValidationError('');
     setStatus('sending');
 
+    if (!supabase) {
+      setStatus('error');
+      return;
+    }
+
     const { error } = await supabase.from('leads').insert({
       name: name.trim(),
       email: email.trim(),
