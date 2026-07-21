@@ -467,22 +467,22 @@ function TypewriterHeadline() {
 // ---------------------------------------------------------------------------
 function CaseStudy() {
   return (
-    <section className="px-6 py-24">
+    <section className="bg-[#f7f7f5] px-6 py-24">
       <div className="mx-auto max-w-5xl">
         <div className="mb-12 text-center">
-          <p className="text-xs font-semibold uppercase tracking-widest text-cyan-400">
+          <p className="text-xs font-semibold uppercase tracking-widest text-cyan-600">
             Case study
           </p>
-          <h2 className="mt-3 text-3xl font-bold text-white sm:text-4xl">
+          <h2 className="mt-3 text-3xl font-bold text-gray-900 sm:text-4xl">
             Gabinet Stomatologiczny „Uśmiech"
           </h2>
-          <p className="mt-4 text-gray-400">
+          <p className="mt-4 text-gray-600">
             3 fotele, 6 higienistek, 4 dentystów. Wdrożenie: 14 dni.
           </p>
         </div>
 
         {/* Clinic photo */}
-        <div className="mb-8 overflow-hidden rounded-2xl border border-white/10 shadow-2xl shadow-black/40">
+        <div className="mb-8 overflow-hidden rounded-2xl border border-gray-200 shadow-lg">
           <img
             src="https://images.pexels.com/photos/6812532/pexels-photo-6812532.jpeg?auto=compress&cs=tinysrgb&w=1200"
             alt="Dentysta pracujący z pacjentem w nowoczesnej klinice"
@@ -493,55 +493,55 @@ function CaseStudy() {
 
         <div className="grid gap-6 md:grid-cols-2">
           {/* Before */}
-          <div className="rounded-2xl border border-red-500/20 bg-red-500/5 p-8">
-            <p className="text-sm font-semibold text-red-400">Przed wdrożeniem</p>
+          <div className="rounded-2xl border border-red-500/20 bg-white p-8 shadow-sm">
+            <p className="text-sm font-semibold text-red-600">Przed wdrożeniem</p>
             <div className="mt-6 space-y-4">
               <div>
-                <p className="text-3xl font-bold text-white">12%</p>
-                <p className="text-sm text-gray-400">wskaźnik no-shows</p>
+                <p className="text-3xl font-bold text-gray-900">12%</p>
+                <p className="text-sm text-gray-600">wskaźnik no-shows</p>
               </div>
               <div>
-                <p className="text-3xl font-bold text-white">18h/tyg.</p>
-                <p className="text-sm text-gray-400">czas recepcji na telefon i przypomnienia</p>
+                <p className="text-3xl font-bold text-gray-900">18h/tyg.</p>
+                <p className="text-sm text-gray-600">czas recepcji na telefon i przypomnienia</p>
               </div>
               <div>
-                <p className="text-3xl font-bold text-white">~14 000 zł</p>
-                <p className="text-sm text-gray-400">stracone zyski / miesiąc (puste sloty)</p>
+                <p className="text-3xl font-bold text-gray-900">~14 000 zł</p>
+                <p className="text-sm text-gray-600">stracone zyski / miesiąc (puste sloty)</p>
               </div>
             </div>
           </div>
 
           {/* After */}
-          <div className="rounded-2xl border border-cyan-400/20 bg-cyan-400/5 p-8">
-            <p className="text-sm font-semibold text-cyan-400">Po wdrożeniu</p>
+          <div className="rounded-2xl border border-cyan-500/20 bg-white p-8 shadow-sm">
+            <p className="text-sm font-semibold text-cyan-600">Po wdrożeniu</p>
             <div className="mt-6 space-y-4">
               <div>
-                <p className="text-3xl font-bold text-white">
+                <p className="text-3xl font-bold text-gray-900">
                   <StatCounter value={3} suffix="%" />
                 </p>
-                <p className="text-sm text-gray-400">wskaźnik no-shows</p>
+                <p className="text-sm text-gray-600">wskaźnik no-shows</p>
               </div>
               <div>
-                <p className="text-3xl font-bold text-white">
+                <p className="text-3xl font-bold text-gray-900">
                   <StatCounter value={4} suffix="h/tyg." />
                 </p>
-                <p className="text-sm text-gray-400">czas recepcji na telefon i przypomnienia</p>
+                <p className="text-sm text-gray-600">czas recepcji na telefon i przypomnienia</p>
               </div>
               <div>
-                <p className="text-3xl font-bold text-white">
+                <p className="text-3xl font-bold text-gray-900">
                   <StatCounter value={21000} suffix=" zł" />
                 </p>
-                <p className="text-sm text-gray-400">odzyskane zyski / miesiąc</p>
+                <p className="text-sm text-gray-600">odzyskane zyski / miesiąc</p>
               </div>
             </div>
           </div>
         </div>
 
-        <div className="mt-8 rounded-2xl border border-white/10 bg-white/5 p-6 text-center">
-          <p className="text-lg font-semibold text-white">
-            ROI wdrożenia: <span className="text-cyan-400">3,2x</span> w pierwszym miesiącu
+        <div className="mt-8 rounded-2xl border border-gray-200 bg-white p-6 text-center shadow-sm">
+          <p className="text-lg font-semibold text-gray-900">
+            ROI wdrożenia: <span className="text-cyan-600">3,2x</span> w pierwszym miesiącu
           </p>
-          <p className="mt-2 text-sm text-gray-400">
+          <p className="mt-2 text-sm text-gray-600">
             „Przestaliśmy gonić pacjentów telefonem. Teraz to oni rezerwują sami, a my skupiamy się na leczeniu."
           </p>
           <p className="mt-3 text-xs text-gray-500">— Anna K., właścicielka gabinetu „Uśmiech"</p>
@@ -567,35 +567,35 @@ function ComparisonTable() {
 
   const renderCell = (val: boolean | string) => {
     if (val === true)
-      return <CheckCircle className="mx-auto h-5 w-5 text-cyan-400" />;
-    if (val === false) return <XCircle className="mx-auto h-5 w-5 text-gray-600" />;
-    return <span className="text-xs text-gray-400">{val}</span>;
+      return <CheckCircle className="mx-auto h-5 w-5 text-cyan-600" />;
+    if (val === false) return <XCircle className="mx-auto h-5 w-5 text-gray-300" />;
+    return <span className="text-xs text-gray-500">{val}</span>;
   };
 
   return (
-    <section className="px-6 py-24">
+    <section className="bg-[#f7f7f5] px-6 py-24">
       <div className="mx-auto max-w-4xl">
         <div className="mb-12 text-center">
-          <p className="text-xs font-semibold uppercase tracking-widest text-cyan-400">
+          <p className="text-xs font-semibold uppercase tracking-widest text-cyan-600">
             Porównanie
           </p>
-          <h2 className="mt-3 text-3xl font-bold text-white sm:text-4xl">
+          <h2 className="mt-3 text-3xl font-bold text-gray-900 sm:text-4xl">
             Dlaczego PracticeFlow?
           </h2>
         </div>
 
-        <div className="overflow-x-auto">
+        <div className="overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm">
           <table className="w-full border-collapse">
             <thead>
-              <tr className="border-b border-white/10">
-                <th className="py-4 text-left text-sm font-medium text-gray-400" />
-                <th className="py-4 px-4 text-center text-sm font-bold text-cyan-400">
+              <tr className="border-b border-gray-200 bg-gray-50">
+                <th className="py-4 text-left text-sm font-medium text-gray-500" />
+                <th className="py-4 px-4 text-center text-sm font-bold text-cyan-600">
                   PracticeFlow
                 </th>
-                <th className="py-4 px-4 text-center text-sm font-medium text-gray-400">
+                <th className="py-4 px-4 text-center text-sm font-medium text-gray-500">
                   Ręczna obsługa
                 </th>
-                <th className="py-4 px-4 text-center text-sm font-medium text-gray-400">
+                <th className="py-4 px-4 text-center text-sm font-medium text-gray-500">
                   Typowy system
                 </th>
               </tr>
@@ -604,9 +604,9 @@ function ComparisonTable() {
               {features.map((f, i) => (
                 <tr
                   key={f.label}
-                  className={`border-b border-white/5 ${i % 2 === 0 ? 'bg-white/[0.02]' : ''}`}
+                  className={`border-b border-gray-100 ${i % 2 === 0 ? 'bg-gray-50/50' : ''}`}
                 >
-                  <td className="py-4 text-left text-sm text-white">{f.label}</td>
+                  <td className="py-4 text-left text-sm text-gray-900">{f.label}</td>
                   <td className="py-4 px-4 text-center">{renderCell(f.pf)}</td>
                   <td className="py-4 px-4 text-center">{renderCell(f.manual)}</td>
                   <td className="py-4 px-4 text-center">{renderCell(f.other)}</td>
@@ -644,7 +644,7 @@ function Hero() {
           <h1 className="min-h-[2.5em] text-4xl font-bold leading-tight text-white sm:text-5xl md:text-6xl">
             <TypewriterHeadline />
           </h1>
-          <p className="mt-6 text-lg text-gray-400">
+          <p className="mt-6 text-lg text-gray-300">
             Stały napływ pacjentów przy minimalnym zaangażowaniu zespołu.
             Automatyzujemy stomatologię, odzyskując Twój czas i pieniądze.
           </p>
@@ -674,15 +674,15 @@ function Hero() {
               <p className="text-[10px] font-semibold text-cyan-400">Twoja klinika</p>
             </div>
           </div>
-          <div className="rounded-2xl border border-white/10 bg-[#0d1a2e] p-5 shadow-2xl shadow-black/50">
+          <div className="rounded-2xl border border-white/15 bg-[#0d1a2e] p-5 shadow-2xl shadow-black/50">
             {/* Mock header */}
-            <div className="flex items-center justify-between border-b border-white/5 pb-4">
+            <div className="flex items-center justify-between border-b border-white/15 pb-4">
               <div className="flex items-center gap-2">
                 <div className="h-3 w-3 rounded-full bg-red-400/60" />
                 <div className="h-3 w-3 rounded-full bg-sky-500/60" />
                 <div className="h-3 w-3 rounded-full bg-cyan-400/60" />
               </div>
-              <span className="text-xs font-medium text-gray-500">
+              <span className="text-xs font-medium text-gray-400">
                 Kalendarz — 9:00–14:00
               </span>
             </div>
@@ -704,10 +704,10 @@ function Hero() {
                       ? 'border-cyan-400/30 bg-cyan-400/10'
                       : slot.status === 'reminder'
                       ? 'border-sky-400/30 bg-sky-500/5'
-                      : 'border-white/5 bg-[#0a1628]'
+                      : 'border-white/10 bg-[#0a1628]'
                   }`}
                 >
-                  <span className="w-12 font-mono text-gray-500">{slot.time}</span>
+                  <span className="w-12 font-mono text-gray-400">{slot.time}</span>
                   <span
                     className={`flex-1 font-medium ${
                       slot.status === 'filled'
@@ -732,17 +732,17 @@ function Hero() {
               ))}
             </div>
             {/* Mock footer stats */}
-            <div className="mt-4 grid grid-cols-3 gap-3 border-t border-white/5 pt-4">
+            <div className="mt-4 grid grid-cols-3 gap-3 border-t border-white/15 pt-4">
               <div>
-                <p className="text-xs text-gray-500">Obsadzone</p>
+                <p className="text-xs text-gray-400">Obsadzone</p>
                 <p className="text-sm font-bold text-cyan-300">94%</p>
               </div>
               <div>
-                <p className="text-xs text-gray-500">No-shows</p>
+                <p className="text-xs text-gray-400">No-shows</p>
                 <p className="text-sm font-bold text-sky-300">2%</p>
               </div>
               <div>
-                <p className="text-xs text-gray-500">Odzyskany czas</p>
+                <p className="text-xs text-gray-400">Odzyskany czas</p>
                 <p className="text-sm font-bold text-white">18h</p>
               </div>
             </div>
@@ -758,16 +758,16 @@ function Hero() {
 // ---------------------------------------------------------------------------
 function SocialProof() {
   return (
-    <section className="border-y border-white/5 bg-[#0d1a2e] px-6 py-12">
+    <section className="border-y border-white/10 bg-[#0d1a2e] px-6 py-12">
       <div className="mx-auto max-w-6xl">
-        <p className="text-center text-xs font-semibold uppercase tracking-widest text-gray-500">
+        <p className="text-center text-xs font-semibold uppercase tracking-widest text-gray-400">
           Zaufały nam gabinety stomatologiczne w całej Polsce
         </p>
         <div className="mt-8 flex flex-wrap items-center justify-center gap-x-12 gap-y-6">
           {['DentalCare', 'WhiteSmile', 'OrthoLine', 'MediDent', 'SmilePro'].map((name) => (
             <span
               key={name}
-              className="text-lg font-bold tracking-tight text-gray-600 transition hover:text-gray-400"
+              className="text-lg font-bold tracking-tight text-gray-500 transition hover:text-gray-300"
             >
               {name}
             </span>
@@ -886,22 +886,22 @@ function Calculator() {
 
         <div className="mt-12 grid gap-8 lg:grid-cols-2">
           {/* Calculator */}
-          <div className="rounded-2xl border border-white/5 bg-[#0d1a2e] p-8">
+          <div className="rounded-2xl border border-white/15 bg-[#0d1a2e] p-8">
             <h3 className="text-lg font-semibold text-white">
               Kalkulator automatyzacji
             </h3>
-            <p className="mt-2 text-sm text-gray-400">
+            <p className="mt-2 text-sm text-gray-300">
               Suwaki pokazują szacunkowy potencjał odzyskanych dochodów i oszczędności.
             </p>
 
             <div className="mt-8 space-y-8">
               <div>
                 <div className="flex items-center justify-between">
-                  <label className="flex items-center gap-2 text-sm font-medium text-gray-300">
+                  <label className="flex items-center gap-2 text-sm font-medium text-gray-100">
                     <CalendarClock className="h-4 w-4 text-cyan-400" />
                     Odwołane wizyty tygodniowo
                   </label>
-                  <span className="text-lg font-bold text-cyan-400">{cancellations}</span>
+                  <span className="text-lg font-bold text-cyan-300">{cancellations}</span>
                 </div>
                 <input
                   type="range"
@@ -915,11 +915,11 @@ function Calculator() {
 
               <div>
                 <div className="flex items-center justify-between">
-                  <label className="flex items-center gap-2 text-sm font-medium text-gray-300">
+                  <label className="flex items-center gap-2 text-sm font-medium text-gray-100">
                     <Users className="h-4 w-4 text-cyan-400" />
                     Osoby w recepcji
                   </label>
-                  <span className="text-lg font-bold text-cyan-400">{staff}</span>
+                  <span className="text-lg font-bold text-cyan-300">{staff}</span>
                 </div>
                 <input
                   type="range"
@@ -932,37 +932,37 @@ function Calculator() {
               </div>
             </div>
 
-            <div className="mt-10 space-y-4 border-t border-white/5 pt-8">
+            <div className="mt-10 space-y-4 border-t border-white/15 pt-8">
               <div className="flex items-center justify-between">
-                <span className="text-sm text-gray-400">Odzyskane dochody z wizyt / tydzień</span>
+                <span className="text-sm text-gray-300">Odzyskane dochody z wizyt / tydzień</span>
                 <span className="text-xl font-bold text-white">
                   <StatCounter value={recoveredRevenuePLN} suffix=" zł" />
                 </span>
               </div>
               <div className="flex items-center justify-between">
-                <span className="text-sm text-gray-400">Oszczędność na recepcji / tydzień</span>
+                <span className="text-sm text-gray-300">Oszczędność na recepcji / tydzień</span>
                 <span className="text-xl font-bold text-white">
                   <StatCounter value={savedCostWeekly} suffix=" zł" />
                 </span>
               </div>
               <div className="flex items-center justify-between">
-                <span className="text-sm text-gray-400">Odzyskany czas / tydzień</span>
+                <span className="text-sm text-gray-300">Odzyskany czas / tydzień</span>
                 <span className="text-xl font-bold text-white">{savedHoursWeekly}h</span>
               </div>
               <div className="rounded-lg bg-cyan-400/10 px-4 py-3">
                 <div className="flex items-center justify-between">
-                  <span className="text-sm font-medium text-cyan-300">
+                  <span className="text-sm font-medium text-cyan-200">
                     Potencjał tygodniowy (łącznie)
                   </span>
-                  <span className="text-lg font-bold text-cyan-300">
+                  <span className="text-lg font-bold text-cyan-200">
                     {(recoveredRevenuePLN + savedCostWeekly).toLocaleString('pl-PL')} zł
                   </span>
                 </div>
                 <div className="mt-2 flex items-center justify-between border-t border-cyan-400/20 pt-2">
-                  <span className="text-sm font-medium text-cyan-300">
+                  <span className="text-sm font-medium text-cyan-200">
                     Potencjał miesięczny (łącznie)
                   </span>
-                  <span className="text-2xl font-bold text-cyan-300">
+                  <span className="text-2xl font-bold text-cyan-200">
                     <StatCounter value={totalMonthly} suffix=" zł" />
                   </span>
                 </div>
@@ -971,19 +971,19 @@ function Calculator() {
           </div>
 
           {/* Diagnosis */}
-          <div className="rounded-2xl border border-white/5 bg-[#0d1a2e] p-8">
+          <div className="rounded-2xl border border-white/15 bg-[#0d1a2e] p-8">
             {!showResult ? (
               <>
                 <div className="flex items-center justify-between">
                   <h3 className="text-lg font-semibold text-white">
                     Diagnoza stanu automatyzacji
                   </h3>
-                  <span className="text-sm text-gray-500">
+                  <span className="text-sm text-gray-400">
                     {step + 1} / {questions.length}
                   </span>
                 </div>
 
-                <div className="mt-2 h-1 w-full overflow-hidden rounded-full bg-white/5">
+                <div className="mt-2 h-1 w-full overflow-hidden rounded-full bg-white/10">
                   <div
                     className="h-full bg-cyan-400 transition-all duration-300"
                     style={{ width: `${((step + 1) / questions.length) * 100}%` }}
@@ -1009,10 +1009,10 @@ function Calculator() {
                       <button
                         key={opt.value}
                         onClick={() => handleAnswer(questions[step].key, opt.value)}
-                        className="flex items-center justify-between rounded-xl border border-white/5 bg-[#0a1628] px-5 py-4 text-left text-sm font-medium text-gray-300 transition hover:border-cyan-400/40 hover:text-white"
+                        className="flex items-center justify-between rounded-xl border border-white/10 bg-[#0a1628] px-5 py-4 text-left text-sm font-medium text-gray-200 transition hover:border-cyan-400/40 hover:text-white"
                       >
                         {opt.label}
-                        <ArrowRight className="h-4 w-4 text-gray-600" />
+                        <ArrowRight className="h-4 w-4 text-gray-500" />
                       </button>
                     ))}
                   </div>
@@ -1029,10 +1029,10 @@ function Calculator() {
                 <h3 className="mt-4 text-2xl font-bold text-white">
                   Twój gabinet ma wyraźny potencjał automatyzacji.
                 </h3>
-                <p className="mt-3 text-sm text-gray-400">
+                <p className="mt-3 text-sm text-gray-300">
                   Na podstawie Twoich odpowiedzi i kalkulatora, możesz odzyskać
-                  do <span className="font-semibold text-cyan-300">{savedHoursWeekly}h tygodniowo</span> i
-                  <span className="font-semibold text-cyan-300"> {totalMonthly.toLocaleString('pl-PL')} zł miesięcznie</span> —
+                  do <span className="font-semibold text-cyan-200">{savedHoursWeekly}h tygodniowo</span> i
+                  <span className="font-semibold text-cyan-200"> {totalMonthly.toLocaleString('pl-PL')} zł miesięcznie</span> —
                   z odzyskanych wizyt i oszczędności na recepcji.
                 </p>
 
@@ -1044,7 +1044,7 @@ function Calculator() {
                   ].map((goal) => (
                     <div key={goal} className="flex items-center gap-3">
                       <CheckCircle className="h-5 w-5 flex-shrink-0 text-cyan-400" strokeWidth={1.5} />
-                      <span className="text-sm text-gray-300">{goal}</span>
+                      <span className="text-sm text-gray-200">{goal}</span>
                     </div>
                   ))}
                 </div>
@@ -1057,7 +1057,7 @@ function Calculator() {
                     Umów rozmowę
                     <ArrowRight className="h-4 w-4" />
                   </MagneticButton>
-                  <p className="mt-3 text-xs text-gray-500">15 min, bez zobowiązań</p>
+                  <p className="mt-3 text-xs text-gray-400">15 min, bez zobowiązań</p>
                 </div>
               </div>
             )}
@@ -1069,76 +1069,7 @@ function Calculator() {
 }
 
 // ---------------------------------------------------------------------------
-// Why Automation in Dentistry — light section with Pexels image
-// ---------------------------------------------------------------------------
-function WhyAutomation() {
-  return (
-    <section className="bg-[#f7f7f5] px-6 py-24">
-      <div className="mx-auto max-w-5xl">
-        <p className="text-xs font-semibold uppercase tracking-widest text-cyan-600">
-          Dlaczego automatyzacja w stomatologii?
-        </p>
-        <h2 className="mt-4 text-3xl font-bold text-gray-900 sm:text-4xl">
-          Systemy odzyskujące twoje dochody
-        </h2>
-        <div className="mt-8 grid gap-10 lg:grid-cols-2 lg:items-center">
-          <div className="space-y-6 text-lg leading-relaxed text-gray-700">
-            <p>
-              Projektujemy systemy dla klinik dentystycznych, które automatycznie
-              zapełniają Twój grafik i usuwają puste fotele, eliminując potrzebę
-              ręcznej obsługi recepcji.
-            </p>
-            <p className="text-base text-gray-500">
-              Od zapełniania grafiku po samoobsługową rezerwację — bez zatrudniania dodatkowych osób.
-            </p>
-          </div>
-          <div className="overflow-hidden rounded-2xl border border-gray-200 shadow-lg">
-            <img
-              src="https://images.pexels.com/photos/6627562/pexels-photo-6627562.jpeg?auto=compress&cs=tinysrgb&w=900"
-              alt="Nowoczesny gabinet stomatologiczny"
-              className="h-64 w-full object-cover lg:h-80"
-              loading="lazy"
-            />
-          </div>
-        </div>
-
-        <div className="mt-12 grid gap-6 md:grid-cols-3">
-          {[
-            {
-              icon: CalendarClock,
-              title: 'Eliminacja pustych slotów',
-              text: 'Inteligentne wypełnianie grafiku i automatyczne obsadzanie odwołań.',
-            },
-            {
-              icon: Bell,
-              title: 'Automatyczne przypomnienia',
-              text: 'SMS i e-mail, które redukują no-shows bez udziału recepcji.',
-            },
-            {
-              icon: Workflow,
-              title: 'Samoobsługowa rezerwacja',
-              text: 'Pacjenci umawiają wizyty 24/7 bez telefonu do gabinetu.',
-            },
-          ].map((goal) => (
-            <div
-              key={goal.title}
-              className="rounded-xl border border-gray-200 bg-white p-6 transition hover:border-cyan-300 hover:shadow-md"
-            >
-              <goal.icon className="h-6 w-6 text-cyan-600" strokeWidth={1.5} />
-              <h3 className="mt-4 text-base font-semibold text-gray-900">
-                {goal.title}
-              </h3>
-              <p className="mt-2 text-sm text-gray-600">{goal.text}</p>
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-// ---------------------------------------------------------------------------
-// System Diagram (scroll-reveal)
+// System Diagram (scroll-reveal) — light section
 // ---------------------------------------------------------------------------
 function SystemDiagram() {
   const sectionRef = useRef<HTMLDivElement>(null);
@@ -1168,12 +1099,12 @@ function SystemDiagram() {
   }, []);
 
   return (
-    <section ref={sectionRef} className="px-6 py-24">
+    <section ref={sectionRef} className="bg-[#f7f7f5] px-6 py-24">
       <div className="mx-auto max-w-5xl">
-        <p className="text-xs font-semibold uppercase tracking-widest text-cyan-400">
+        <p className="text-xs font-semibold uppercase tracking-widest text-cyan-600">
           Jak działa system
         </p>
-        <h2 className="mt-4 text-3xl font-bold text-white sm:text-4xl">
+        <h2 className="mt-4 text-3xl font-bold text-gray-900 sm:text-4xl">
           Od połączenia do obsadzonego grafiku.
         </h2>
 
@@ -1183,33 +1114,33 @@ function SystemDiagram() {
               <div
                 className={`flex h-16 w-16 items-center justify-center rounded-2xl border transition-all duration-500 ${
                   visibleSteps > i
-                    ? 'border-cyan-400/40 bg-cyan-400/10 opacity-100'
-                    : 'border-white/5 bg-[#0d1a2e] opacity-30'
+                    ? 'border-cyan-500/40 bg-cyan-500/10 opacity-100'
+                    : 'border-gray-200 bg-white opacity-40'
                 }`}
               >
                 <step.icon
                   className={`h-7 w-7 transition-colors duration-500 ${
-                    visibleSteps > i ? 'text-cyan-400' : 'text-gray-600'
+                    visibleSteps > i ? 'text-cyan-600' : 'text-gray-400'
                   }`}
                   strokeWidth={1.5}
                 />
               </div>
               <h3
                 className={`mt-4 text-base font-semibold transition-colors duration-500 ${
-                  visibleSteps > i ? 'text-white' : 'text-gray-600'
+                  visibleSteps > i ? 'text-gray-900' : 'text-gray-400'
                 }`}
               >
                 {step.title}
               </h3>
               <p
                 className={`mt-2 text-sm transition-colors duration-500 ${
-                  visibleSteps > i ? 'text-gray-400' : 'text-gray-700'
+                  visibleSteps > i ? 'text-gray-600' : 'text-gray-400'
                 }`}
               >
                 {step.text}
               </p>
               {i < steps.length - 1 && (
-                <div className="mt-4 hidden h-8 w-px bg-gradient-to-b from-cyan-400/40 to-transparent md:block md:h-px md:w-full md:bg-gradient-to-r md:from-cyan-400/40 md:to-transparent" />
+                <div className="mt-4 hidden h-8 w-px bg-gradient-to-b from-cyan-500/40 to-transparent md:block md:h-px md:w-full md:bg-gradient-to-r md:from-cyan-500/40 md:to-transparent" />
               )}
             </div>
           ))}
@@ -1270,7 +1201,7 @@ function BeforeAfter() {
                       : 'border-sky-400/20 bg-sky-500/5'
                   }`}
                 >
-                  <span className="w-12 font-mono text-gray-500">{slot.time}</span>
+                  <span className="w-12 font-mono text-gray-400">{slot.time}</span>
                   <span
                     className={`flex-1 font-medium ${
                       slot.gap ? 'text-red-300/70' : 'text-sky-300/70'
@@ -1299,7 +1230,7 @@ function BeforeAfter() {
                   key={i}
                   className="flex items-center gap-3 rounded-lg border border-cyan-400/20 bg-cyan-400/5 px-3 py-2.5 text-xs"
                 >
-                  <span className="w-12 font-mono text-gray-500">{slot.time}</span>
+                  <span className="w-12 font-mono text-gray-400">{slot.time}</span>
                   <span className="flex-1 font-medium text-cyan-300">{slot.label}</span>
                   <CheckCircle className="h-3.5 w-3.5 text-cyan-400/70" strokeWidth={1.5} />
                 </div>
@@ -1340,7 +1271,7 @@ function BeforeAfter() {
               ].map((item) => (
                 <li key={item} className="flex items-start gap-3">
                   <XCircle className="mt-0.5 h-5 w-5 flex-shrink-0 text-red-400/50" strokeWidth={1.5} />
-                  <span className="text-sm text-gray-400">{item}</span>
+                  <span className="text-sm text-gray-300">{item}</span>
                 </li>
               ))}
             </ul>
@@ -1358,7 +1289,7 @@ function BeforeAfter() {
               ].map((item) => (
                 <li key={item} className="flex items-start gap-3">
                   <CheckCircle className="mt-0.5 h-5 w-5 flex-shrink-0 text-cyan-400" strokeWidth={1.5} />
-                  <span className="text-sm text-gray-300">{item}</span>
+                  <span className="text-sm text-gray-200">{item}</span>
                 </li>
               ))}
             </ul>
@@ -1404,13 +1335,13 @@ function Implementation() {
           {phases.map((phase) => (
             <div
               key={phase.title}
-              className="rounded-xl border border-white/5 bg-[#0d1a2e] p-6 transition hover:border-cyan-400/30"
+              className="rounded-xl border border-white/10 bg-[#0d1a2e] p-6 transition hover:border-cyan-400/30"
             >
               <phase.icon className="h-6 w-6 text-cyan-400" strokeWidth={1.5} />
               <h3 className="mt-4 text-base font-semibold text-white">
                 {phase.title}
               </h3>
-              <p className="mt-2 text-sm text-gray-400">{phase.text}</p>
+              <p className="mt-2 text-sm text-gray-300">{phase.text}</p>
             </div>
           ))}
         </div>
@@ -1451,7 +1382,7 @@ function Testimonials() {
           {reviews.map((review) => (
             <div
               key={review.author}
-              className="rounded-2xl border border-white/5 bg-[#0d1a2e] p-8"
+              className="rounded-2xl border border-white/10 bg-[#0d1a2e] p-8"
             >
               <div className="flex items-center gap-1 text-sky-400">
                 {Array.from({ length: 5 }).map((_, i) => (
@@ -1468,7 +1399,7 @@ function Testimonials() {
                 </div>
                 <div>
                   <p className="text-sm font-semibold text-white">{review.author}</p>
-                  <p className="text-xs text-gray-500">{review.role}</p>
+                  <p className="text-xs text-gray-400">{review.role}</p>
                 </div>
               </div>
             </div>
@@ -1498,11 +1429,11 @@ function FounderNote() {
           </p>
           <div className="mt-6 flex items-center gap-3">
             <div className="flex h-10 w-10 items-center justify-center rounded-full bg-cyan-600/10 text-sm font-bold text-cyan-700">
-              PF
+              P
             </div>
             <div>
-              <p className="text-sm font-semibold text-gray-900">Założyciel, PracticeFlow</p>
-              <p className="text-xs text-gray-500">Inżynier systemów automatyzacji</p>
+              <p className="text-sm font-semibold text-gray-900">Patryk</p>
+              <p className="text-xs text-gray-500">Założyciel, PracticeFlow</p>
             </div>
           </div>
         </div>
@@ -1549,7 +1480,7 @@ function FAQ() {
           {faqs.map((faq, i) => (
             <div
               key={i}
-              className="rounded-xl border border-white/5 bg-[#0d1a2e] overflow-hidden"
+              className="rounded-xl border border-white/10 bg-[#0d1a2e] overflow-hidden"
             >
               <button
                 onClick={() => setOpen(open === i ? null : i)}
@@ -1559,11 +1490,11 @@ function FAQ() {
                 {open === i ? (
                   <Minus className="h-4 w-4 flex-shrink-0 text-cyan-400" strokeWidth={2} />
                 ) : (
-                  <Plus className="h-4 w-4 flex-shrink-0 text-gray-500" strokeWidth={2} />
+                  <Plus className="h-4 w-4 flex-shrink-0 text-gray-400" strokeWidth={2} />
                 )}
               </button>
               {open === i && (
-                <div className="px-6 pb-5 text-sm leading-relaxed text-gray-400">
+                <div className="px-6 pb-5 text-sm leading-relaxed text-gray-300">
                   {faq.a}
                 </div>
               )}
@@ -1580,33 +1511,30 @@ function FAQ() {
 // ---------------------------------------------------------------------------
 function MiniCta() {
   return (
-    <section className="relative overflow-hidden bg-[#0d1a2e] px-6 py-20">
-      {/* Sweeping light beam */}
-      <div className="pointer-events-none absolute inset-0 overflow-hidden">
-        <div
-          className="absolute -inset-y-10 -left-1/2 w-1/2 animate-[sweep_6s_ease-in-out_infinite] opacity-30 blur-2xl"
-          style={{
-            background:
-              'linear-gradient(90deg, transparent, #22d3ee 50%, transparent)',
-          }}
-        />
-      </div>
-      <div className="relative mx-auto flex max-w-4xl flex-col items-center gap-6 text-center md:flex-row md:justify-between md:text-left">
-        <div>
-          <h3 className="text-2xl font-bold text-white sm:text-3xl">
-            Gotów odzyskać kontrol nad grafikiem?
-          </h3>
-          <p className="mt-2 text-base text-gray-400">
-            15 minut rozmowy — pokazujemy dokładnie, gdzie Twoja klinika traci pieniądze.
-          </p>
+    <section className="bg-white px-6 py-14">
+      <div className="mx-auto max-w-4xl">
+        <div className="flex flex-col items-center gap-6 rounded-2xl border border-cyan-500/20 bg-[#f7f7f5] p-8 text-center md:flex-row md:justify-between md:text-left">
+          <div className="flex items-center gap-4">
+            <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-cyan-500/10">
+              <CalendarClock className="h-6 w-6 text-cyan-600" strokeWidth={1.5} />
+            </div>
+            <div>
+              <h3 className="text-xl font-bold text-gray-900 sm:text-2xl">
+                Gotów odzyskać kontrol nad grafikiem?
+              </h3>
+              <p className="mt-1 text-sm text-gray-600">
+                15 minut rozmowy — pokazujemy dokładnie, gdzie Twoja klinika traci pieniądze.
+              </p>
+            </div>
+          </div>
+          <a
+            href="mailto:kontakt@practiceflow.pl?subject=Pro%C5%9Bba%20o%20audyt%20grafiku"
+            className="inline-flex flex-shrink-0 items-center gap-2 rounded-full bg-sky-500 px-7 py-3.5 text-sm font-semibold text-black transition hover:bg-sky-400"
+          >
+            Umów bezpłatny audyt
+            <ArrowRight className="h-4 w-4" />
+          </a>
         </div>
-        <a
-          href="mailto:kontakt@practiceflow.pl?subject=Pro%C5%9Bba%20o%20audyt%20grafiku"
-          className="inline-flex flex-shrink-0 items-center gap-2 rounded-full bg-sky-500 px-7 py-3.5 text-sm font-semibold text-black transition hover:bg-sky-400"
-        >
-          Umów bezpłatny audyt
-          <ArrowRight className="h-4 w-4" />
-        </a>
       </div>
     </section>
   );
@@ -1627,7 +1555,7 @@ function AuditCta() {
         <h2 className="text-4xl font-bold text-white sm:text-5xl">
           Porozmawiajmy o Twoim grafiku.
         </h2>
-        <p className="mx-auto mt-6 max-w-xl text-lg text-gray-400">
+        <p className="mx-auto mt-6 max-w-xl text-lg text-gray-300">
           Krótka rozmowa o tym, gdzie Twój gabinet traci czas i dochody — i jak
           możemy to zautomatyzować. Bez zobowiązań.
         </p>
@@ -1639,9 +1567,9 @@ function AuditCta() {
           Umów audyt grafiku
           <ArrowRight className="h-4 w-4" />
         </a>
-        <p className="mt-3 text-sm text-gray-500">15 min, bez zobowiązań</p>
+        <p className="mt-3 text-sm text-gray-400">15 min, bez zobowiązań</p>
 
-        <p className="mt-6 flex items-center justify-center gap-2 text-sm text-gray-500">
+        <p className="mt-6 flex items-center justify-center gap-2 text-sm text-gray-400">
           <Mail className="h-4 w-4" />
           kontakt@practiceflow.pl
         </p>
@@ -1678,28 +1606,25 @@ function App() {
         <SocialProof />
       </Reveal>
       <Reveal>
-        <Calculator />
-      </Reveal>
-      <Reveal>
-        <WhyAutomation />
-      </Reveal>
-      <Reveal>
         <SystemDiagram />
       </Reveal>
       <Reveal>
-        <BeforeAfter />
+        <Calculator />
       </Reveal>
       <Reveal>
         <MiniCta />
+      </Reveal>
+      <Reveal>
+        <Implementation />
+      </Reveal>
+      <Reveal>
+        <BeforeAfter />
       </Reveal>
       <Reveal>
         <CaseStudy />
       </Reveal>
       <Reveal>
         <ComparisonTable />
-      </Reveal>
-      <Reveal>
-        <Implementation />
       </Reveal>
       <Reveal>
         <Testimonials />
