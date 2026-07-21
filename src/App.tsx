@@ -341,7 +341,7 @@ function Nav() {
           <img
             src="/Projekt_bez_nazwy_-_2026-07-21T160459.162-removebg-preview copy.png"
             alt="FullSchedule"
-            className="h-11 w-auto"
+            className="h-20 w-auto"
           />
         </a>
         <nav className="hidden items-center gap-7 md:flex">
@@ -552,19 +552,11 @@ function Hero() {
         <img
           src="https://images.pexels.com/photos/6628076/pexels-photo-6628076.jpeg?auto=compress&cs=tinysrgb&w=1920"
           alt="Dental clinic"
-          className="h-full w-full object-cover opacity-20"
+          className="h-full w-full object-cover opacity-40"
           loading="eager"
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-[#0a1628]/80 via-[#0a1628]/70 to-[#0a1628]" />
-      </div>
-
-      {/* Logo top-left in hero */}
-      <div className="relative mb-8 flex justify-center lg:justify-start">
-        <img
-          src="/Projekt_bez_nazwy_-_2026-07-21T160459.162-removebg-preview copy.png"
-          alt="FullSchedule"
-          className="h-14 w-auto"
-        />
+        <div className="absolute inset-0 bg-gradient-to-r from-[#0a1628] via-[#0a1628]/80 to-[#0a1628]/40" />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#0a1628]/50 via-transparent to-[#0a1628]" />
       </div>
 
       <div className="relative mx-auto grid max-w-6xl items-center gap-12 lg:grid-cols-2">
@@ -586,18 +578,6 @@ function Hero() {
 
         {/* Dashboard mockup with clinic photo */}
         <div className="relative hidden md:block">
-          {/* Floating clinic photo card */}
-          <div className="absolute -right-6 -top-8 z-10 w-44 overflow-hidden rounded-xl border border-white/15 shadow-2xl shadow-black/60">
-            <img
-              src="https://images.pexels.com/photos/6812532/pexels-photo-6812532.jpeg?auto=compress&cs=tinysrgb&w=400"
-              alt="Dental clinic"
-              className="h-28 w-full object-cover"
-              loading="lazy"
-            />
-            <div className="bg-[#0d1a2e] px-2 py-1.5">
-              <p className="text-[10px] font-semibold text-cyan-400">{t.hero.yourClinic}</p>
-            </div>
-          </div>
           <div className="rounded-2xl border border-white/15 bg-[#0d1a2e] p-5 shadow-2xl shadow-black/50">
             {/* Mock header */}
             <div className="flex items-center justify-between border-b border-white/15 pb-4">

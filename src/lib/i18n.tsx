@@ -20,8 +20,8 @@ const translations = {
     },
     langLabel: 'EN',
     hero: {
-      title: 'Puste fotele codziennie palą Twoje pieniądze.',
-      subtitle: 'Automatycznie wypełnimy każdą dziurę w grafiku, zanim stracisz tysiące złotych.',
+      title: 'Twoja klinika. Płynna i uporządkowana.',
+      subtitle: 'Mniej chaosu, więcej czasu i pełna kontrola na codzień. Pozbądź się stresu i strat z FullSchedule.',
       cta: 'Oblicz swoje straty',
       yourClinic: 'Twoja klinika',
       calendarLabel: 'Kalendarz — 9:00–14:00',
@@ -261,8 +261,8 @@ const translations = {
     },
     langLabel: 'PL',
     hero: {
-      title: 'Empty chairs burn your money every single day.',
-      subtitle: "We'll automatically fill every gap in your schedule before you lose thousands.",
+      title: 'Your clinic. Smooth and organized.',
+      subtitle: 'Less chaos, more time, and full control every day. Eliminate stress and losses with FullSchedule.',
       cta: 'Calculate your losses',
       yourClinic: 'Your clinic',
       calendarLabel: 'Schedule — 9:00–14:00',
