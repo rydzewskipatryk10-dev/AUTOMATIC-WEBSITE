@@ -32,51 +32,6 @@ import {
 const GUIDE_PDF_PATH = '/practiceflow-przewodnik.pdf';
 
 // ---------------------------------------------------------------------------
-// Rotating typewriter hook — cycles through phrases: type in, pause, delete, next
-// ---------------------------------------------------------------------------
-function useRotatingTypewriter(
-  phrases: string[],
-  typeSpeed = 55,
-  deleteSpeed = 28,
-  pauseEnd = 2200,
-  pauseStart = 500,
-) {
-  const [displayed, setDisplayed] = useState('');
-  const [phraseIndex, setPhraseIndex] = useState(0);
-  const [phase, setPhase] = useState<'typing' | 'pausing' | 'deleting'>('typing');
-
-  useEffect(() => {
-    const current = phrases[phraseIndex] ?? '';
-    let timer: ReturnType<typeof setTimeout>;
-
-    if (phase === 'typing') {
-      if (displayed.length < current.length) {
-        timer = setTimeout(() => {
-          setDisplayed(current.slice(0, displayed.length + 1));
-        }, typeSpeed);
-      } else {
-        timer = setTimeout(() => setPhase('pausing'), pauseEnd);
-      }
-    } else if (phase === 'pausing') {
-      timer = setTimeout(() => setPhase('deleting'), pauseStart);
-    } else {
-      if (displayed.length > 0) {
-        timer = setTimeout(() => {
-          setDisplayed(current.slice(0, displayed.length - 1));
-        }, deleteSpeed);
-      } else {
-        setPhraseIndex((phraseIndex + 1) % phrases.length);
-        setPhase('typing');
-      }
-    }
-
-    return () => clearTimeout(timer);
-  }, [displayed, phase, phraseIndex, phrases, typeSpeed, deleteSpeed, pauseEnd, pauseStart]);
-
-  return { displayed, phraseIndex, phase };
-}
-
-// ---------------------------------------------------------------------------
 // Scroll-reveal hook — fades children in when they enter the viewport
 // ---------------------------------------------------------------------------
 function useScrollReveal<T extends HTMLElement>() {
@@ -366,30 +321,6 @@ function Nav() {
 }
 
 // ---------------------------------------------------------------------------
-// Rotating typewriter headline — cycles through pain-point phrases
-// ---------------------------------------------------------------------------
-const HERO_PHRASES = [
-  'Twoja klinika traci zyski przy każdym wolnym slocie.',
-  'Twoja recepcja traci 12 godzin tygodniowo na telefon.',
-  'Twoi pacjenci rezygnują przez trudny zapis na wizytę.',
-];
-
-function TypewriterHeadline() {
-  const { displayed, phase } = useRotatingTypewriter(HERO_PHRASES);
-  return (
-    <span translate="no" className="notranslate">
-      {displayed}
-      <span
-        className={`inline-block w-[3px] -mb-1 ml-1 self-stretch bg-cyan-400 transition-opacity duration-100 ${
-          phase === 'pausing' ? 'animate-pulse' : 'opacity-100'
-        }`}
-        style={{ height: '0.9em' }}
-      />
-    </span>
-  );
-}
-
-// ---------------------------------------------------------------------------
 // Case Study — concrete before/after with numbers
 // ---------------------------------------------------------------------------
 function CaseStudy() {
@@ -568,12 +499,11 @@ function Hero() {
       />
       <div className="relative mx-auto grid max-w-6xl items-center gap-12 lg:grid-cols-2">
         <div className="max-w-2xl">
-          <h1 className="min-h-[2.5em] text-4xl font-bold leading-tight text-white sm:text-5xl md:text-6xl">
-            <TypewriterHeadline />
+          <h1 className="text-4xl font-bold leading-tight text-white sm:text-5xl md:text-6xl">
+            Puste fotele codziennie palą Twoje pieniądze.
           </h1>
           <p className="mt-6 text-lg text-gray-300">
-            Stały napływ pacjentów przy minimalnym zaangażowaniu zespołu.
-            Automatyzujemy stomatologię, odzyskując Twój czas i pieniądze.
+            Automatycznie wypełnimy każdą dziurę w grafiku, zanim stracisz tysiące złotych.
           </p>
           <MagneticButton
             href="#diagnoza"
