@@ -26,7 +26,6 @@ import {
   Rocket,
   ShieldCheck,
   X,
-  Gift,
 } from 'lucide-react';
 
 // Path to the downloadable PDF guide (place the file in /public)
@@ -225,73 +224,7 @@ function MagneticButton({
 }
 
 // ---------------------------------------------------------------------------
-// Lead Magnet Modal — centered overlay shown on first page load
-// ---------------------------------------------------------------------------
-function LeadMagnetModal() {
-  const [open, setOpen] = useState(true);
-
-  const close = () => setOpen(false);
-
-  return (
-    <div
-      className={`fixed inset-0 z-[100] flex items-center justify-center px-6 transition-all duration-300 ${
-        open ? 'opacity-100' : 'pointer-events-none opacity-0'
-      }`}
-    >
-      <div
-        className="absolute inset-0 bg-black/80 backdrop-blur-sm"
-        onClick={close}
-      />
-      <div
-        className={`relative w-full max-w-md overflow-hidden rounded-2xl border border-cyan-400/20 bg-[#0d1a2e] p-8 shadow-2xl shadow-black/60 transition-all duration-300 ${
-          open ? 'scale-100 translate-y-0' : 'scale-95 translate-y-4'
-        }`}
-      >
-        <button
-          onClick={close}
-          aria-label="Zamknij"
-          className="absolute right-4 top-4 text-gray-500 transition hover:text-white"
-        >
-          <X className="h-5 w-5" />
-        </button>
-
-        <div className="flex flex-col items-center text-center">
-          <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-sky-500/15">
-            <Gift className="h-7 w-7 text-sky-400" strokeWidth={1.5} />
-          </div>
-          <p className="mt-5 text-xs font-semibold uppercase tracking-widest text-cyan-400">
-            Darmowy przewodnik
-          </p>
-          <h3 className="mt-3 text-xl font-bold text-white">
-            5 sygnałów, że Twój gabinet traci na ręcznej obsłudze
-          </h3>
-          <p className="mt-3 text-sm leading-relaxed text-gray-400">
-            Krótki przewodnik, który pokaże Ci, gdzie uciekają zyski — i jak je
-            odzyskać automatyzacją. Pobierz za darmo — bez podawania e-maila.
-          </p>
-          <a
-            href={GUIDE_PDF_PATH}
-            download
-            onClick={close}
-            className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-full bg-sky-500 px-6 py-3.5 text-base font-semibold text-black transition hover:bg-sky-400"
-          >
-            Pobierz darmowy przewodnik
-            <ArrowRight className="h-4 w-4" />
-          </a>
-          <button
-            onClick={close}
-            className="mt-3 text-xs text-gray-500 transition hover:text-gray-300"
-          >
-            Nie, dziękuję — przejdź do strony
-          </button>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-// ---------------------------------------------------------------------------
-// Exit-intent popup — shows when cursor leaves the top of the page
+// Exit-intent popup — single popup, appears after 10 seconds
 // ---------------------------------------------------------------------------
 function ExitIntentPopup() {
   const [open, setOpen] = useState(false);
@@ -1678,8 +1611,7 @@ function App() {
         <FAQ />
       </Reveal>
       <Footer />
-      <LeadMagnetModal />
-      <ExitIntentPopup />
+
       <StickyMobileCta />
     </div>
   );
