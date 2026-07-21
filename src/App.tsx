@@ -665,7 +665,7 @@ const DIAGNOSIS_OPTIONS = {
 
 // Stałe wartości kalkulatora
 const AVG_REVENUE_PER_VISIT = 500; // zł — średni zysk z wizyty
-const HOURS_SAVED_PER_STAFF_MONTHLY = 20; // h/miesiąc — oszczędność czasu na jedną osobę w recepcji
+const HOURS_SAVED_PER_STAFF_MONTHLY = 40; // h/miesiąc — oszczędność czasu na jedną osobę w recepcji
 const HOURLY_COST = 37; // zł brutto — koszt godziny pracy
 
 function RangeSlider({ value, min, max, onChange }: { value: number; min: number; max: number; onChange: (v: number) => void }) {
@@ -793,7 +793,7 @@ function Calculator() {
                   </label>
                   <span className="text-lg font-bold text-cyan-300">{cancellations}</span>
                 </div>
-                <RangeSlider value={cancellations} min={1} max={30} onChange={setCancellations} />
+                <RangeSlider value={cancellations} min={10} max={30} onChange={setCancellations} />
               </div>
 
               <div>
