@@ -212,6 +212,7 @@ function ExitIntentPopup() {
         className={`relative w-full max-w-md overflow-hidden rounded-2xl border border-cyan-400/20 bg-[#0d1a2e] p-8 shadow-2xl shadow-black/60 transition-all duration-300 ${
           open ? 'scale-100 translate-y-0' : 'scale-95 translate-y-4'
         }`}
+        translate="no"
       >
         <button
           onClick={close}
@@ -221,7 +222,7 @@ function ExitIntentPopup() {
           <X className="h-5 w-5" />
         </button>
 
-        <div className="flex flex-col items-center text-center">
+        <div className="flex flex-col items-center text-center notranslate" translate="no">
           <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-cyan-400/15">
             <CalendarClock className="h-7 w-7 text-cyan-400" strokeWidth={1.5} />
           </div>
@@ -522,8 +523,8 @@ function Hero() {
           {/* Floating clinic photo card */}
           <div className="absolute -right-6 -top-8 z-10 w-44 overflow-hidden rounded-xl border border-white/15 shadow-2xl shadow-black/60 transition-transform duration-500 hover:scale-105">
             <img
-              src="https://images.pexels.com/photos/6627359/pexels-photo-6627359.jpeg?auto=compress&cs=tinysrgb&w=400"
-              alt="Dentysta z laptopem w nowoczesnej klinice"
+              src="https://images.pexels.com/photos/6812532/pexels-photo-6812532.jpeg?auto=compress&cs=tinysrgb&w=400"
+              alt="Nowoczesna klinika dentystyczna"
               className="h-28 w-full object-cover"
               loading="lazy"
             />
@@ -1387,38 +1388,39 @@ function MiniCta() {
   return (
     <section className="bg-white px-6 py-20">
       <div className="mx-auto max-w-4xl">
-        <div className="relative overflow-hidden rounded-3xl border border-gray-200 bg-gradient-to-br from-[#f7f7f5] to-white p-10 text-center shadow-xl shadow-gray-200/50 sm:p-14">
+        <div className="relative overflow-hidden rounded-3xl border-2 border-cyan-500/40 bg-gradient-to-br from-[#0d1a2e] via-[#0d1a2e] to-[#102540] p-12 text-center shadow-2xl shadow-cyan-500/20 sm:p-16">
           {/* Soft ambient glow */}
           <div
-            className="pointer-events-none absolute -left-24 -top-24 h-48 w-48 rounded-full bg-cyan-400/10 blur-3xl"
-            style={{ animation: 'pulse 8s ease-in-out infinite' }}
+            className="pointer-events-none absolute -left-24 -top-24 h-56 w-56 rounded-full bg-cyan-400/20 blur-3xl"
+            style={{ animation: 'pulse 6s ease-in-out infinite' }}
           />
           <div
-            className="pointer-events-none absolute -bottom-24 -right-24 h-48 w-48 rounded-full bg-sky-400/[0.08] blur-3xl"
-            style={{ animation: 'pulse 10s ease-in-out 2s infinite' }}
+            className="pointer-events-none absolute -bottom-24 -right-24 h-56 w-56 rounded-full bg-sky-400/15 blur-3xl"
+            style={{ animation: 'pulse 8s ease-in-out 2s infinite' }}
           />
+          {/* Top accent bar */}
+          <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-transparent via-cyan-400 to-transparent" />
 
           <div className="relative">
-            <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-cyan-500/10 transition-transform duration-500 hover:scale-110">
-              <CalendarClock className="h-8 w-8 text-cyan-600" strokeWidth={1.5} />
+            <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-cyan-500/20 ring-1 ring-cyan-400/40 transition-transform duration-500 hover:scale-110">
+              <CalendarClock className="h-8 w-8 text-cyan-400" strokeWidth={1.5} />
             </div>
 
-            <h3 className="mt-6 text-2xl font-bold text-gray-900 sm:text-3xl">
-              Każdy pusty slot w grafiku to przepalane pieniądze.
-            </h3>
-            <p className="mx-auto mt-3 max-w-lg text-base text-gray-600">
-              15 minut rozmowy — pokazujemy dokładnie, ile Twoja klinika traci co tydzień
-              i jak możesz to odzyskać.
+            <p className="mt-6 text-sm font-semibold uppercase tracking-[0.2em] text-cyan-400">
+              Bezpłatna konsultacja
             </p>
+            <h3 className="mx-auto mt-3 max-w-xl text-3xl font-bold text-white sm:text-4xl">
+              Odkryj, ile Twój gabinet traci co tydzień.
+            </h3>
 
             <a
               href="mailto:kontakt@practiceflow.pl?subject=Pro%C5%9Bba%20o%20audyt%20grafiku"
-              className="group mt-8 inline-flex items-center gap-2 rounded-full bg-sky-500 px-8 py-4 text-base font-semibold text-black shadow-lg shadow-sky-500/30 transition hover:bg-sky-400 hover:shadow-xl hover:shadow-sky-500/40"
+              className="group mt-10 inline-flex items-center gap-3 rounded-full bg-gradient-to-r from-sky-500 to-cyan-400 px-12 py-5 text-lg font-bold text-black shadow-xl shadow-cyan-500/40 transition hover:scale-105 hover:shadow-2xl hover:shadow-cyan-400/50"
             >
               Umów bezpłatny audyt
-              <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+              <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
             </a>
-            <p className="mt-3 text-xs text-gray-500">15 min, bez zobowiązań</p>
+            <p className="mt-4 text-sm text-gray-400">15 min, bez zobowiązań</p>
           </div>
         </div>
       </div>
@@ -1511,10 +1513,10 @@ function App() {
         <SystemDiagram />
       </Reveal>
       <Reveal>
-        <Calculator />
+        <MiniCta />
       </Reveal>
       <Reveal>
-        <MiniCta />
+        <Calculator />
       </Reveal>
       <Reveal>
         <Implementation />
