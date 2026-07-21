@@ -29,6 +29,7 @@ import {
   Languages,
 } from 'lucide-react';
 import { I18nProvider, useI18n, type Lang } from './lib/i18n';
+import { LeadForm } from './lib/LeadForm';
 
 // ---------------------------------------------------------------------------
 // Scroll-reveal hook — fades children in when they enter the viewport
@@ -293,7 +294,7 @@ function StickyMobileCta() {
       }`}
     >
       <a
-        href="#diagnoza"
+        href="#book"
         className="flex items-center justify-center gap-2 rounded-full bg-gradient-to-r from-sky-500 to-cyan-400 px-8 py-4 text-base font-bold text-black shadow-lg shadow-cyan-500/40"
       >
         {t.sticky}
@@ -334,7 +335,7 @@ function Nav() {
         <div className="flex items-center gap-3">
           <LanguageToggle />
           <a
-            href="#diagnoza"
+            href="#book"
             className="rounded-full bg-gradient-to-r from-sky-500 to-cyan-400 px-7 py-3 text-base font-bold text-black shadow-lg shadow-cyan-500/40 transition hover:scale-105 hover:shadow-xl hover:shadow-cyan-400/50"
           >
             {t.nav.book}
@@ -534,7 +535,7 @@ function Hero() {
             {t.hero.subtitle}
           </p>
           <MagneticButton
-            href="#diagnoza"
+            href="#book"
             className="mt-10 rounded-full bg-gradient-to-r from-sky-500 to-cyan-400 px-9 py-5 text-lg font-bold text-black shadow-xl shadow-cyan-500/40 transition hover:scale-105 hover:shadow-2xl hover:shadow-cyan-400/50"
           >
             {t.hero.cta}
@@ -1387,14 +1388,9 @@ function AuditCta() {
           ))}
         </div>
 
-        <a
-          href="/practiceflow-przewodnik.pdf"
-          download
-          className="group mt-12 inline-flex items-center gap-3 rounded-full bg-gradient-to-r from-sky-500 to-cyan-400 px-12 py-5 text-lg font-bold text-black shadow-xl shadow-cyan-500/40 transition hover:scale-105 hover:shadow-2xl hover:shadow-cyan-400/50"
-        >
-          {t.audit.download}
-          <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
-        </a>
+        <div className="mx-auto mt-12 max-w-md rounded-2xl border border-white/10 bg-[#0a1628]/60 p-6 text-left backdrop-blur-sm sm:p-8">
+          <LeadForm source="audit-cta" variant="booking" />
+        </div>
         <p className="mt-4 text-sm text-gray-400">{t.audit.noCommit}</p>
 
         <p className="mt-6 flex items-center justify-center gap-2 text-sm text-gray-400">
