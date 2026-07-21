@@ -668,38 +668,17 @@ const REVENUE_PER_STAFF_MONTHLY = 1480; // zł/miesiąc — odzyskane dochody z 
 const HOURS_SAVED_PER_STAFF_MONTHLY = 40; // h/miesiąc — odzyskany czas z jednej osoby w recepcji
 
 function RangeSlider({ value, min, max, onChange }: { value: number; min: number; max: number; onChange: (v: number) => void }) {
-  const trackRef = useRef<HTMLDivElement>(null);
   const pct = ((value - min) / (max - min)) * 100;
-
-  const setFromClientX = (clientX: number) => {
-    const el = trackRef.current;
-    if (!el) return;
-    const rect = el.getBoundingClientRect();
-    const ratio = Math.min(1, Math.max(0, (clientX - rect.left) / rect.width));
-    onChange(Math.round(min + ratio * (max - min)));
-  };
-
   return (
-    <div
-      ref={trackRef}
-      onPointerDown={(e) => {
-        e.currentTarget.setPointerCapture(e.pointerId);
-        setFromClientX(e.clientX);
-      }}
-      onPointerMove={(e) => {
-        if (e.buttons !== 1) return;
-        setFromClientX(e.clientX);
-      }}
-      className="mt-3 flex h-6 cursor-pointer touch-none items-center"
-    >
-      <div className="relative h-2 w-full rounded-full bg-white/10">
-        <div className="absolute inset-y-0 left-0 rounded-full bg-gradient-to-r from-sky-500 to-cyan-400" style={{ width: `${pct}%` }} />
-        <div
-          className="absolute top-1/2 h-5 w-5 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-cyan-400 bg-white shadow-lg shadow-cyan-500/40"
-          style={{ left: `${pct}%` }}
-        />
-      </div>
-    </div>
+    <input
+      type="range"
+      min={min}
+      max={max}
+      value={value}
+      onChange={(e) => onChange(Number(e.target.value))}
+      className="pf-range mt-3 w-full"
+      style={{ '--pf-pct': `${pct}%` } as React.CSSProperties}
+    />
   );
 }
 
