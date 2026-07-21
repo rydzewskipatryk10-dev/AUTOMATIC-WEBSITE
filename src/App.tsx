@@ -442,7 +442,7 @@ function Nav() {
 // ---------------------------------------------------------------------------
 const HERO_PHRASES = [
   'Twoja klinika traci zyski przy każdym wolnym slocie.',
-  'Twoja recepcja traci 18 godzin tygodniowo na telefon.',
+  'Twoja recepcja traci 12 godzin tygodniowo na telefon.',
   'Twoi pacjenci rezygnują przez trudny zapis na wizytę.',
 ];
 
@@ -500,7 +500,7 @@ function CaseStudy() {
                 <p className="text-sm text-gray-600">wskaźnik no-shows</p>
               </div>
               <div>
-                <p className="text-3xl font-bold text-gray-900">18h/tyg.</p>
+                <p className="text-3xl font-bold text-gray-900">12h/tyg.</p>
                 <p className="text-sm text-gray-600">czas recepcji na telefon i przypomnienia</p>
               </div>
               <div>
@@ -1107,20 +1107,9 @@ function SystemDiagram() {
           Od połączenia do obsadzonego grafiku.
         </h2>
 
-        <div className="relative mt-14 flex flex-col gap-8 md:flex-row md:items-stretch md:gap-4">
+        <div className="relative mt-14 flex flex-col items-center gap-2 md:flex-row md:items-stretch md:gap-2">
           {steps.map((step, i) => (
-            <div key={step.title} className="relative flex flex-1 flex-col items-center text-center">
-              {/* Number badge */}
-              <div
-                className={`absolute -top-3 z-10 flex h-7 items-center rounded-full px-3 text-xs font-bold tracking-wider transition-all duration-500 ${
-                  visibleSteps > i
-                    ? 'bg-cyan-500 text-white shadow-lg shadow-cyan-500/30'
-                    : 'bg-gray-300 text-gray-500'
-                }`}
-              >
-                {String(i + 1).padStart(2, '0')}
-              </div>
-
+            <div key={step.title} className="flex flex-1 flex-col items-center text-center">
               <div
                 className={`flex h-16 w-16 items-center justify-center rounded-2xl border transition-all duration-500 ${
                   visibleSteps > i
@@ -1150,7 +1139,14 @@ function SystemDiagram() {
                 {step.text}
               </p>
               {i < steps.length - 1 && (
-                <div className="mt-4 hidden h-8 w-px bg-gradient-to-b from-cyan-500/40 to-transparent md:block md:h-px md:w-full md:bg-gradient-to-r md:from-cyan-500/40 md:to-transparent" />
+                <div className="mt-4 flex items-center justify-center md:mt-0 md:flex-1 md:items-center">
+                  <ArrowRight
+                    className={`h-5 w-5 transition-colors duration-500 ${
+                      visibleSteps > i ? 'text-cyan-400/50' : 'text-gray-300'
+                    }`}
+                    strokeWidth={1.5}
+                  />
+                </div>
               )}
             </div>
           ))}
@@ -1213,13 +1209,13 @@ function BeforeAfter() {
 
           {/* Before — chaotic calendar */}
           <div
-            className={`rounded-2xl border border-white/10 bg-[#0d1a2e] p-6 transition-all duration-700 ${
+            className={`rounded-2xl border border-red-500/20 bg-[#1a0e0e] p-6 transition-all duration-700 ${
               visible ? 'translate-x-0 opacity-100' : '-translate-x-8 opacity-0'
             }`}
           >
-            <div className="flex items-center gap-2 border-b border-white/10 pb-3">
-              <XCircle className="h-4 w-4 text-gray-500" strokeWidth={1.5} />
-              <span className="text-xs font-semibold uppercase tracking-widest text-gray-500">
+            <div className="flex items-center gap-2 border-b border-red-500/15 pb-3">
+              <XCircle className="h-4 w-4 text-red-400" strokeWidth={1.5} />
+              <span className="text-xs font-semibold uppercase tracking-widest text-red-400/80">
                 Przed — chaos w grafiku
               </span>
             </div>
@@ -1227,22 +1223,22 @@ function BeforeAfter() {
               {beforeSlots.map((slot, i) => (
                 <div
                   key={i}
-                  className="flex items-center gap-3 rounded-lg border border-white/5 bg-white/[0.02] px-3 py-2.5 text-xs"
+                  className="flex items-center gap-3 rounded-lg border border-red-500/10 bg-red-500/[0.03] px-3 py-2.5 text-xs"
                 >
                   <span className="w-12 font-mono text-gray-500">{slot.time}</span>
-                  <span className="flex-1 font-medium text-gray-500 line-through decoration-gray-700">
+                  <span className="flex-1 font-medium text-red-300/60 line-through decoration-red-800">
                     {slot.label}
                   </span>
                 </div>
               ))}
             </div>
-            <div className="mt-5 border-t border-white/10 pt-4">
+            <div className="mt-5 border-t border-red-500/15 pt-4">
               <div className="flex items-center justify-between">
-                <span className="text-xs text-gray-500">No-shows</span>
-                <span className="text-lg font-bold text-gray-600">12%</span>
+                <span className="text-xs text-red-400/60">No-shows</span>
+                <span className="text-lg font-bold text-red-400">12%</span>
               </div>
               <div className="mt-2 h-1.5 w-full overflow-hidden rounded-full bg-white/5">
-                <div className="h-full w-[12%] rounded-full bg-gray-600" />
+                <div className="h-full w-[12%] rounded-full bg-red-500" />
               </div>
             </div>
           </div>
@@ -1264,10 +1260,10 @@ function BeforeAfter() {
               {afterSlots.map((slot, i) => (
                 <div
                   key={i}
-                  className="flex items-center gap-3 rounded-lg border border-cyan-400/20 bg-cyan-400/5 px-3 py-2.5 text-xs transition-transform hover:translate-x-1"
+                  className="flex items-center gap-3 rounded-lg border border-white/10 bg-white/[0.02] px-3 py-2.5 text-xs transition-transform hover:translate-x-1"
                 >
                   <span className="w-12 font-mono text-gray-400">{slot.time}</span>
-                  <span className="flex-1 font-medium text-cyan-200">{slot.label}</span>
+                  <span className="flex-1 font-medium text-white">{slot.label}</span>
                   <CheckCircle className="h-3.5 w-3.5 text-cyan-400/70" strokeWidth={1.5} />
                 </div>
               ))}
@@ -1502,17 +1498,14 @@ function MiniCta() {
     <section className="bg-white px-6 py-20">
       <div className="mx-auto max-w-4xl">
         <div className="relative overflow-hidden rounded-3xl border border-gray-200 bg-gradient-to-br from-[#f7f7f5] to-white p-10 text-center shadow-xl shadow-gray-200/50 sm:p-14">
-          {/* Animated glow orbs */}
+          {/* Soft ambient glow */}
           <div
-            className="pointer-events-none absolute -left-32 -top-32 h-64 w-64 animate-pulse rounded-full bg-cyan-400/25 blur-3xl"
+            className="pointer-events-none absolute -left-24 -top-24 h-48 w-48 rounded-full bg-cyan-400/10 blur-3xl"
+            style={{ animation: 'pulse 8s ease-in-out infinite' }}
           />
           <div
-            className="pointer-events-none absolute -bottom-32 -right-32 h-64 w-64 rounded-full bg-sky-400/20 blur-3xl"
-            style={{ animation: 'pulse 4s ease-in-out 1s infinite' }}
-          />
-          <div
-            className="pointer-events-none absolute left-1/2 top-1/2 h-72 w-72 -translate-x-1/2 -translate-y-1/2 rounded-full bg-cyan-300/10 blur-3xl"
-            style={{ animation: 'pulse 6s ease-in-out infinite' }}
+            className="pointer-events-none absolute -bottom-24 -right-24 h-48 w-48 rounded-full bg-sky-400/[0.08] blur-3xl"
+            style={{ animation: 'pulse 10s ease-in-out 2s infinite' }}
           />
 
           <div className="relative">
@@ -1521,10 +1514,10 @@ function MiniCta() {
             </div>
 
             <h3 className="mt-6 text-2xl font-bold text-gray-900 sm:text-3xl">
-              Gotów odzyskać kontrolę nad grafikiem?
+              Każdy pusty slot w grafiku to przepalane pieniądze.
             </h3>
             <p className="mx-auto mt-3 max-w-lg text-base text-gray-600">
-              15 minut rozmowy — pokazujemy dokładnie, gdzie Twoja klinika traci pieniądze
+              15 minut rozmowy — pokazujemy dokładnie, ile Twoja klinika traci co tydzień
               i jak możesz to odzyskać.
             </p>
 
