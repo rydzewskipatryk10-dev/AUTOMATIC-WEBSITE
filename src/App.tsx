@@ -318,21 +318,10 @@ function StickyMobileCta() {
 // ---------------------------------------------------------------------------
 function Nav() {
   const { t } = useI18n();
-  const [visible, setVisible] = useState(false);
-
-  useEffect(() => {
-    const onScroll = () => {
-      setVisible(window.scrollY > 600);
-    };
-    window.addEventListener('scroll', onScroll, { passive: true });
-    return () => window.removeEventListener('scroll', onScroll);
-  }, []);
 
   return (
     <header
-      className={`fixed inset-x-0 top-0 z-50 border-b border-white/5 bg-[#0a1628]/80 backdrop-blur-md transition-all duration-300 ${
-        visible ? 'translate-y-0 opacity-100' : '-translate-y-full opacity-0'
-      }`}
+      className="fixed inset-x-0 top-0 z-50 border-b border-white/5 bg-[#0a1628]/80 backdrop-blur-md"
     >
       <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
         <a
@@ -347,7 +336,8 @@ function Nav() {
         </a>
         <nav className="hidden items-center gap-7 md:flex">
           <a href="#diagnoza" className="text-sm font-medium text-gray-300 transition hover:text-cyan-300">{t.nav.calc}</a>
-          <a href="#system" className="text-sm font-medium text-gray-300 transition hover:text-cyan-300">{t.nav.system}</a>
+          <a href="#onas" className="text-sm font-medium text-gray-300 transition hover:text-cyan-300">{t.nav.about}</a>
+          <a href="#kontakt" className="text-sm font-medium text-gray-300 transition hover:text-cyan-300">{t.nav.contact}</a>
         </nav>
         <div className="flex items-center gap-3">
           <LanguageToggle />
@@ -454,9 +444,9 @@ function _CaseStudy_REMOVED() {
 }
 
 // ---------------------------------------------------------------------------
-// Comparison Table — FullSchedule vs. ręczna obsługa
+// Comparison Table — [Removed]
 // ---------------------------------------------------------------------------
-function ComparisonTable() {
+function _ComparisonTable_REMOVED() {
   const { t } = useI18n();
   const features = [
     { pf: true, manual: false },
@@ -533,6 +523,43 @@ function ComparisonTable() {
               </div>
             </div>
           ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// ---------------------------------------------------------------------------
+// About Section
+// ---------------------------------------------------------------------------
+function AboutSection() {
+  const { t } = useI18n();
+
+  return (
+    <section id="onas" className="bg-[#f7f7f5] px-6 py-24">
+      <div className="mx-auto max-w-3xl text-center">
+        <p className="text-xs font-semibold uppercase tracking-widest text-cyan-600">
+          {t.about.eyebrow}
+        </p>
+        <h2 className="mt-3 text-3xl font-bold text-gray-900 sm:text-4xl">
+          {t.about.title}
+        </h2>
+        <p className="mt-6 text-lg leading-relaxed text-gray-600">
+          {t.about.body}
+        </p>
+        <div className="mt-12 grid gap-6 sm:grid-cols-3">
+          <div className="rounded-2xl border border-gray-200 bg-white p-8 shadow-sm">
+            <p className="text-4xl font-bold text-cyan-600">30–50%</p>
+            <p className="mt-2 text-sm text-gray-600">{t.about.stat1}</p>
+          </div>
+          <div className="rounded-2xl border border-gray-200 bg-white p-8 shadow-sm">
+            <p className="text-4xl font-bold text-cyan-600">24/7</p>
+            <p className="mt-2 text-sm text-gray-600">{t.about.stat2}</p>
+          </div>
+          <div className="rounded-2xl border border-gray-200 bg-white p-8 shadow-sm">
+            <p className="text-4xl font-bold text-cyan-600">0 zł</p>
+            <p className="mt-2 text-sm text-gray-600">{t.about.stat3}</p>
+          </div>
         </div>
       </div>
     </section>
@@ -1360,7 +1387,7 @@ function MiniCta() {
 function AuditCta() {
   const { t } = useI18n();
   return (
-    <section id="book" className="relative overflow-hidden bg-[#0d1a2e] px-6 py-32">
+    <section id="kontakt" className="relative overflow-hidden bg-[#0d1a2e] px-6 py-32">
       <div className="relative mx-auto max-w-3xl text-center">
         <h2 className="text-5xl font-bold text-white sm:text-6xl">
           {t.audit.title}
@@ -1486,7 +1513,7 @@ function AppContent() {
         <BeforeAfter />
       </Reveal>
       <Reveal>
-        <ComparisonTable />
+        <AboutSection />
       </Reveal>
       <Reveal>
         <FAQ />

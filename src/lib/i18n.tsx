@@ -14,8 +14,8 @@ const translations = {
   pl: {
     nav: {
       calc: 'Kalkulator',
-      system: 'Jak to działa',
-      cases: 'Case study',
+      about: 'O nas',
+      contact: 'Kontakt',
       book: 'Umów rozmowę',
     },
     langLabel: 'EN',
@@ -211,6 +211,14 @@ const translations = {
       name: 'Patryk',
       role: 'Założyciel, FullSchedule',
     },
+    about: {
+      eyebrow: 'O nas',
+      title: 'Pełna kontrola nad grafikiem Twojej kliniki.',
+      body: 'FullSchedule powstał z myślą o właścicielach klinik stomatologicznych, którzy chcą pracować przewidywalnie i bez strat. Automatyzacja pozwala nam zmniejszać odwołania, puste godziny i chaos w grafiku nawet o 30–50%.',
+      stat1: 'mniej odwołań i pustych godzin',
+      stat2: 'samodzielna rezerwacja pacjentów',
+      stat3: 'bezpłatny audyt grafiku',
+    },
     audit: {
       title: 'Porozmawiajmy o Twoim kalendarzu.',
       desc: 'Krótka rozmowa o tym, gdzie Twój gabinet traci czas, dochody i jak możemy to rozwiązać. Bez zobowiązań.',
@@ -262,8 +270,8 @@ const translations = {
   en: {
     nav: {
       calc: 'Calculator',
-      system: 'How it works',
-      cases: 'Case study',
+      about: 'About',
+      contact: 'Contact',
       book: 'Book a call',
     },
     langLabel: 'PL',
@@ -458,6 +466,14 @@ const translations = {
       quote: '"Dental clinics lose revenue not from a lack of patients, but from processes nobody audits. We built FullSchedule to change that — with a system that fills your schedule and recovers your time."',
       name: 'Patryk',
       role: 'Founder, FullSchedule',
+    },
+    about: {
+      eyebrow: 'About us',
+      title: 'Full control over your clinic schedule.',
+      body: 'FullSchedule was created for owners of dental clinics who want to work predictably and without losses. Automation lets us reduce cancellations, empty hours, and schedule chaos by up to 30–50%.',
+      stat1: 'fewer cancellations and empty hours',
+      stat2: 'self-service patient booking',
+      stat3: 'free schedule audit',
     },
     audit: {
       title: "Let's talk about your schedule.",
