@@ -546,18 +546,18 @@ function Hero() {
   const { t } = useI18n();
 
   return (
-    <section className="relative overflow-hidden px-6 pb-32 pt-40">
+    <section className="relative overflow-hidden px-6 pb-32 pt-10">
       {/* Hero background — clean gradient, no photo */}
       <div className="absolute inset-0 bg-gradient-to-br from-[#08111f] via-[#0a1628] to-[#0c1e35]" />
       <div className="pointer-events-none absolute right-0 top-0 h-[600px] w-[600px] rounded-full bg-cyan-500/5 blur-3xl" />
       <div className="pointer-events-none absolute -left-20 bottom-0 h-[400px] w-[400px] rounded-full bg-sky-500/5 blur-3xl" />
 
       {/* Logo top-left */}
-      <div className="relative z-10 mx-auto max-w-6xl">
+      <div className="relative z-10 mx-auto max-w-6xl pb-16 pt-6">
         <img src="/logo-fullschedule.svg" alt="FullSchedule" className="h-9 w-auto" />
       </div>
 
-      <div className="relative mx-auto grid max-w-6xl items-center gap-12 pt-10 lg:grid-cols-[1.15fr_0.85fr]">
+      <div className="relative mx-auto grid max-w-6xl items-center gap-12 lg:grid-cols-[1.15fr_0.85fr]">
         <div className="max-w-xl text-left">
           <h1 className="pf-hero-fade-in text-4xl font-bold leading-tight text-white sm:text-5xl md:text-7xl">
             {t.hero.title}
