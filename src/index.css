@@ -91,3 +91,29 @@ body {
   animation: pfFadeRise 1.1s cubic-bezier(0.22, 1, 0.36, 1) 0.8s forwards;
 }
 
+@keyframes pfWordRise {
+  0% { opacity: 0; transform: translateY(28px) rotateX(-40deg); filter: blur(8px); }
+  100% { opacity: 1; transform: translateY(0) rotateX(0); filter: blur(0); }
+}
+
+.pf-hero-word {
+  display: inline-block;
+  opacity: 0;
+  transform-origin: bottom center;
+  animation: pfWordRise 0.9s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.pf-hero-word-1 { animation-delay: 0.2s; }
+.pf-hero-word-2 { animation-delay: 0.45s; }
+.pf-hero-word-3 {
+  animation-delay: 0.7s;
+  background: linear-gradient(135deg, #22d3ee 0%, #0ea5e9 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pf-hero-word { animation: none; opacity: 1; transform: none; filter: none; }
+}
+

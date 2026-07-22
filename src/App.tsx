@@ -569,6 +569,189 @@ function AboutSection() {
 // ---------------------------------------------------------------------------
 // Hero — asymmetric, with dashboard mockup on the right
 // ---------------------------------------------------------------------------
+// ---------------------------------------------------------------------------
+// Hero Carousel — rotating dashboard views with smooth crossfade
+// ---------------------------------------------------------------------------
+function HeroCarousel() {
+  const { t } = useI18n();
+  const [index, setIndex] = useState(0);
+  const slides = t.heroCarousel.slides;
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setIndex((i) => (i + 1) % slides.length);
+    }, 5000);
+    return () => clearInterval(timer);
+  }, [slides.length]);
+
+  return (
+    <div className="relative hidden md:block lg:mr-auto lg:justify-self-start">
+      <div className="relative w-full max-w-md overflow-hidden rounded-2xl border border-white/15 bg-[#0d1a2e]/95 shadow-2xl shadow-black/50 backdrop-blur-sm">
+        {/* Slide container with fixed height */}
+        <div className="relative h-[440px]">
+          {slides.map((slide, i) => (
+            <div
+              key={i}
+              className={`absolute inset-0 transition-all duration-1000 ease-in-out ${
+                i === index ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4 pointer-events-none'
+              }`}
+            >
+              {/* Slide header */}
+              <div className="flex items-center justify-between border-b border-white/15 px-5 py-4">
+                <div className="flex items-center gap-2">
+                  <div className="h-3 w-3 rounded-full bg-red-400/60" />
+                  <div className="h-3 w-3 rounded-full bg-sky-500/60" />
+                  <div className="h-3 w-3 rounded-full bg-cyan-400/60" />
+                </div>
+                <span className="text-xs font-medium text-gray-400">{slide.header}</span>
+              </div>
+
+              {/* Slide content */}
+              <div className="px-5 py-4">
+                {slide.type === 'calendar' && <CalendarSlide slide={slide} />}
+                {slide.type === 'features' && <FeaturesSlide slide={slide} />}
+                {slide.type === 'system' && <SystemSlide slide={slide} />}
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Dot indicators */}
+        <div className="flex items-center justify-center gap-2 border-t border-white/15 px-5 py-3">
+          {slides.map((_, i) => (
+            <button
+              key={i}
+              onClick={() => setIndex(i)}
+              aria-label={`Slide ${i + 1}`}
+              className={`h-1.5 rounded-full transition-all duration-300 ${
+                i === index ? 'w-8 bg-cyan-400' : 'w-1.5 bg-white/20 hover:bg-white/40'
+              }`}
+            />
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function CalendarSlide({ slide }: { slide: { items: { time: string; label: string; status: string }[]; footer: { booked: string; noshow: string; saved: string } } }) {
+  const { t } = useI18n();
+  return (
+    <div className="space-y-2">
+      {slide.items.map((slot, i) => (
+        <div
+          key={i}
+          className={`flex items-center gap-3 rounded-lg border px-3 py-2.5 text-xs transition ${
+            slot.status === 'filled'
+              ? 'border-cyan-400/30 bg-cyan-400/10'
+              : slot.status === 'reminder'
+              ? 'border-sky-400/30 bg-sky-500/5'
+              : 'border-white/10 bg-[#0a1628]'
+          }`}
+        >
+          <span className="w-12 font-mono text-gray-400">{slot.time}</span>
+          <span
+            className={`flex-1 font-medium ${
+              slot.status === 'filled' ? 'text-cyan-300' : slot.status === 'reminder' ? 'text-sky-300' : 'text-gray-300'
+            }`}
+          >
+            {slot.label}
+          </span>
+          {slot.status === 'booked' && <CheckCircle className="h-3.5 w-3.5 text-cyan-400/70" strokeWidth={1.5} />}
+          {slot.status === 'filled' && <Sparkles className="h-3.5 w-3.5 text-cyan-400" strokeWidth={1.5} />}
+          {slot.status === 'reminder' && <Bell className="h-3.5 w-3.5 text-sky-400" strokeWidth={1.5} />}
+        </div>
+      ))}
+      <div className="mt-4 grid grid-cols-3 gap-3 border-t border-white/15 pt-4">
+        <div>
+          <p className="text-xs text-gray-400">{t.hero.booked}</p>
+          <p className="text-sm font-bold text-cyan-300">94%</p>
+        </div>
+        <div>
+          <p className="text-xs text-gray-400">{t.hero.noshow}</p>
+          <p className="text-sm font-bold text-sky-300">2%</p>
+        </div>
+        <div>
+          <p className="text-xs text-gray-400">{t.hero.saved}</p>
+          <p className="text-sm font-bold text-white">14h</p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function FeaturesSlide({ slide }: { slide: { items: { icon: string; label: string; desc: string }[] } }) {
+  const iconMap: Record<string, typeof Calendar> = {
+    Calendar,
+    Bell,
+    Users,
+    Sparkles,
+    Clock,
+    Rocket,
+    ShieldCheck,
+  };
+  return (
+    <div className="space-y-3">
+      {slide.items.map((item, i) => {
+        const Icon = iconMap[item.icon] ?? CheckCircle;
+        return (
+          <div
+            key={i}
+            className="flex items-start gap-3 rounded-lg border border-white/10 bg-[#0a1628] px-4 py-3"
+          >
+            <div className="mt-0.5 flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-lg bg-cyan-400/15">
+              <Icon className="h-4 w-4 text-cyan-400" strokeWidth={1.5} />
+            </div>
+            <div>
+              <p className="text-sm font-semibold text-white">{item.label}</p>
+              <p className="mt-0.5 text-xs text-gray-400">{item.desc}</p>
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
+function SystemSlide({ slide }: { slide: { title: string; subtitle: string; nodes: { icon: string; label: string }[]; footer: string } }) {
+  const iconMap: Record<string, typeof Phone> = {
+    Phone,
+    Calendar,
+    Bell,
+    Database,
+    Mail,
+    Users,
+  };
+  return (
+    <div className="flex h-full flex-col">
+      <p className="text-sm font-bold text-white">{slide.title}</p>
+      <p className="mt-1 text-xs text-gray-400">{slide.subtitle}</p>
+      <div className="mt-4 grid grid-cols-2 gap-3">
+        {slide.nodes.map((node, i) => {
+          const Icon = iconMap[node.icon] ?? CheckCircle;
+          return (
+            <div
+              key={i}
+              className="flex flex-col items-center gap-2 rounded-lg border border-white/10 bg-[#0a1628] p-4 text-center"
+            >
+              <div className="flex h-10 w-10 items-center justify-center rounded-full bg-cyan-400/15">
+                <Icon className="h-5 w-5 text-cyan-400" strokeWidth={1.5} />
+              </div>
+              <span className="text-xs font-medium text-gray-300">{node.label}</span>
+            </div>
+          );
+        })}
+      </div>
+      <div className="mt-auto rounded-lg border border-cyan-400/20 bg-cyan-400/5 px-4 py-3">
+        <p className="text-xs text-cyan-200">{slide.footer}</p>
+      </div>
+    </div>
+  );
+}
+
+// ---------------------------------------------------------------------------
+// Hero — asymmetric, with rotating dashboard carousel on the right
+// ---------------------------------------------------------------------------
 function Hero() {
   const { t } = useI18n();
 
@@ -579,15 +762,21 @@ function Hero() {
       <div className="pointer-events-none absolute right-0 top-0 h-[600px] w-[600px] rounded-full bg-cyan-500/5 blur-3xl" />
       <div className="pointer-events-none absolute -left-20 bottom-0 h-[400px] w-[400px] rounded-full bg-sky-500/5 blur-3xl" />
 
-      {/* Logo top-left */}
-      <div className="relative z-10 mx-auto max-w-6xl pb-16 pt-6">
-        <img src="/logo-fullschedule.svg" alt="FullSchedule" className="h-9 w-auto" />
-      </div>
-
       <div className="relative mx-auto grid max-w-6xl items-center gap-12 lg:grid-cols-[1.15fr_0.85fr]">
         <div className="max-w-xl text-left">
           <h1 className="pf-hero-fade-in text-4xl font-bold leading-tight text-white sm:text-5xl md:text-7xl">
-            {t.hero.title}
+            {t.hero.title.split(' ').map((word, i) => (
+              <span
+                key={i}
+                className={`pf-hero-word ${i === 0 ? 'pf-hero-word-1' : i === 1 ? 'pf-hero-word-2' : 'pf-hero-word-3'}`}
+              >
+                {word}
+              </span>
+            )).reduce<ReactNode[]>((acc, el, i) => {
+              if (i > 0) acc.push(' ');
+              acc.push(el);
+              return acc;
+            }, [])}
           </h1>
           <p className="pf-hero-fade-in-delayed mt-6 text-xl text-gray-300">
             {t.hero.subtitle}
@@ -601,84 +790,8 @@ function Hero() {
           </a>
         </div>
 
-        {/* Dashboard mockup — smaller, pushed to the side */}
-        <div className="relative hidden md:block lg:justify-self-end">
-          <div className="rounded-2xl border border-white/15 bg-[#0d1a2e]/95 p-4 shadow-2xl shadow-black/50 backdrop-blur-sm w-full max-w-md lg:ml-auto">
-            {/* Mock header */}
-            <div className="flex items-center justify-between border-b border-white/15 pb-4">
-              <div className="flex items-center gap-2">
-                <div className="h-3 w-3 rounded-full bg-red-400/60" />
-                <div className="h-3 w-3 rounded-full bg-sky-500/60" />
-                <div className="h-3 w-3 rounded-full bg-cyan-400/60" />
-              </div>
-              <span className="text-xs font-medium text-gray-400">
-                {t.hero.calendarLabel}
-              </span>
-            </div>
-            {/* Mock calendar grid */}
-            <div className="mt-4 space-y-2">
-              {[
-                { time: '09:00', label: 'A. Kowalska', status: 'booked' },
-                { time: '10:30', label: 'M. Nowak', status: 'booked' },
-                { time: '11:00', label: 'Wolne → zajęte', status: 'filled' },
-                { time: '12:30', label: 'J. Wiśniewski', status: 'booked' },
-                { time: '13:00', label: 'Przypomnienie SMS', status: 'reminder' },
-                { time: '14:30', label: 'K. Lewandowska', status: 'booked' },
-                { time: '15:00', label: 'Rezerwacja online', status: 'filled' },
-                { time: '16:30', label: 'P. Zieliński', status: 'booked' },
-                { time: '17:00', label: 'Wolne → zajęte', status: 'filled' },
-              ].map((slot, i) => (
-                <div
-                  key={i}
-                  className={`flex items-center gap-3 rounded-lg border px-3 py-2.5 text-xs transition ${
-                    slot.status === 'filled'
-                      ? 'border-cyan-400/30 bg-cyan-400/10'
-                      : slot.status === 'reminder'
-                      ? 'border-sky-400/30 bg-sky-500/5'
-                      : 'border-white/10 bg-[#0a1628]'
-                  }`}
-                >
-                  <span className="w-12 font-mono text-gray-400">{slot.time}</span>
-                  <span
-                    className={`flex-1 font-medium ${
-                      slot.status === 'filled'
-                        ? 'text-cyan-300'
-                        : slot.status === 'reminder'
-                        ? 'text-sky-300'
-                        : 'text-gray-300'
-                    }`}
-                  >
-                    {slot.label}
-                  </span>
-                  {slot.status === 'booked' && (
-                    <CheckCircle className="h-3.5 w-3.5 text-cyan-400/70" strokeWidth={1.5} />
-                  )}
-                  {slot.status === 'filled' && (
-                    <Sparkles className="h-3.5 w-3.5 text-cyan-400" strokeWidth={1.5} />
-                  )}
-                  {slot.status === 'reminder' && (
-                    <Bell className="h-3.5 w-3.5 text-sky-400" strokeWidth={1.5} />
-                  )}
-                </div>
-              ))}
-            </div>
-            {/* Mock footer stats */}
-            <div className="mt-4 grid grid-cols-3 gap-3 border-t border-white/15 pt-4">
-              <div>
-                <p className="text-xs text-gray-400">{t.hero.booked}</p>
-                <p className="text-sm font-bold text-cyan-300">94%</p>
-              </div>
-              <div>
-                <p className="text-xs text-gray-400">{t.hero.noshow}</p>
-                <p className="text-sm font-bold text-sky-300">2%</p>
-              </div>
-              <div>
-                <p className="text-xs text-gray-400">{t.hero.saved}</p>
-                <p className="text-sm font-bold text-white">14h</p>
-              </div>
-            </div>
-          </div>
-        </div>
+        {/* Rotating dashboard carousel */}
+        <HeroCarousel />
       </div>
     </section>
   );
@@ -715,7 +828,7 @@ function RangeSlider({ value, min, max, onChange }: { value: number; min: number
 function Calculator() {
   const { t } = useI18n();
   const [cancellations, setCancellations] = useState(1);
-  const [staff, setStaff] = useState(2);
+  const [staff, setStaff] = useState(1);
   const [step, setStep] = useState(0);
   const [answers, setAnswers] = useState<DiagnosisAnswers>({
     cancellations: '',
