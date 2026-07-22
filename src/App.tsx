@@ -689,6 +689,7 @@ function FeaturesSlide({ slide }: { slide: { items: { icon: string; label: strin
     Clock,
     Rocket,
     ShieldCheck,
+    Database,
   };
   return (
     <div className="space-y-3">
@@ -961,6 +962,12 @@ function Calculator() {
               <div className="flex items-center justify-between gap-4">
                 <span className="text-sm text-gray-300">{t.calc.savedHours}</span>
                 <span className="text-xl font-bold tabular-nums text-white whitespace-nowrap">{savedHoursMonthly}h</span>
+              </div>
+              <div className="flex items-center justify-between gap-4">
+                <span className="text-sm text-gray-300">{t.calc.savedStaffCost}</span>
+                <span className="text-xl font-bold tabular-nums text-white whitespace-nowrap">
+                  {staffCostMonthly.toLocaleString('pl-PL')} zł
+                </span>
               </div>
               <div className="rounded-lg bg-cyan-400/10 px-4 py-3">
                 <div className="flex items-center justify-between gap-4">
