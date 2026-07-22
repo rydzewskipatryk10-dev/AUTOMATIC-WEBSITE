@@ -28,6 +28,10 @@ const translations = {
       booked: 'Obsadzone',
       noshow: 'No-shows',
       saved: 'Odzyskany czas',
+      notify1Title: 'SMS Wysłany',
+      notify1Desc: 'Przypomnienie o wizycie',
+      notify2Title: 'Potwierdzono',
+      notify2Desc: 'A. Kowalska (09:00)',
     },
     heroCarousel: {
       slides: [
@@ -331,6 +335,10 @@ const translations = {
       booked: 'Booked',
       noshow: 'No-shows',
       saved: 'Time saved',
+      notify1Title: 'SMS Sent',
+      notify1Desc: 'Visit reminder',
+      notify2Title: 'Confirmed',
+      notify2Desc: 'A. Kowalska (09:00)',
     },
     heroCarousel: {
       slides: [

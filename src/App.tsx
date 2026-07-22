@@ -585,29 +585,57 @@ function HeroCarousel() {
   }, [slides.length]);
 
   return (
-    <div className="relative hidden md:block lg:mr-auto lg:justify-self-start">
-      <div className="relative w-full max-w-md overflow-hidden rounded-2xl border border-white/15 bg-[#0d1a2e]/95 shadow-2xl shadow-black/50 backdrop-blur-sm">
-        {/* Slide container with fixed height */}
-        <div className="relative h-[440px]">
+    <div className="relative hidden md:flex items-center justify-center lg:mr-auto lg:justify-self-start lg:ml-10">
+      
+      {/* 3D Floating Notifications */}
+      <div className="absolute -left-16 top-1/4 z-20 animate-[pfWordRise_3s_ease-in-out_infinite_alternate]">
+        <div className="flex items-center gap-3 rounded-2xl border border-white/20 bg-white/10 p-3 pr-5 shadow-[0_8px_32px_rgba(0,0,0,0.4)] backdrop-blur-md">
+          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-sky-400/20">
+            <Bell className="h-5 w-5 text-sky-300" strokeWidth={1.5} />
+          </div>
+          <div>
+            <p className="text-xs font-semibold text-white">{t.hero.notify1Title}</p>
+            <p className="text-[10px] text-gray-300">{t.hero.notify1Desc}</p>
+          </div>
+        </div>
+      </div>
+      
+      <div className="absolute -right-12 bottom-1/4 z-20 animate-[pfWordRise_4s_ease-in-out_infinite_alternate_reverse]">
+        <div className="flex items-center gap-3 rounded-2xl border border-white/20 bg-white/10 p-3 pr-5 shadow-[0_8px_32px_rgba(0,0,0,0.4)] backdrop-blur-md">
+          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-emerald-400/20">
+            <CheckCircle className="h-5 w-5 text-emerald-300" strokeWidth={1.5} />
+          </div>
+          <div>
+            <p className="text-xs font-semibold text-white">{t.hero.notify2Title}</p>
+            <p className="text-[10px] text-gray-300">{t.hero.notify2Desc}</p>
+          </div>
+        </div>
+      </div>
+
+      {/* Phone Mockup */}
+      <div className="relative w-[320px] h-[600px] overflow-hidden rounded-[3rem] border-[10px] border-[#102035] bg-[#0d1a2e] shadow-2xl shadow-black/80">
+        
+        {/* Notch */}
+        <div className="absolute top-0 inset-x-0 z-30 flex justify-center">
+          <div className="h-6 w-32 rounded-b-2xl bg-[#102035]"></div>
+        </div>
+
+        {/* Slide container with full height */}
+        <div className="relative h-full pt-8">
           {slides.map((slide, i) => (
             <div
               key={i}
-              className={`absolute inset-0 transition-all duration-1000 ease-in-out ${
-                i === index ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4 pointer-events-none'
+              className={`absolute inset-0 pt-8 transition-all duration-1000 ease-in-out ${
+                i === index ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8 pointer-events-none'
               }`}
             >
               {/* Slide header */}
-              <div className="flex items-center justify-between border-b border-white/15 px-5 py-4">
-                <div className="flex items-center gap-2">
-                  <div className="h-3 w-3 rounded-full bg-red-400/60" />
-                  <div className="h-3 w-3 rounded-full bg-sky-500/60" />
-                  <div className="h-3 w-3 rounded-full bg-cyan-400/60" />
-                </div>
-                <span className="text-xs font-medium text-gray-400">{slide.header}</span>
+              <div className="flex items-center justify-center border-b border-white/10 px-5 pb-3">
+                <span className="text-sm font-semibold text-gray-300">{slide.header}</span>
               </div>
 
               {/* Slide content */}
-              <div className="px-5 py-4">
+              <div className="px-5 py-4 h-[470px] overflow-hidden">
                 {slide.type === 'calendar' && <CalendarSlide slide={slide} />}
                 {slide.type === 'features' && <FeaturesSlide slide={slide} />}
                 {slide.type === 'system' && <SystemSlide slide={slide} />}
@@ -616,15 +644,15 @@ function HeroCarousel() {
           ))}
         </div>
 
-        {/* Dot indicators */}
-        <div className="flex items-center justify-center gap-2 border-t border-white/15 px-5 py-3">
+        {/* Dot indicators inside phone */}
+        <div className="absolute bottom-6 left-0 right-0 z-30 flex items-center justify-center gap-2 bg-gradient-to-t from-[#0d1a2e] via-[#0d1a2e]/80 to-transparent pb-2 pt-6">
           {slides.map((_, i) => (
             <button
               key={i}
               onClick={() => setIndex(i)}
               aria-label={`Slide ${i + 1}`}
               className={`h-1.5 rounded-full transition-all duration-300 ${
-                i === index ? 'w-8 bg-cyan-400' : 'w-1.5 bg-white/20 hover:bg-white/40'
+                i === index ? 'w-6 bg-cyan-400' : 'w-1.5 bg-white/30 hover:bg-white/50'
               }`}
             />
           ))}
@@ -760,8 +788,8 @@ function Hero() {
     <section className="relative overflow-hidden px-6 pb-32 pt-10">
       {/* Hero background — clean gradient, no photo */}
       <div className="absolute inset-0 bg-gradient-to-br from-[#08111f] via-[#0a1628] to-[#0c1e35]" />
-      <div className="pointer-events-none absolute right-0 top-0 h-[600px] w-[600px] rounded-full bg-cyan-500/5 blur-3xl" />
-      <div className="pointer-events-none absolute -left-20 bottom-0 h-[400px] w-[400px] rounded-full bg-sky-500/5 blur-3xl" />
+      <div className="pointer-events-none absolute right-0 top-0 h-[600px] w-[600px] rounded-full bg-purple-500/10 blur-3xl" />
+      <div className="pointer-events-none absolute -left-20 bottom-0 h-[400px] w-[400px] rounded-full bg-pink-500/5 blur-3xl" />
 
       <div className="relative mx-auto grid max-w-6xl items-center gap-12 lg:grid-cols-[1.15fr_0.85fr]">
         <div className="max-w-xl text-left">
@@ -824,6 +852,35 @@ function RangeSlider({ value, min, max, onChange }: { value: number; min: number
       style={{ '--pf-pct': `${pct}%` } as React.CSSProperties}
     />
   );
+}
+
+function AnimatedNumber({ value, formatFn }: { value: number; formatFn?: (val: number) => string }) {
+  const [displayValue, setDisplayValue] = useState(0);
+
+  useEffect(() => {
+    let startTimestamp: number | null = null;
+    const duration = 600;
+    const startValue = displayValue;
+    const change = value - startValue;
+
+    if (change === 0) return;
+
+    const step = (timestamp: number) => {
+      if (!startTimestamp) startTimestamp = timestamp;
+      const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+      const easeOutQuart = 1 - Math.pow(1 - progress, 4);
+      setDisplayValue(startValue + change * easeOutQuart);
+      if (progress < 1) {
+        window.requestAnimationFrame(step);
+      } else {
+        setDisplayValue(value);
+      }
+    };
+    window.requestAnimationFrame(step);
+  }, [value]);
+
+  const display = Math.round(displayValue);
+  return <span className="tabular-nums">{formatFn ? formatFn(display) : display}</span>;
 }
 
 function Calculator() {
@@ -909,8 +966,11 @@ function Calculator() {
   };
 
   return (
-    <section id="diagnoza" className="px-6 py-20">
-      <div className="mx-auto max-w-5xl">
+    /* ROI Calculator Section */
+    <section id="calculator" className="relative px-6 py-32 bg-[#08111f] overflow-hidden">
+      <div className="pointer-events-none absolute left-1/2 top-1/2 h-[600px] w-[600px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-fuchsia-500/5 blur-[120px]" />
+      
+      <div className="relative mx-auto max-w-6xl">
         <p className="text-xs font-semibold uppercase tracking-widest text-cyan-400">
           {t.calc.eyebrow}
         </p>
