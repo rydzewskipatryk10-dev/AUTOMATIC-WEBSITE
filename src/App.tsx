@@ -29,6 +29,7 @@ import {
   X,
   Loader2,
   Languages,
+  Stethoscope,
 } from 'lucide-react';
 import { I18nProvider, useI18n, type Lang } from './lib/i18n';
 import { LeadForm } from './lib/LeadForm';
@@ -244,9 +245,9 @@ function ExitIntentPopup() {
 
         <div className="flex flex-col items-center text-center">
           <img
-            src="/Projekt_bez_nazwy_-_2026-07-21T160459.162-removebg-preview copy.png"
+            src="/logo-fullschedule.svg"
             alt="FullSchedule"
-            className="mb-5 h-20 w-auto"
+            className="mb-5 h-14 w-auto"
           />
           <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-cyan-400/15">
             <CalendarClock className="h-7 w-7 text-cyan-400" strokeWidth={1.5} />
@@ -339,9 +340,9 @@ function Nav() {
           className="flex items-center"
         >
           <img
-            src="/Projekt_bez_nazwy_-_2026-07-21T160459.162-removebg-preview copy.png"
+            src="/logo-fullschedule.svg"
             alt="FullSchedule"
-            className="h-16 w-auto"
+            className="h-10 w-auto"
           />
         </a>
         <nav className="hidden items-center gap-7 md:flex">
@@ -547,21 +548,13 @@ function Hero() {
 
   return (
     <section className="relative overflow-hidden px-6 pb-32 pt-40">
-      {/* Clean clinical background — deep navy with subtle dental pattern */}
-      <div className="absolute inset-0 bg-gradient-to-br from-[#0a1628] via-[#0c1c34] to-[#0a1628]" />
-      <div
-        className="absolute inset-0 opacity-[0.04]"
-        style={{
-          backgroundImage:
-            "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 24 24' fill='none' stroke='%2360d4e8' stroke-width='1.2'%3E%3Cpath d='M12 5.5c-1.5-1-3-1.5-4.5-1.5C5 4 3.5 5.5 3.5 8c0 2 .5 4 1 6 .5 2 1 4.5 2.5 4.5 1.5 0 1.5-2 2-3.5 .5-1.5 1-2.5 3-2.5s2.5 1 3 2.5c.5 1.5 .5 3.5 2 3.5 1.5 0 2-2.5 2.5-4.5 .5-2 1-4 1-6 0-2.5-1.5-4-4-4-1.5 0-3 .5-4.5 1.5z'/%3E%3C/svg%3E\")",
-          backgroundSize: '180px 180px',
-        }}
-      />
-      <div className="pointer-events-none absolute -right-40 top-20 h-96 w-96 rounded-full bg-cyan-500/5 blur-3xl" />
-      <div className="pointer-events-none absolute -left-40 bottom-0 h-80 w-80 rounded-full bg-sky-500/5 blur-3xl" />
+      {/* Hero background — clean gradient, no photo */}
+      <div className="absolute inset-0 bg-gradient-to-br from-[#08111f] via-[#0a1628] to-[#0c1e35]" />
+      <div className="pointer-events-none absolute right-0 top-0 h-[600px] w-[600px] rounded-full bg-cyan-500/5 blur-3xl" />
+      <div className="pointer-events-none absolute -left-20 bottom-0 h-[400px] w-[400px] rounded-full bg-sky-500/5 blur-3xl" />
 
       <div className="relative mx-auto grid max-w-6xl items-center gap-12 lg:grid-cols-[1.15fr_0.85fr]">
-        <div className="max-w-xl mx-auto text-center lg:text-left">
+        <div className="max-w-xl text-left">
           <h1 className="pf-hero-fade-in text-4xl font-bold leading-tight text-white sm:text-5xl md:text-7xl">
             {t.hero.title}
           </h1>
@@ -690,7 +683,7 @@ function RangeSlider({ value, min, max, onChange }: { value: number; min: number
 
 function Calculator() {
   const { t } = useI18n();
-  const [cancellations, setCancellations] = useState(10);
+  const [cancellations, setCancellations] = useState(1);
   const [staff, setStaff] = useState(2);
   const [step, setStep] = useState(0);
   const [answers, setAnswers] = useState<DiagnosisAnswers>({
@@ -706,7 +699,7 @@ function Calculator() {
   const totalMonthly = recoveredRevenueMonthly + staffCostMonthly;
 
   const diagnosisScore =
-    (answers.cancellations === '10-15' ? 1 : answers.cancellations === '16-25' ? 2 : answers.cancellations === '>25' ? 3 : 0) +
+    (answers.cancellations === '6-15' ? 1 : answers.cancellations === '16-25' ? 2 : answers.cancellations === '>25' ? 3 : 0) +
     (answers.emptySlots === '<5' ? 1 : answers.emptySlots === '5-10' ? 2 : answers.emptySlots === '>10' ? 3 : 0) +
     (answers.dropOff === '>20%' ? 2 : answers.dropOff === '<20%' ? 1 : 0);
 
@@ -719,7 +712,8 @@ function Calculator() {
       icon: Phone,
       title: t.calc.q1,
       options: [
-        { value: '10-15', label: t.calc.opt.c1 },
+        { value: '0-5', label: t.calc.opt.c0 },
+        { value: '6-15', label: t.calc.opt.c1 },
         { value: '16-25', label: t.calc.opt.c2 },
         { value: '>25', label: t.calc.opt.c3 },
       ],
@@ -751,7 +745,8 @@ function Calculator() {
     setAnswers(newAnswers);
 
     if (key === 'cancellations') {
-      if (value === '10-15') setCancellations(12);
+      if (value === '0-5') setCancellations(3);
+      else if (value === '6-15') setCancellations(10);
       else if (value === '16-25') setCancellations(20);
       else if (value === '>25') setCancellations(28);
     }
@@ -797,7 +792,7 @@ function Calculator() {
                   </label>
                   <span className="text-lg font-bold text-cyan-300">{cancellations}</span>
                 </div>
-                <RangeSlider value={cancellations} min={10} max={30} onChange={setCancellations} />
+                <RangeSlider value={cancellations} min={1} max={30} onChange={setCancellations} />
               </div>
 
               <div>
@@ -978,17 +973,11 @@ function SystemDiagram() {
               style={{ width: `${(visibleSteps / steps.length) * 100}%` }}
             />
           </div>
-          {/* Vertical progress line (mobile) */}
-          <div className="absolute left-8 top-0 bottom-0 w-0.5 bg-gray-200 md:hidden">
-            <div
-              className="w-full bg-gradient-to-b from-cyan-500 to-cyan-400 transition-all duration-1000 ease-out"
-              style={{ height: `${(visibleSteps / steps.length) * 100}%` }}
-            />
-          </div>
+
 
           <div className="flex flex-col gap-10 md:flex-row md:items-start md:gap-4">
             {steps.map((step, i) => (
-              <div key={step.title} className="relative flex flex-1 flex-col items-center text-center md:items-center">
+              <div key={step.title} className="relative flex flex-1 flex-col items-center pl-0 text-center md:items-center">
                 <div
                   className={`relative z-10 flex h-16 w-16 items-center justify-center rounded-full border-4 border-[#f7f7f5] transition-all duration-500 ${
                     visibleSteps > i
@@ -1312,51 +1301,49 @@ function FounderNote() {
 function MiniCta() {
   const { t } = useI18n();
   return (
-    <section className="bg-[#f4f8fb] px-6 py-24">
-      <div className="mx-auto max-w-5xl">
-        <div className="grid overflow-hidden rounded-3xl bg-white shadow-xl shadow-slate-300/40 md:grid-cols-[0.9fr_1.1fr]">
-          {/* Left — clinical info panel */}
-          <div className="flex flex-col justify-center bg-gradient-to-br from-cyan-600 to-teal-600 p-10 text-white sm:p-12">
-            <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-white/15 ring-1 ring-white/25 backdrop-blur-sm">
-              <CalendarClock className="h-7 w-7 text-white" strokeWidth={1.5} />
-            </div>
-            <p className="mt-8 text-sm font-semibold uppercase tracking-[0.18em] text-cyan-100">
-              {t.miniCta.eyebrow}
-            </p>
-            <h3 className="mt-3 text-3xl font-bold leading-snug sm:text-4xl">
-              {t.miniCta.title}
-            </h3>
-            <div className="mt-8 space-y-3">
-              {[
-                { icon: Clock, text: t.miniCta.noCommit },
-                { icon: ShieldCheck, text: 'Bez zobowiązań' },
-                { icon: Video, text: 'Rozmowa online' },
-              ].map((item, i) => (
-                <div key={i} className="flex items-center gap-3 text-sm text-cyan-50">
-                  <item.icon className="h-5 w-5 flex-shrink-0 text-white/90" strokeWidth={1.5} />
-                  <span>{item.text}</span>
-                </div>
-              ))}
-            </div>
+    <section className="bg-white px-6 py-24">
+      <div className="mx-auto max-w-4xl">
+        <div className="text-center">
+          <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-cyan-50 ring-1 ring-cyan-100">
+            <Stethoscope className="h-8 w-8 text-cyan-600" strokeWidth={1.5} />
           </div>
+          <p className="mt-6 text-sm font-semibold uppercase tracking-[0.18em] text-cyan-600">
+            {t.miniCta.eyebrow}
+          </p>
+          <h3 className="mx-auto mt-4 max-w-2xl text-3xl font-bold leading-tight text-slate-900 sm:text-4xl">
+            {t.miniCta.title}
+          </h3>
+          <p className="mx-auto mt-5 max-w-xl text-lg text-slate-500">
+            {t.miniCta.subtitle}
+          </p>
+        </div>
 
-          {/* Right — clean white CTA panel */}
-          <div className="flex flex-col justify-center p-10 sm:p-12">
-            <p className="text-sm font-medium text-slate-500">
-              {t.audit.desc}
-            </p>
-            <a
-              href="#book"
-              className="group mt-8 inline-flex items-center justify-center gap-3 rounded-xl bg-cyan-600 px-8 py-4 text-base font-bold text-white shadow-lg shadow-cyan-600/25 transition hover:bg-cyan-700 hover:shadow-xl"
+        <div className="mx-auto mt-12 grid max-w-3xl gap-4 sm:grid-cols-3">
+          {[
+            { icon: Clock, value: '15 min', label: t.miniCta.feature1 },
+            { icon: ShieldCheck, value: t.miniCta.feature2Value, label: t.miniCta.feature2 },
+            { icon: Video, value: t.miniCta.feature3Value, label: t.miniCta.feature3 },
+          ].map((item, i) => (
+            <div
+              key={i}
+              className="rounded-2xl border border-slate-100 bg-slate-50/50 p-6 text-center"
             >
-              {t.miniCta.cta}
-              <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
-            </a>
-            <div className="mt-6 flex items-center gap-2 text-xs text-slate-400">
-              <Mail className="h-4 w-4" />
-              <span>kontakt@fullschedule.pl</span>
+              <item.icon className="mx-auto h-7 w-7 text-cyan-600" strokeWidth={1.5} />
+              <p className="mt-3 text-lg font-bold text-slate-900">{item.value}</p>
+              <p className="mt-1 text-sm text-slate-500">{item.label}</p>
             </div>
-          </div>
+          ))}
+        </div>
+
+        <div className="mt-12 text-center">
+          <a
+            href="#book"
+            className="group inline-flex items-center gap-3 rounded-xl bg-cyan-600 px-10 py-4 text-base font-bold text-white shadow-lg shadow-cyan-600/20 transition hover:bg-cyan-700"
+          >
+            {t.miniCta.cta}
+            <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
+          </a>
+          <p className="mt-4 text-sm text-slate-400">{t.miniCta.noCommit}</p>
         </div>
       </div>
     </section>
@@ -1462,9 +1449,9 @@ function Footer() {
     <footer className="px-6 py-12">
       <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 sm:flex-row">
         <img
-          src="/Projekt_bez_nazwy_-_2026-07-21T160459.162-removebg-preview copy.png"
+          src="/logo-fullschedule.svg"
           alt="FullSchedule"
-          className="h-12 w-auto"
+          className="h-9 w-auto"
         />
         <p className="text-xs text-gray-600">
           {t.footer}

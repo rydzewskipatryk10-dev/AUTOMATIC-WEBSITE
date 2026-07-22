@@ -20,7 +20,7 @@ const translations = {
     },
     langLabel: 'EN',
     hero: {
-      title: 'Twoja klinika płynnie i przewidywalnie każdego dnia',
+      title: 'Porządek, pełna kontrola.',
       subtitle: 'Mniej chaosu, więcej czasu i pełna kontrola na codzień. Pozbądź się stresu i strat z FullSchedule.',
       cta: 'Sprawdź, ile możesz odzyskać',
       yourClinic: 'Twoja klinika',
@@ -57,7 +57,8 @@ const translations = {
       q2: 'Ile średnio "pustych slotów" w grafiku pojawia się w Twoim gabinecie w ciągu miesiąca?',
       q3: 'Jaki procent nowych pacjentów rezygnuje z wizyty przez trudności z zapisem?',
       opt: {
-        c1: '10–15 wizyt',
+        c0: '0–5 wizyt',
+        c1: '6–15 wizyt',
         c2: '16–25 wizyt',
         c3: 'Powyżej 25',
         e1: 'Poniżej 5',
@@ -115,8 +116,14 @@ const translations = {
     miniCta: {
       eyebrow: 'Bezpłatna konsultacja',
       title: 'Odkryj, ile Twój gabinet traci co tydzień.',
+      subtitle: 'Krótka rozmowa, podczas której przeanalizujemy Twój grafik i wskażemy konkretne obszary do automatyzacji.',
       cta: 'Umów bezpłatny audyt',
       noCommit: '15 min, bez zobowiązań',
+      feature1: 'rozmowy',
+      feature2: 'Bez zobowiązań',
+      feature2Value: '0 zł',
+      feature3: 'Rozmowa online',
+      feature3Value: 'Online',
     },
     implementation: {
       eyebrow: 'Jak to wygląda w praktyce',
@@ -261,7 +268,7 @@ const translations = {
     },
     langLabel: 'PL',
     hero: {
-      title: 'Your clinic, smooth and predictable every day',
+      title: 'Order. Full control.',
       subtitle: 'Less chaos, more time, and full control every day. Eliminate stress and losses with FullSchedule.',
       cta: 'See how much you can recover',
       yourClinic: 'Your clinic',
@@ -298,7 +305,8 @@ const translations = {
       q2: 'How many "empty slots" appear in your schedule on average per month?',
       q3: 'What percentage of new patients give up booking due to difficulty scheduling?',
       opt: {
-        c1: '10–15 visits',
+        c0: '0–5 visits',
+        c1: '6–15 visits',
         c2: '16–25 visits',
         c3: 'Over 25',
         e1: 'Under 5',
@@ -356,8 +364,14 @@ const translations = {
     miniCta: {
       eyebrow: 'Free consultation',
       title: 'Discover how much your clinic loses every week.',
+      subtitle: 'A short call where we analyze your schedule and identify specific areas to automate.',
       cta: 'Book a free audit',
       noCommit: '15 min, no commitment',
+      feature1: 'call',
+      feature2: 'No commitment',
+      feature2Value: 'Free',
+      feature3: 'Online call',
+      feature3Value: 'Online',
     },
     implementation: {
       eyebrow: 'How it works in practice',
