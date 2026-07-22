@@ -208,8 +208,11 @@ function ExitIntentPopup() {
   const [dismissed, setDismissed] = useState(false);
 
   useEffect(() => {
-    if (dismissed) return;
-    const timer = setTimeout(() => setOpen(true), 15000);
+    if (dismissed || sessionStorage.getItem('popupShown')) return;
+    const timer = setTimeout(() => {
+      setOpen(true);
+      sessionStorage.setItem('popupShown', 'true');
+    }, 25000);
     return () => clearTimeout(timer);
   }, [dismissed]);
 

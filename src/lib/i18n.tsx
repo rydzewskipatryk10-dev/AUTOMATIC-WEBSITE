@@ -271,7 +271,7 @@ const translations = {
       stat3: 'bezpłatny audyt grafiku',
     },
     audit: {
-      title: 'Zamów bezpłatną 15-minutową symulację grafiku dla Twojego gabinetu.',
+      title: 'Zamów darmową symulację grafiku.',
       desc: 'Krótka rozmowa o tym, gdzie Twój gabinet traci czas, dochody i jak możemy to rozwiązać. Bez zobowiązań.',
       stats: [
         { value: '15 min', label: 'rozmowy' },
@@ -578,8 +578,8 @@ const translations = {
       stat3: 'free schedule audit',
     },
     audit: {
-      title: 'Book a free 15-minute schedule simulation for your clinic.',
-      desc: 'A short conversation about where your clinic loses time and revenue — and how we can automate it. No commitment.',
+      title: 'Zamów darmową symulację grafiku.',
+      desc: 'A short call about where your clinic is losing time and revenue, and how we can solve it. No strings attached.',
       stats: [
         { value: '15 min', label: 'call' },
         { value: '40h', label: 'saved / month' },
