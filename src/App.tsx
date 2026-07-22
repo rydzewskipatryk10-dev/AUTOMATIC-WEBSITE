@@ -348,7 +348,6 @@ function Nav() {
         <nav className="hidden items-center gap-7 md:flex">
           <a href="#diagnoza" className="text-sm font-medium text-gray-300 transition hover:text-cyan-300">{t.nav.calc}</a>
           <a href="#system" className="text-sm font-medium text-gray-300 transition hover:text-cyan-300">{t.nav.system}</a>
-          <a href="#case-study" className="text-sm font-medium text-gray-300 transition hover:text-cyan-300">{t.nav.cases}</a>
         </nav>
         <div className="flex items-center gap-3">
           <LanguageToggle />
@@ -365,9 +364,9 @@ function Nav() {
 }
 
 // ---------------------------------------------------------------------------
-// Case Study — concrete before/after with numbers
+// [Removed: CaseStudy]
 // ---------------------------------------------------------------------------
-function CaseStudy() {
+function _CaseStudy_REMOVED() {
   const { t } = useI18n();
   return (
     <section id="case-study" className="bg-[#f7f7f5] px-6 py-24">
@@ -553,7 +552,12 @@ function Hero() {
       <div className="pointer-events-none absolute right-0 top-0 h-[600px] w-[600px] rounded-full bg-cyan-500/5 blur-3xl" />
       <div className="pointer-events-none absolute -left-20 bottom-0 h-[400px] w-[400px] rounded-full bg-sky-500/5 blur-3xl" />
 
-      <div className="relative mx-auto grid max-w-6xl items-center gap-12 lg:grid-cols-[1.15fr_0.85fr]">
+      {/* Logo top-left */}
+      <div className="relative z-10 mx-auto max-w-6xl">
+        <img src="/logo-fullschedule.svg" alt="FullSchedule" className="h-9 w-auto" />
+      </div>
+
+      <div className="relative mx-auto grid max-w-6xl items-center gap-12 pt-10 lg:grid-cols-[1.15fr_0.85fr]">
         <div className="max-w-xl text-left">
           <h1 className="pf-hero-fade-in text-4xl font-bold leading-tight text-white sm:text-5xl md:text-7xl">
             {t.hero.title}
@@ -930,9 +934,9 @@ function Calculator() {
 }
 
 // ---------------------------------------------------------------------------
-// System Diagram (scroll-reveal) — light section
+// [Removed: SystemDiagram]
 // ---------------------------------------------------------------------------
-function SystemDiagram() {
+function _SystemDiagram_REMOVED() {
   const { t } = useI18n();
   const sectionRef = useRef<HTMLDivElement>(null);
   const [visibleSteps, setVisibleSteps] = useState(0);
@@ -1044,7 +1048,7 @@ function SystemDiagram() {
   );
 }
 
-function StepIcon({ index, visible }: { index: number; visible: boolean }) {
+function _StepIcon_REMOVED({ index, visible }: { index: number; visible: boolean }) {
   const icons = [Phone, Calendar, Bell, Database];
   const Icon = icons[index];
   return (
@@ -1216,9 +1220,9 @@ function Implementation() {
 }
 
 // ---------------------------------------------------------------------------
-// Testimonials
+// [Removed: Testimonials]
 // ---------------------------------------------------------------------------
-function Testimonials() {
+function _Testimonials_REMOVED() {
   const { t } = useI18n();
   return (
     <section className="px-6 py-24">
@@ -1266,9 +1270,9 @@ function Testimonials() {
 }
 
 // ---------------------------------------------------------------------------
-// Founder Note — light section
+// [Removed: FounderNote]
 // ---------------------------------------------------------------------------
-function FounderNote() {
+function _FounderNote_REMOVED() {
   const { t } = useI18n();
   return (
     <section className="bg-[#f7f7f5] px-6 py-24">
@@ -1470,13 +1474,10 @@ function AppContent() {
       <Nav />
       <Hero />
       <Reveal>
-        <SystemDiagram />
+        <Calculator />
       </Reveal>
       <Reveal>
         <MiniCta />
-      </Reveal>
-      <Reveal>
-        <Calculator />
       </Reveal>
       <Reveal>
         <Implementation />
@@ -1485,22 +1486,13 @@ function AppContent() {
         <BeforeAfter />
       </Reveal>
       <Reveal>
-        <CaseStudy />
-      </Reveal>
-      <Reveal>
         <ComparisonTable />
       </Reveal>
       <Reveal>
-        <Testimonials />
-      </Reveal>
-      <Reveal>
-        <FounderNote />
+        <FAQ />
       </Reveal>
       <Reveal>
         <AuditCta />
-      </Reveal>
-      <Reveal>
-        <FAQ />
       </Reveal>
       <Footer />
 
