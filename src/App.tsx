@@ -338,7 +338,7 @@ function AboutSection() {
   const { t } = useI18n();
 
   return (
-    <section id="onas" className="bg-[#f7f7f5] px-6 py-24">
+    <section id="onas" className="scroll-mt-24 bg-[#f7f7f5] px-6 py-24">
       <div className="mx-auto max-w-3xl text-center">
         <p className="text-xs font-semibold uppercase tracking-widest text-cyan-600">
           {t.about.eyebrow}
@@ -780,7 +780,7 @@ function Calculator() {
 
   return (
     /* ROI Calculator Section */
-    <section id="calculator" className="relative px-6 py-12 bg-[#08111f] min-h-screen overflow-hidden flex items-center">
+    <section id="calculator" className="scroll-mt-24 relative px-6 py-12 bg-[#08111f] min-h-screen overflow-hidden flex items-center">
       <div className="pointer-events-none absolute left-1/2 top-1/2 h-[520px] w-[520px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-fuchsia-500/5 blur-[120px]" />
       
       <div className="relative mx-auto max-w-6xl">
@@ -1084,7 +1084,7 @@ function Implementation() {
   const { t } = useI18n();
   const icons = [Wrench, Rocket, ShieldCheck];
   return (
-    <section id="implementation" className="bg-[#0d1a2e] px-6 py-24">
+    <section id="implementation" className="scroll-mt-24 bg-[#0d1a2e] px-6 py-24">
       <div className="mx-auto max-w-5xl">
         <p className="text-xs font-semibold uppercase tracking-widest text-cyan-400">
           {t.implementation.eyebrow}
@@ -1221,7 +1221,7 @@ function FAQ() {
   const [open, setOpen] = useState<number | null>(0);
 
   return (
-    <section id="faq" className="px-6 py-24">
+    <section id="faq" className="scroll-mt-24 px-6 py-24">
       <div className="mx-auto max-w-3xl">
         <p className="text-xs font-semibold uppercase tracking-widest text-cyan-400">
           {t.faq.eyebrow}
