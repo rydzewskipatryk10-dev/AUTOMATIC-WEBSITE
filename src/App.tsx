@@ -6,16 +6,17 @@ import {
 } from 'react';
 import {
   ArrowRight,
+  Calendar,
   Users,
-  Bell,
-  Settings,
   CheckCircle,
   XCircle,
   Phone,
   Mail,
   CalendarClock,
+  Bell,
   Clock,
   Video,
+  Database,
   Sparkles,
   Plus,
   Minus,
@@ -76,6 +77,63 @@ function Reveal({
     >
       {children}
     </div>
+  );
+}
+
+// ---------------------------------------------------------------------------
+// Animated counter — counts up from 0 to target when scrolled into view
+// ---------------------------------------------------------------------------
+function useCountUp(target: number, duration = 1600, startDelay = 200) {
+  const [value, setValue] = useState(0);
+  const ref = useRef<HTMLSpanElement>(null);
+  const started = useRef(false);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && !started.current) {
+          started.current = true;
+          setTimeout(() => {
+            const startTime = performance.now();
+            const tick = (now: number) => {
+              const progress = Math.min((now - startTime) / duration, 1);
+              const eased = 1 - Math.pow(1 - progress, 3);
+              setValue(Math.round(target * eased));
+              if (progress < 1) requestAnimationFrame(tick);
+            };
+            requestAnimationFrame(tick);
+          }, startDelay);
+        }
+      },
+      { threshold: 0.4 }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [target, duration, startDelay]);
+
+  return { ref, value };
+}
+
+function StatCounter({
+  value,
+  suffix = '',
+  prefix = '',
+  className = '',
+}: {
+  value: number;
+  suffix?: string;
+  prefix?: string;
+  className?: string;
+}) {
+  const { ref, value: display } = useCountUp(value);
+  return (
+    <span ref={ref} className={className}>
+      {prefix}
+      {display.toLocaleString('pl-PL')}
+      {suffix}
+    </span>
   );
 }
 
@@ -307,183 +365,281 @@ function AboutSection() {
 // ---------------------------------------------------------------------------
 // Hero Carousel — rotating dashboard views with smooth crossfade
 // ---------------------------------------------------------------------------
-function easeOutCubic(x: number) {
-  return 1 - Math.pow(1 - x, 3);
-}
-
-function useAnimatedNumber(value: number, duration = 700) {
-  const [displayValue, setDisplayValue] = useState(value);
-  const frameRef = useRef<number | null>(null);
-
-  useEffect(() => {
-    const from = displayValue;
-    const delta = value - from;
-    if (delta === 0) return;
-
-    let start: number | null = null;
-
-    const step = (timestamp: number) => {
-      if (start === null) start = timestamp;
-      const progress = Math.min((timestamp - start) / duration, 1);
-      setDisplayValue(Math.round(from + delta * easeOutCubic(progress)));
-      if (progress < 1) {
-        frameRef.current = window.requestAnimationFrame(step);
-      }
-    };
-
-    frameRef.current = window.requestAnimationFrame(step);
-
-    return () => {
-      if (frameRef.current !== null) {
-        window.cancelAnimationFrame(frameRef.current);
-      }
-    };
-  }, [value]);
-
-  return displayValue;
-}
-
 function HeroCarousel() {
-  const [activeTab, setActiveTab] = useState<'dashboard' | 'notifications'>('dashboard');
-  const [occupancy, setOccupancy] = useState(88);
-  const [refreshing, setRefreshing] = useState(false);
-  const refreshTimeout = useRef<number | null>(null);
-
-  const displayedOccupancy = useAnimatedNumber(occupancy, 800);
+  const [activeScreen, setActiveScreen] = useState(0);
 
   useEffect(() => {
-    return () => {
-      if (refreshTimeout.current !== null) {
-        window.clearTimeout(refreshTimeout.current);
-      }
-    };
+    const interval = window.setInterval(() => {
+      setActiveScreen((index) => (index === 0 ? 1 : 0));
+    }, 4500);
+    return () => window.clearInterval(interval);
   }, []);
 
-  const handleRefresh = () => {
-    setRefreshing(true);
-    setOccupancy(86 + Math.round(Math.random() * 4));
-    if (refreshTimeout.current !== null) {
-      window.clearTimeout(refreshTimeout.current);
-    }
-    refreshTimeout.current = window.setTimeout(() => {
-      setRefreshing(false);
-    }, 650);
-  };
+  const screens = [
+    {
+      title: 'Wskaźniki zajętości',
+      subtitle: 'Automatyczne wypełnianie grafiku.',
+      content: <PhoneScreenOverview />,
+    },
+    {
+      title: 'Plan dnia',
+      subtitle: 'Kluczowe wizyty i potwierdzenia.',
+      content: <PhoneScreenToday />,
+    },
+  ];
 
   return (
     <div className="relative flex justify-center lg:justify-end lg:justify-self-end lg:ml-10">
-      <div className="w-full max-w-[380px]">
-        <div className="rounded-[3rem] border border-white/10 bg-slate-950/95 p-5 shadow-[0_40px_110px_rgba(8,13,25,0.45)]">
-          <div className="overflow-hidden rounded-[2.5rem] border border-white/10 bg-[radial-gradient(circle_at_top_right,_rgba(56,189,248,0.18),_transparent_30%),_linear-gradient(180deg,_rgba(15,23,42,0.98),_rgba(10,18,31,0.96))] p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)] backdrop-blur-xl">
-            <div className="mb-4 flex items-center justify-between text-[10px] uppercase tracking-[0.3em] text-slate-500">
-              <span>9:41</span>
-              <span className="rounded-full border border-white/10 bg-white/5 px-2.5 py-1 text-[10px] text-slate-300">iOS 17</span>
-              <span>98% 🔋</span>
+      <div className="w-full max-w-[360px]">
+        <div className="rounded-[3rem] border border-white/10 bg-slate-950/95 p-5 shadow-[0_35px_90px_rgba(15,23,42,0.35)]">
+          <div className="flex items-center justify-between rounded-[2.25rem] border border-white/10 bg-slate-900/90 px-4 py-3">
+            <div className="min-w-0">
+              <p className="text-[10px] uppercase tracking-[0.28em] text-slate-400">Ekran telefonu</p>
+              <p className="truncate text-lg font-semibold text-white">Aplikacja</p>
+              <p className="mt-1 text-sm leading-5 text-slate-400">Przejrzysty widok</p>
             </div>
-
-            <div className="rounded-[2rem] border border-white/10 bg-white/5 p-5 backdrop-blur-xl shadow-[0_18px_40px_rgba(0,0,0,0.16)]">
-              <div className="flex items-center justify-between gap-4">
-                <div>
-                  <p className="text-xs uppercase tracking-[0.32em] text-slate-400">Najbliższa wizyta</p>
-                  <h2 className="mt-3 text-xl font-semibold text-white">Michał Kwiatkowski</h2>
-                  <p className="mt-1 text-sm text-slate-300">Gabinet 3 · 14:30</p>
-                </div>
-                <div className="flex h-14 w-14 items-center justify-center rounded-3xl bg-gradient-to-br from-cyan-400/15 to-slate-800 text-sm font-semibold text-white shadow-inner shadow-black/20">
-                  MK
-                </div>
-              </div>
-
-              <div className="mt-5 rounded-[1.75rem] border border-white/10 bg-slate-950/75 p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.05)]">
-                <div className="flex items-center justify-between gap-4">
-                  <div>
-                    <p className="text-xs uppercase tracking-[0.28em] text-slate-400">Start</p>
-                    <p className="mt-2 text-4xl font-semibold text-cyan-300">14:30</p>
-                  </div>
-                  <button
-                    type="button"
-                    onClick={handleRefresh}
-                    className="rounded-2xl bg-cyan-400 px-4 py-3 text-sm font-semibold text-slate-950 shadow-lg shadow-cyan-500/20 transition hover:bg-cyan-300"
-                  >
-                    {refreshing ? 'Aktualizuję…' : 'Potwierdź obecność'}
-                  </button>
-                </div>
-              </div>
-            </div>
-
-            <div className="mt-5 rounded-[2rem] border border-white/10 bg-white/10 p-4 backdrop-blur-xl shadow-[0_22px_60px_rgba(0,0,0,0.18)]">
-              <div className="flex items-center justify-between gap-3">
-                <div>
-                  <p className="text-xs uppercase tracking-[0.28em] text-slate-400">Stan dnia</p>
-                  <h3 className="mt-2 text-lg font-semibold text-white">Przegląd harmonogramu</h3>
-                </div>
-                <span className="rounded-full bg-emerald-400/10 px-3 py-1 text-xs font-semibold text-emerald-200">Potwierdzone wizyty</span>
-              </div>
-
-              <div className="mt-4 grid gap-3 sm:grid-cols-2">
-                <div className="rounded-[1.75rem] bg-slate-950/80 p-4 ring-1 ring-white/10">
-                  <p className="text-xs uppercase tracking-[0.26em] text-slate-400">Obłożenie</p>
-                  <p className="mt-3 text-4xl font-semibold text-cyan-300">{displayedOccupancy}%</p>
-                </div>
-                <div className="rounded-[1.75rem] bg-slate-950/80 p-4 ring-1 ring-white/10">
-                  <p className="text-xs uppercase tracking-[0.26em] text-slate-400">Luka</p>
-                  <p className="mt-3 text-2xl font-semibold text-amber-300">11:30–12:00</p>
-                  <button className="mt-4 rounded-2xl bg-amber-300/10 px-4 py-3 text-sm font-semibold text-amber-100 transition hover:bg-amber-300/15">
-                    Znajdź zastępstwo
-                  </button>
-                </div>
-              </div>
-
-              <div className="mt-4 grid gap-3 sm:grid-cols-2">
-                <div className="rounded-[1.75rem] bg-slate-950/80 p-4 ring-1 ring-white/10">
-                  <p className="text-xs uppercase tracking-[0.26em] text-slate-400">Potwierdzone</p>
-                  <p className="mt-2 text-2xl font-semibold text-emerald-300">18</p>
-                </div>
-                <div className="rounded-[1.75rem] bg-slate-950/80 p-4 ring-1 ring-white/10">
-                  <p className="text-xs uppercase tracking-[0.26em] text-slate-400">Oczekujące</p>
-                  <p className="mt-2 text-2xl font-semibold text-slate-100">2</p>
-                </div>
-              </div>
+            <div className="flex items-center gap-2">
+              <span className="h-2.5 w-2.5 rounded-full bg-emerald-400" />
+              <span className="h-2.5 w-2.5 rounded-full bg-slate-700" />
             </div>
           </div>
 
-          <div className="mt-5 grid grid-cols-4 gap-2 rounded-[1.85rem] border border-white/10 bg-slate-900/70 p-3">
-            <button
-              type="button"
-              onClick={() => setActiveTab('dashboard')}
-              className={`flex flex-col items-center justify-center gap-1 rounded-2xl px-2 py-3 text-[11px] font-semibold transition ${
-                activeTab === 'dashboard' ? 'bg-cyan-400/15 text-cyan-200' : 'text-slate-400 hover:bg-white/5'
+          <div className="relative mt-4 overflow-hidden rounded-[2.5rem] border border-white/10 bg-[#06101d]/95 p-4">
+            <div className="relative h-[560px] overflow-hidden rounded-[2rem] bg-slate-950/90">
+              {screens.map((screen, index) => (
+                <div
+                  key={screen.title}
+                  className={`absolute inset-0 transition-all duration-700 ease-in-out ${
+                    activeScreen === index
+                      ? 'opacity-100 translate-x-0'
+                      : 'opacity-0 translate-x-4 pointer-events-none'
+                  }`}
+                >
+                  {screen.content}
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="mt-4 flex items-center justify-center gap-2">
+            {screens.map((_, index) => (
+              <button
+                key={index}
+                type="button"
+                onClick={() => setActiveScreen(index)}
+                className={`h-2.5 w-2.5 rounded-full transition-colors ${
+                  activeScreen === index ? 'bg-cyan-400' : 'bg-white/20'
+                }`}
+                aria-label={`Pokaż ekran ${screens[index].title}`}
+              />
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function PhoneScreenOverview() {
+  return (
+    <div className="h-full rounded-[1.6rem] border border-white/10 bg-slate-950/90 p-4">
+      <div className="flex items-center justify-between text-sm font-semibold text-white">
+        <span>Wskaźniki</span>
+        <span className="text-[10px] uppercase tracking-[0.25em] text-sky-300">Tydzień</span>
+      </div>
+      <div className="mt-4 grid grid-cols-3 gap-3 text-center">
+        <div className="rounded-[1.5rem] bg-slate-900/85 p-3">
+          <p className="text-2xl font-semibold text-white">94%</p>
+          <p className="mt-1 text-[11px] text-slate-400">Obsadzenie</p>
+        </div>
+        <div className="rounded-[1.5rem] bg-slate-900/85 p-3">
+          <p className="text-2xl font-semibold text-sky-300">2%</p>
+          <p className="mt-1 text-[11px] text-slate-400">No-show</p>
+        </div>
+        <div className="rounded-[1.5rem] bg-slate-900/85 p-3">
+          <p className="text-2xl font-semibold text-emerald-300">14h</p>
+          <p className="mt-1 text-[11px] text-slate-400">Odzyskany</p>
+        </div>
+      </div>
+      <div className="mt-4 rounded-[1.75rem] border border-white/10 bg-[#07101a]/95 p-3 text-[12px] leading-6 text-slate-400">
+        Automatyczne potwierdzenia i rezerwacje wypełniły 6 wolnych terminów.
+      </div>
+    </div>
+  );
+}
+
+function PhoneScreenToday() {
+  return (
+    <div className="h-full rounded-[1.6rem] border border-white/10 bg-slate-950/90 p-4">
+      <div className="flex items-center justify-between text-sm font-semibold text-white">
+        <span>Plan dnia</span>
+        <span className="text-[10px] uppercase tracking-[0.25em] text-slate-400">7 wizyt</span>
+      </div>
+      <div className="mt-4 space-y-3">
+        {[
+          { time: '09:00', patient: 'A. Kowalska', status: 'Potwierdzona' },
+          { time: '10:30', patient: 'M. Nowak', status: 'Nowa rezerwacja' },
+          { time: '12:00', patient: 'J. Wiśniewski', status: 'SMS przypomnienie' },
+        ].map((row) => (
+          <div key={row.time} className="rounded-[1.5rem] border border-white/10 bg-[#06111f]/95 p-3">
+            <div className="flex items-center justify-between text-[13px] font-semibold text-white">
+              <span>{row.time}</span>
+              <span className="rounded-full bg-slate-800/70 px-2 py-1 text-[10px] text-slate-300">{row.status}</span>
+            </div>
+            <p className="mt-2 text-sm text-slate-200">{row.patient}</p>
+          </div>
+        ))}
+      </div>
+      <div className="mt-4 rounded-[1.75rem] border border-white/10 bg-slate-900/70 p-3 text-[11px] text-slate-300">
+        Przypomnienia SMS odzyskały 2 wolne sloty, które zostały natychmiast zarezerwowane.
+      </div>
+    </div>
+  );
+}
+
+function CalendarSlide({ slide }: { slide: { items: { time: string; label: string; status: string }[]; footer: { booked: string; noshow: string; saved: string } } }) {
+  const { t } = useI18n();
+  return (
+    <div className="flex h-full flex-col gap-4">
+      <div className="rounded-[1.75rem] border border-white/10 bg-white/5 p-4">
+        <div className="flex items-center justify-between text-sm font-semibold text-white">
+          <span>Wtorek, 21 lip</span>
+          <span className="text-xs text-sky-300">9:00–18:00</span>
+        </div>
+        <div className="mt-4 space-y-2">
+          {slide.items.slice(0, 6).map((slot, i) => (
+            <div
+              key={i}
+              className={`flex items-center justify-between gap-3 rounded-2xl border px-3 py-2 text-xs ${
+                slot.status === 'filled'
+                  ? 'border-cyan-400/20 bg-cyan-400/10 text-cyan-100'
+                  : slot.status === 'reminder'
+                  ? 'border-sky-400/20 bg-sky-500/10 text-sky-100'
+                  : 'border-white/10 bg-slate-950/60 text-white'
               }`}
             >
-              <CalendarClock className="h-5 w-5" />
-              Dashboard
-            </button>
-            <button
-              type="button"
-              onClick={() => setActiveTab('dashboard')}
-              className={`flex flex-col items-center justify-center gap-1 rounded-2xl px-2 py-3 text-[11px] font-semibold transition ${
-                activeTab === 'dashboard' ? 'bg-cyan-400/15 text-cyan-200' : 'text-slate-400 hover:bg-white/5'
-              }`}
-            >
-              <Users className="h-5 w-5" />
-              Pacjenci
-            </button>
-            <button
-              type="button"
-              onClick={() => setActiveTab('notifications')}
-              className={`flex flex-col items-center justify-center gap-1 rounded-2xl px-2 py-3 text-[11px] font-semibold transition ${
-                activeTab === 'notifications' ? 'bg-cyan-400/15 text-cyan-200' : 'text-slate-400 hover:bg-white/5'
-              }`}
-            >
-              <Bell className="h-5 w-5" />
-              Powiad.
-            </button>
-            <button
-              type="button"
-              className="flex flex-col items-center justify-center gap-1 rounded-2xl px-2 py-3 text-[11px] font-semibold text-slate-400 transition hover:bg-white/5"
-            >
-              <Settings className="h-5 w-5" />
-              Ustaw.
-            </button>
+              <span className="w-14 font-mono text-xs font-semibold">{slot.time}</span>
+              <span className="min-w-0 flex-1 truncate text-[11px] font-medium">{slot.label}</span>
+              <span className="rounded-full bg-white/5 px-2 py-0.5 text-[10px] uppercase tracking-[0.18em] text-slate-300">
+                {slot.status === 'reminder' ? 'Przypomnienie' : slot.status === 'filled' ? 'Wypełnione' : 'Potwierdzone'}
+              </span>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div className="grid grid-cols-3 gap-3 text-[10px]">
+        <div className="rounded-2xl bg-white/5 p-3 text-center">
+          <p className="text-[10px] uppercase tracking-[0.18em] text-slate-400">{t.hero.booked}</p>
+          <p className="mt-2 text-sm font-semibold text-cyan-300">94%</p>
+        </div>
+        <div className="rounded-2xl bg-white/5 p-3 text-center">
+          <p className="text-[10px] uppercase tracking-[0.18em] text-slate-400">{t.hero.noshow}</p>
+          <p className="mt-2 text-sm font-semibold text-sky-300">2%</p>
+        </div>
+        <div className="rounded-2xl bg-white/5 p-3 text-center">
+          <p className="text-[10px] uppercase tracking-[0.18em] text-slate-400">{t.hero.saved}</p>
+          <p className="mt-2 text-sm font-semibold text-white">14h</p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function FeaturesSlide({ slide }: { slide: { items: { icon: string; label: string; desc: string }[] } }) {
+  const iconMap: Record<string, typeof Calendar> = {
+    Calendar,
+    Bell,
+    Users,
+    Sparkles,
+    Clock,
+    Rocket,
+    ShieldCheck,
+    Database,
+  };
+  return (
+    <div className="flex h-full flex-col gap-4">
+      <div className="rounded-[1.75rem] border border-white/10 bg-white/5 p-4">
+        <p className="text-sm font-semibold text-white">Aplikacje w jednym miejscu</p>
+        <p className="mt-2 text-xs text-slate-400">Wszystko, co potrzebne do zarządzania wizytami.</p>
+        <div className="mt-4 grid grid-cols-2 gap-3">
+          {slide.items.slice(0, 4).map((item, i) => {
+            const Icon = iconMap[item.icon] ?? CheckCircle;
+            return (
+              <div key={i} className="rounded-3xl border border-white/10 bg-[#06101a]/90 p-3">
+                <div className="inline-flex h-10 w-10 items-center justify-center rounded-3xl bg-cyan-400/10 text-cyan-300">
+                  <Icon className="h-5 w-5" strokeWidth={1.5} />
+                </div>
+                <p className="mt-3 text-xs font-semibold text-white">{item.label}</p>
+                <p className="mt-1 text-[10px] leading-tight text-slate-400">{item.desc}</p>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
+      <div className="grid grid-cols-3 gap-3 text-[10px]">
+        {slide.items.slice(4).map((item, i) => {
+          const Icon = iconMap[item.icon] ?? CheckCircle;
+          return (
+            <div key={i} className="rounded-2xl border border-white/10 bg-white/5 p-3 text-center">
+              <div className="mx-auto flex h-9 w-9 items-center justify-center rounded-2xl bg-slate-950/60 text-cyan-300">
+                <Icon className="h-4 w-4" strokeWidth={1.5} />
+              </div>
+              <p className="mt-3 text-[10px] font-medium text-white">{item.label}</p>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+function SystemSlide({ slide }: { slide: { title: string; subtitle: string; nodes: { icon: string; label: string }[]; footer: string } }) {
+  const iconMap: Record<string, typeof Phone> = {
+    Phone,
+    Calendar,
+    Bell,
+    Database,
+    Mail,
+    Users,
+  };
+  return (
+    <div className="flex h-full flex-col justify-between gap-4">
+      <div className="rounded-[1.75rem] border border-white/10 bg-white/5 p-4">
+        <p className="text-sm font-semibold text-white">{slide.title}</p>
+        <p className="mt-2 text-xs text-slate-400">{slide.subtitle}</p>
+        <div className="mt-4 grid grid-cols-2 gap-3">
+          {slide.nodes.map((node, i) => {
+            const Icon = iconMap[node.icon] ?? CheckCircle;
+            return (
+              <div key={i} className="rounded-3xl border border-white/10 bg-[#06101a]/90 p-3 text-center">
+                <div className="mx-auto flex h-10 w-10 items-center justify-center rounded-3xl bg-cyan-400/10 text-cyan-300">
+                  <Icon className="h-5 w-5" strokeWidth={1.5} />
+                </div>
+                <p className="mt-3 text-xs font-medium text-white">{node.label}</p>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
+      <div className="space-y-3">
+        <div className="rounded-[1.75rem] border border-white/10 bg-white/5 p-4">
+          <p className="text-[10px] uppercase tracking-[0.18em] text-slate-400">Status</p>
+          <p className="mt-2 text-sm font-semibold text-white">{slide.footer}</p>
+        </div>
+        <div className="rounded-[1.75rem] border border-white/10 bg-white/5 p-3 text-[10px] text-slate-400">
+          <p className="font-semibold text-white">Dock</p>
+          <div className="mt-3 flex items-center justify-between gap-2">
+            {slide.nodes.slice(0, 4).map((node, i) => {
+              const Icon = iconMap[node.icon] ?? CheckCircle;
+              return (
+                <div key={i} className="flex h-12 min-w-[2.5rem] flex-1 items-center justify-center rounded-2xl bg-slate-950/70 text-cyan-300">
+                  <Icon className="h-5 w-5" strokeWidth={1.5} />
+                </div>
+              );
+            })}
           </div>
         </div>
       </div>
@@ -498,28 +654,39 @@ function Hero() {
   const { t } = useI18n();
 
   return (
-    <section className="relative overflow-hidden px-6 py-0 min-h-screen">
+    <section className="relative overflow-hidden px-6 py-10 min-h-screen sm:py-14 lg:py-18">
       <div className="absolute inset-0 bg-gradient-to-br from-[#08111f] via-[#0a1628] to-[#0c1e35]" />
       <div className="pointer-events-none absolute right-0 top-0 h-[520px] w-[520px] rounded-full bg-purple-500/10 blur-3xl" />
       <div className="pointer-events-none absolute -left-16 bottom-0 h-[340px] w-[340px] rounded-full bg-pink-500/5 blur-3xl" />
 
-      <div className="relative mx-auto grid min-h-screen max-w-6xl items-center gap-10 lg:grid-cols-[1.05fr_0.95fr]">
-        <div className="max-w-xl text-left flex flex-col justify-center gap-8 lg:min-h-[640px]">
-          <p className="pf-hero-fade-in text-sm font-semibold uppercase tracking-[0.3em] text-cyan-300">Nowoczesny pulpit zarządzania</p>
-          <h1 className="pf-hero-fade-in text-4xl font-semibold leading-tight text-white sm:text-5xl lg:text-5xl xl:text-6xl">
-            {t.hero.title}
+      <div className="relative mx-auto grid max-w-6xl items-start gap-10 lg:grid-cols-[1.1fr_auto]">
+        <div className="max-w-xl text-left flex flex-col justify-start gap-8 pt-4 lg:pt-6">
+          <h1 className="pf-hero-fade-in text-4xl font-bold leading-tight text-white sm:text-5xl lg:text-6xl xl:text-7xl">
+            {t.hero.title.split(' ').map((word, i) => (
+              <span
+                key={i}
+                className={`pf-hero-word ${i === 0 ? 'pf-hero-word-1' : i === 1 ? 'pf-hero-word-2' : 'pf-hero-word-3'}`}
+              >
+                {word}
+              </span>
+            )).reduce<ReactNode[]>((acc, el, i) => {
+              if (i > 0) acc.push(' ');
+              acc.push(el);
+              return acc;
+            }, [])}
           </h1>
           <p className="pf-hero-fade-in-delayed max-w-2xl text-base leading-8 text-gray-300 sm:text-lg">
             {t.hero.subtitle}
           </p>
           <a
             href="#diagnoza"
-            className="pf-hero-fade-in-delayed-2 inline-flex max-w-max items-center gap-2 rounded-full bg-gradient-to-r from-sky-500 to-cyan-400 px-8 py-4 text-base font-semibold text-black shadow-xl shadow-cyan-500/40 transition hover:bg-cyan-400"
+            className="pf-hero-fade-in-delayed-2 inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-sky-500 to-cyan-400 px-8 py-4 text-base font-bold text-black shadow-xl shadow-cyan-500/40 transition hover:bg-cyan-400"
           >
             {t.hero.cta}
             <ArrowRight className="h-5 w-5" />
           </a>
         </div>
+
         <HeroCarousel />
       </div>
     </section>
@@ -552,6 +719,35 @@ function RangeSlider({ value, min, max, onChange }: { value: number; min: number
       style={{ '--pf-pct': `${pct}%` } as React.CSSProperties}
     />
   );
+}
+
+function AnimatedNumber({ value, formatFn }: { value: number; formatFn?: (val: number) => string }) {
+  const [displayValue, setDisplayValue] = useState(0);
+
+  useEffect(() => {
+    let startTimestamp: number | null = null;
+    const duration = 600;
+    const startValue = displayValue;
+    const change = value - startValue;
+
+    if (change === 0) return;
+
+    const step = (timestamp: number) => {
+      if (!startTimestamp) startTimestamp = timestamp;
+      const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+      const easeOutQuart = 1 - Math.pow(1 - progress, 4);
+      setDisplayValue(startValue + change * easeOutQuart);
+      if (progress < 1) {
+        window.requestAnimationFrame(step);
+      } else {
+        setDisplayValue(value);
+      }
+    };
+    window.requestAnimationFrame(step);
+  }, [value]);
+
+  const display = Math.round(displayValue);
+  return <span className="tabular-nums">{formatFn ? formatFn(display) : display}</span>;
 }
 
 function Calculator() {
@@ -1146,30 +1342,28 @@ function AppContent() {
     <div id="top" className="min-h-screen bg-[#0a1628] text-white antialiased">
       <Nav />
       <Hero />
-      <div className="hidden">
-        <Reveal>
-          <Calculator />
-        </Reveal>
-        <Reveal>
-          <MiniCta />
-        </Reveal>
-        <Reveal>
-          <Implementation />
-        </Reveal>
-        <Reveal>
-          <BeforeAfter />
-        </Reveal>
-        <Reveal>
-          <AboutSection />
-        </Reveal>
-        <Reveal>
-          <FAQ />
-        </Reveal>
-        <Reveal>
-          <AuditCta />
-        </Reveal>
-        <Footer />
-      </div>
+      <Reveal>
+        <Calculator />
+      </Reveal>
+      <Reveal>
+        <MiniCta />
+      </Reveal>
+      <Reveal>
+        <Implementation />
+      </Reveal>
+      <Reveal>
+        <BeforeAfter />
+      </Reveal>
+      <Reveal>
+        <AboutSection />
+      </Reveal>
+      <Reveal>
+        <FAQ />
+      </Reveal>
+      <Reveal>
+        <AuditCta />
+      </Reveal>
+      <Footer />
 
       <StickyMobileCta />
       <ExitIntentPopup />
