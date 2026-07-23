@@ -1184,24 +1184,24 @@ function Implementation() {
 function MiniCta() {
   const { t } = useI18n();
   return (
-    <section className="bg-white px-4 py-20 sm:px-6 sm:py-24">
+    <section className="bg-white px-4 py-10 sm:px-6 sm:py-16">
       <div className="mx-auto max-w-4xl">
         <div className="text-center">
           <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-cyan-50 ring-1 ring-cyan-100">
             <Stethoscope className="h-7 w-7 text-cyan-600" strokeWidth={1.5} />
           </div>
-          <p className="mt-5 text-sm font-semibold uppercase tracking-[0.18em] text-cyan-600">
+          <p className="mt-4 text-sm font-semibold uppercase tracking-[0.18em] text-cyan-600">
             {t.miniCta.eyebrow}
           </p>
-          <h3 className="mx-auto mt-4 max-w-2xl text-3xl font-bold leading-tight text-slate-900 sm:text-4xl">
+          <h3 className="mx-auto mt-3 max-w-2xl text-3xl font-bold leading-tight text-slate-900 sm:text-4xl">
             {t.miniCta.title}
           </h3>
-          <p className="mx-auto mt-4 max-w-xl text-base text-slate-500 sm:text-lg">
+          <p className="mx-auto mt-3 max-w-xl text-base text-slate-500 sm:text-lg">
             {t.miniCta.subtitle}
           </p>
         </div>
 
-        <div className="mx-auto mt-10 grid max-w-3xl gap-4 sm:grid-cols-3">
+        <div className="mx-auto mt-6 grid max-w-3xl gap-3 sm:grid-cols-3">
           {[
             { icon: Clock, value: '15 min', label: t.miniCta.feature1 },
             { icon: ShieldCheck, value: t.miniCta.feature2Value, label: t.miniCta.feature2 },
@@ -1209,7 +1209,7 @@ function MiniCta() {
           ].map((item, i) => (
             <div
               key={i}
-              className="rounded-2xl border border-slate-100 bg-slate-50/50 p-4 text-center"
+              className="rounded-2xl border border-slate-100 bg-slate-50/50 p-3 text-center"
             >
               <item.icon className="mx-auto h-6 w-6 text-cyan-600" strokeWidth={1.5} />
               <p className="mt-2 text-base font-semibold text-slate-900 sm:text-lg">{item.value}</p>
@@ -1218,7 +1218,7 @@ function MiniCta() {
           ))}
         </div>
 
-        <div className="mt-10 text-center">
+        <div className="mt-6 text-center">
           <a
             href="#book"
             className="group inline-flex items-center gap-3 rounded-xl bg-cyan-600 px-6 py-3 text-base font-bold text-white shadow-lg shadow-cyan-600/20 transition hover:bg-cyan-700 sm:px-10 sm:py-4"
@@ -1226,7 +1226,7 @@ function MiniCta() {
             {t.miniCta.cta}
             <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
           </a>
-          <p className="mt-4 text-sm text-slate-400">{t.miniCta.noCommit}</p>
+          <p className="mt-3 text-sm text-slate-400">{t.miniCta.noCommit}</p>
         </div>
       </div>
     </section>
@@ -1239,36 +1239,36 @@ function MiniCta() {
 function AuditCta() {
   const { t } = useI18n();
   return (
-    <section id="kontakt" className="relative overflow-hidden bg-[#0d1a2e] px-6 py-12 sm:py-16">
+    <section id="kontakt" className="relative overflow-hidden bg-[#0d1a2e] px-6 py-8 sm:py-12">
       <div className="relative mx-auto max-w-3xl text-center">
         <h2 className="text-4xl font-bold text-white sm:text-5xl">
           {t.audit.title}
         </h2>
-        <p className="mx-auto mt-5 max-w-2xl text-base leading-7 text-gray-300 sm:text-lg">
+        <p className="mx-auto mt-4 max-w-2xl text-base leading-7 text-gray-300 sm:text-lg">
           {t.audit.desc}
         </p>
 
-        <div className="mt-6 grid gap-3 sm:grid-cols-3 sm:justify-center">
-          <div className="flex items-center justify-center gap-2 rounded-3xl bg-slate-950/75 px-3 py-2 text-xs text-gray-300 sm:text-sm">
+        <div className="mt-4 grid gap-2 sm:grid-cols-3 sm:justify-center">
+          <div className="flex items-center justify-center gap-2 rounded-3xl bg-slate-950/75 px-3 py-2 text-[11px] text-gray-300 sm:text-sm">
             <Clock className="h-5 w-5 text-cyan-400" strokeWidth={1.5} />
             <span>15 min</span>
           </div>
-          <div className="flex items-center justify-center gap-2 rounded-3xl bg-slate-950/75 px-3 py-2 text-xs text-gray-300 sm:text-sm">
+          <div className="flex items-center justify-center gap-2 rounded-3xl bg-slate-950/75 px-3 py-2 text-[11px] text-gray-300 sm:text-sm">
             <Video className="h-5 w-5 text-cyan-400" strokeWidth={1.5} />
             <span>Online</span>
           </div>
-          <div className="flex items-center justify-center gap-2 rounded-3xl bg-slate-950/75 px-3 py-2 text-xs text-gray-300 sm:text-sm">
+          <div className="flex items-center justify-center gap-2 rounded-3xl bg-slate-950/75 px-3 py-2 text-[11px] text-gray-300 sm:text-sm">
             <ShieldCheck className="h-5 w-5 text-cyan-400" strokeWidth={1.5} />
             <span>Bez zobowiązań</span>
           </div>
         </div>
 
-        <div className="mx-auto mt-8 max-w-xl rounded-3xl border border-white/10 bg-[#0a1628]/70 p-4 text-left backdrop-blur-sm sm:p-5">
+        <div className="mx-auto mt-6 max-w-xl rounded-3xl border border-white/10 bg-[#0a1628]/70 p-4 text-left backdrop-blur-sm sm:p-5">
           <LeadForm source="audit-cta" variant="booking" />
         </div>
         <p className="mt-3 text-sm text-gray-400">{t.audit.noCommit}</p>
 
-        <p className="mt-4 flex items-center justify-center gap-2 text-sm text-gray-400">
+        <p className="mt-3 flex items-center justify-center gap-2 text-sm text-gray-400">
           <Mail className="h-4 w-4" />
           kontakt@fullschedule.pl
         </p>
