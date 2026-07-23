@@ -26,6 +26,7 @@ import {
   X,
   Languages,
   Stethoscope,
+  TrendingUp,
 } from 'lucide-react';
 import { I18nProvider, useI18n, type Lang } from './lib/i18n';
 import { LeadForm } from './lib/LeadForm';
@@ -369,7 +370,7 @@ function HeroCarousel() {
 
   useEffect(() => {
     const interval = window.setInterval(() => {
-      setActiveScreen((current) => (current === 0 ? 1 : 0));
+      setActiveScreen((index) => (index === 0 ? 1 : 0));
     }, 4500);
     return () => window.clearInterval(interval);
   }, []);
@@ -377,26 +378,50 @@ function HeroCarousel() {
   const screens = [
     {
       title: 'Wskaźniki zajętości',
-      subtitle: 'Jak automatyzacja wypełnia grafik i redukuje no-shows.',
+      subtitle: 'Automatyczne wypełnianie grafiku.',
       content: <PhoneScreenOverview />,
     },
     {
       title: 'Plan dnia',
-      subtitle: 'Kluczowe wizyty i statusy potwierdzeń na pierwszy rzut oka.',
+      subtitle: 'Kluczowe wizyty i potwierdzenia.',
       content: <PhoneScreenToday />,
     },
   ];
 
   return (
-    <div className="relative hidden md:flex justify-end lg:justify-self-end lg:ml-10">
-      <div className="w-[300px] max-w-[90vw] rounded-[2.5rem] border border-white/10 bg-slate-950/95 p-5 shadow-[0_35px_90px_rgba(15,23,42,0.25)]">
-        <div className="mb-4 flex items-start justify-between gap-3">
-          <div className="min-w-0">
-            <p className="text-xs uppercase tracking-[0.24em] text-slate-400">Ekran</p>
-            <h3 className="mt-2 truncate text-lg font-semibold text-white">Panel automatyzacji</h3>
-            <p className="mt-2 text-sm leading-5 text-slate-400">{screens[activeScreen].subtitle}</p>
+    <div className="relative flex justify-center lg:justify-end lg:justify-self-end lg:ml-10">
+      <div className="w-full max-w-[360px]">
+        <div className="rounded-[3rem] border border-white/10 bg-slate-950/95 p-5 shadow-[0_35px_90px_rgba(15,23,42,0.35)]">
+          <div className="flex items-center justify-between rounded-[2.25rem] border border-white/10 bg-slate-900/90 px-4 py-3">
+            <div className="min-w-0">
+              <p className="text-[10px] uppercase tracking-[0.28em] text-slate-400">Ekran telefonu</p>
+              <p className="truncate text-lg font-semibold text-white">Aplikacja</p>
+              <p className="mt-1 text-sm leading-5 text-slate-400">Przejrzysty widok</p>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="h-2.5 w-2.5 rounded-full bg-emerald-400" />
+              <span className="h-2.5 w-2.5 rounded-full bg-slate-700" />
+            </div>
           </div>
-          <div className="flex items-center gap-2">
+
+          <div className="relative mt-4 overflow-hidden rounded-[2.5rem] border border-white/10 bg-[#06101d]/95 p-4">
+            <div className="relative h-[560px] overflow-hidden rounded-[2rem] bg-slate-950/90">
+              {screens.map((screen, index) => (
+                <div
+                  key={screen.title}
+                  className={`absolute inset-0 transition-all duration-700 ease-in-out ${
+                    activeScreen === index
+                      ? 'opacity-100 translate-x-0'
+                      : 'opacity-0 translate-x-4 pointer-events-none'
+                  }`}
+                >
+                  {screen.content}
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="mt-4 flex items-center justify-center gap-2">
             {screens.map((_, index) => (
               <button
                 key={index}
@@ -410,49 +435,6 @@ function HeroCarousel() {
             ))}
           </div>
         </div>
-
-        <HeroPhoneShell>
-          <div className="relative h-[430px] overflow-hidden rounded-[1.8rem]">
-            {screens.map((screen, index) => (
-              <div
-                key={screen.title}
-                className={`absolute inset-0 transition-all duration-700 ease-in-out ${
-                  activeScreen === index
-                    ? 'opacity-100 translate-y-0'
-                    : 'opacity-0 -translate-y-5 pointer-events-none'
-                }`}
-              >
-                {screen.content}
-              </div>
-            ))}
-          </div>
-        </HeroPhoneShell>
-      </div>
-    </div>
-  );
-}
-
-function HeroPhoneShell({ children }: { children: ReactNode }) {
-  return (
-    <div className="overflow-hidden rounded-[2rem] border border-white/10 bg-gradient-to-b from-slate-900 via-slate-950 to-slate-900 p-3 shadow-[inset_0_0_0_1px_rgba(255,255,255,0.05)]">
-      <div className="mb-4 flex items-center justify-between rounded-[1.8rem] border border-white/10 bg-white/5 px-4 py-3 text-[11px] text-slate-300">
-        <div className="flex items-center gap-2">
-          <span className="h-2.5 w-2.5 rounded-full bg-white/80" />
-          <span className="h-2.5 w-2.5 rounded-full bg-white/50" />
-          <span className="h-2.5 w-2.5 rounded-full bg-white/30" />
-        </div>
-        <span className="text-[10px] uppercase tracking-[0.28em] text-slate-400">Aktywny</span>
-        <div className="flex gap-2">
-          <span className="h-2.5 w-2.5 rounded-full bg-emerald-400" />
-          <span className="h-2.5 w-2.5 rounded-full bg-sky-400" />
-        </div>
-      </div>
-
-      <div className="h-full overflow-hidden rounded-[1.6rem] bg-[#06101d]/90 p-3">{children}</div>
-
-      <div className="mt-4 flex items-center justify-between rounded-[1.75rem] border border-white/10 bg-white/5 px-4 py-3 text-[11px] text-slate-300">
-        <span>Ostatnia aktualizacja</span>
-        <span className="rounded-full bg-slate-800/70 px-3 py-1 text-[10px] text-slate-200">2 min temu</span>
       </div>
     </div>
   );
@@ -672,13 +654,13 @@ function Hero() {
   const { t } = useI18n();
 
   return (
-    <section className="relative overflow-hidden px-6 py-16 min-h-[calc(100vh-4rem)] sm:py-20">
+    <section className="relative overflow-hidden px-6 py-10 min-h-screen sm:py-14 lg:py-18">
       <div className="absolute inset-0 bg-gradient-to-br from-[#08111f] via-[#0a1628] to-[#0c1e35]" />
       <div className="pointer-events-none absolute right-0 top-0 h-[520px] w-[520px] rounded-full bg-purple-500/10 blur-3xl" />
       <div className="pointer-events-none absolute -left-16 bottom-0 h-[340px] w-[340px] rounded-full bg-pink-500/5 blur-3xl" />
 
-      <div className="relative mx-auto grid max-w-6xl items-start gap-10 lg:grid-cols-[1.15fr_0.85fr]">
-        <div className="max-w-xl text-left flex flex-col justify-start">
+      <div className="relative mx-auto grid max-w-6xl items-start gap-10 lg:grid-cols-[1.1fr_auto]">
+        <div className="max-w-xl text-left flex flex-col justify-start gap-8 pt-4 lg:pt-6">
           <h1 className="pf-hero-fade-in text-4xl font-bold leading-tight text-white sm:text-5xl lg:text-6xl xl:text-7xl">
             {t.hero.title.split(' ').map((word, i) => (
               <span
@@ -693,12 +675,12 @@ function Hero() {
               return acc;
             }, [])}
           </h1>
-          <p className="pf-hero-fade-in-delayed mt-6 max-w-2xl text-base leading-8 text-gray-300 sm:text-lg">
+          <p className="pf-hero-fade-in-delayed max-w-2xl text-base leading-8 text-gray-300 sm:text-lg">
             {t.hero.subtitle}
           </p>
           <a
             href="#diagnoza"
-            className="pf-hero-fade-in-delayed-2 mt-10 inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-sky-500 to-cyan-400 px-8 py-4 text-base font-bold text-black shadow-xl shadow-cyan-500/40 transition hover:bg-cyan-400"
+            className="pf-hero-fade-in-delayed-2 inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-sky-500 to-cyan-400 px-8 py-4 text-base font-bold text-black shadow-xl shadow-cyan-500/40 transition hover:bg-cyan-400"
           >
             {t.hero.cta}
             <ArrowRight className="h-5 w-5" />
@@ -1180,12 +1162,6 @@ function Implementation() {
               </div>
             );
           })}
-        </div>
-      </div>
-    </section>
-  );
-}
-
         </div>
       </div>
     </section>
