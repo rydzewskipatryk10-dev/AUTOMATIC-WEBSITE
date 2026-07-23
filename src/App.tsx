@@ -345,13 +345,11 @@ function useAnimatedNumber(value: number, duration = 700) {
 
 function HeroCarousel() {
   const [activeTab, setActiveTab] = useState<'dashboard' | 'notifications'>('dashboard');
-  const [occupancy, setOccupancy] = useState(85);
-  const [freeSeats, setFreeSeats] = useState(2);
+  const [occupancy, setOccupancy] = useState(88);
   const [refreshing, setRefreshing] = useState(false);
   const refreshTimeout = useRef<number | null>(null);
 
-  const displayedOccupancy = useAnimatedNumber(occupancy, 700);
-  const displayedFreeSeats = useAnimatedNumber(freeSeats, 700);
+  const displayedOccupancy = useAnimatedNumber(occupancy, 800);
 
   useEffect(() => {
     return () => {
@@ -363,8 +361,7 @@ function HeroCarousel() {
 
   const handleRefresh = () => {
     setRefreshing(true);
-    setOccupancy(83 + Math.round(Math.random() * 4));
-    setFreeSeats(Math.max(0, 1 + Math.round(Math.random() * 2)));
+    setOccupancy(86 + Math.round(Math.random() * 4));
     if (refreshTimeout.current !== null) {
       window.clearTimeout(refreshTimeout.current);
     }
@@ -373,154 +370,83 @@ function HeroCarousel() {
     }, 650);
   };
 
-  const notifications = [
-    {
-      id: 'cancel',
-      title: 'Odwołanie wizyty',
-      subtitle: 'Jan Kowalski — 14:00',
-      accent: 'border-red-400/20 bg-red-500/10 text-red-100',
-      button: 'Znajdź zastępstwo',
-    },
-    {
-      id: 'change',
-      title: 'Prośba o zmianę',
-      subtitle: 'Anna Nowak — Jutro 09:30',
-      accent: 'border-amber-300/20 bg-amber-400/10 text-amber-100',
-      action: 'decision',
-    },
-    {
-      id: 'new',
-      title: 'Nowa rezerwacja',
-      subtitle: 'Marek Wiśniewski — Pojutrze 11:00',
-      accent: 'border-emerald-400/20 bg-emerald-400/10 text-emerald-100',
-      button: 'Sprawdź szczegóły',
-    },
-  ];
-
   return (
     <div className="relative flex justify-center lg:justify-end lg:justify-self-end lg:ml-10">
-      <div className="w-full max-w-[360px]">
-        <div className="rounded-[3rem] border border-white/10 bg-slate-950/95 p-5 shadow-[0_35px_90px_rgba(15,23,42,0.35)]">
-          <div className="flex items-center justify-between rounded-[2.25rem] border border-white/10 bg-slate-900/90 px-4 py-3">
-            <div className="min-w-0">
-              <p className="text-[10px] uppercase tracking-[0.28em] text-slate-400">Ekran telefonu</p>
-              <p className="truncate text-lg font-semibold text-white">Dental Dashboard</p>
-              <p className="mt-1 text-sm leading-5 text-slate-400">Minimalny mockup iPhone</p>
+      <div className="w-full max-w-[380px]">
+        <div className="rounded-[3rem] border border-white/10 bg-slate-950/95 p-5 shadow-[0_40px_110px_rgba(8,13,25,0.45)]">
+          <div className="overflow-hidden rounded-[2.5rem] border border-white/10 bg-[radial-gradient(circle_at_top_right,_rgba(56,189,248,0.18),_transparent_30%),_linear-gradient(180deg,_rgba(15,23,42,0.98),_rgba(10,18,31,0.96))] p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)] backdrop-blur-xl">
+            <div className="mb-4 flex items-center justify-between text-[10px] uppercase tracking-[0.3em] text-slate-500">
+              <span>9:41</span>
+              <span className="rounded-full border border-white/10 bg-white/5 px-2.5 py-1 text-[10px] text-slate-300">iOS 17</span>
+              <span>98% 🔋</span>
             </div>
-            <div className="flex items-center gap-2">
-              <span className="h-2.5 w-2.5 rounded-full bg-emerald-400" />
-              <span className="h-2.5 w-2.5 rounded-full bg-slate-700" />
-            </div>
-          </div>
 
-          <div className="relative mt-4 overflow-hidden rounded-[2.5rem] border border-white/10 bg-[#06101d]/95 p-4">
-            <div className="relative h-[560px] overflow-hidden rounded-[2rem] bg-slate-950/95">
-              <div
-                className={`absolute inset-0 px-4 py-5 transition-all duration-500 ease-out ${
-                  activeTab === 'dashboard'
-                    ? 'opacity-100 translate-y-0'
-                    : 'opacity-0 -translate-y-6 pointer-events-none'
-                }`}
-              >
-                <div className="flex items-center justify-between text-[11px] text-slate-400">
-                  <span>9:41</span>
-                  <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-[10px] uppercase tracking-[0.24em] text-slate-300">
-                    Dynamic Island
-                  </span>
-                  <span>98% 🔋</span>
+            <div className="rounded-[2rem] border border-white/10 bg-white/5 p-5 backdrop-blur-xl shadow-[0_18px_40px_rgba(0,0,0,0.16)]">
+              <div className="flex items-center justify-between gap-4">
+                <div>
+                  <p className="text-xs uppercase tracking-[0.32em] text-slate-400">Najbliższa wizyta</p>
+                  <h2 className="mt-3 text-xl font-semibold text-white">Michał Kwiatkowski</h2>
+                  <p className="mt-1 text-sm text-slate-300">Gabinet 3 · 14:30</p>
                 </div>
-
-                <div className="mt-4 flex items-center justify-center">
-                  <div className="min-w-[170px] rounded-full bg-white/5 px-4 py-2 text-center text-[11px] uppercase tracking-[0.26em] text-slate-300 shadow-inner shadow-black/20">
-                    iPhone mockup
-                  </div>
-                </div>
-
-                <div className="mt-5 rounded-[2rem] border border-white/10 bg-white/5 p-5 backdrop-blur-xl shadow-[inset_0_1px_0_rgba(255,255,255,0.05)]">
-                  <div className="flex items-start justify-between gap-4">
-                    <div>
-                      <p className="text-xs uppercase tracking-[0.28em] text-slate-400">Dziś w klinice</p>
-                      <h2 className="mt-3 text-2xl font-semibold text-white">Obłożenie</h2>
-                    </div>
-                    <button
-                      type="button"
-                      onClick={handleRefresh}
-                      className="rounded-2xl border border-white/10 bg-white/5 px-3 py-2 text-xs font-semibold text-cyan-200 transition hover:bg-white/10"
-                    >
-                      {refreshing ? 'Aktualizuję…' : 'Odśwież'}
-                    </button>
-                  </div>
-
-                  <div className="mt-5 grid gap-4 lg:grid-cols-2">
-                    <div className="rounded-[1.75rem] bg-slate-900/80 p-4 shadow-[0_20px_40px_rgba(7,17,28,0.3)]">
-                      <p className="text-5xl font-semibold text-cyan-300">{displayedOccupancy}%</p>
-                      <p className="mt-2 text-sm text-slate-400">Obłożenie</p>
-                    </div>
-                    <div className="rounded-[1.75rem] bg-slate-900/80 p-4 shadow-[0_20px_40px_rgba(7,17,28,0.3)]">
-                      <p className="text-5xl font-semibold text-white">{displayedFreeSeats}</p>
-                      <p className="mt-2 text-sm text-slate-400">Wolnych foteli</p>
-                    </div>
-                  </div>
+                <div className="flex h-14 w-14 items-center justify-center rounded-3xl bg-gradient-to-br from-cyan-400/15 to-slate-800 text-sm font-semibold text-white shadow-inner shadow-black/20">
+                  MK
                 </div>
               </div>
 
-              <div
-                className={`absolute inset-0 px-4 py-5 transition-all duration-500 ease-out ${
-                  activeTab === 'notifications'
-                    ? 'opacity-100 translate-y-0'
-                    : 'opacity-0 translate-y-6 pointer-events-none'
-                }`}
-              >
-                <div className="flex items-center justify-between">
+              <div className="mt-5 rounded-[1.75rem] border border-white/10 bg-slate-950/75 p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.05)]">
+                <div className="flex items-center justify-between gap-4">
                   <div>
-                    <p className="text-xs uppercase tracking-[0.28em] text-slate-400">Ostatnie alerty</p>
-                    <h2 className="mt-2 text-2xl font-semibold text-white">Powiadomienia</h2>
+                    <p className="text-xs uppercase tracking-[0.28em] text-slate-400">Start</p>
+                    <p className="mt-2 text-4xl font-semibold text-cyan-300">14:30</p>
                   </div>
                   <button
                     type="button"
-                    className="rounded-2xl border border-white/10 bg-white/5 px-3 py-2 text-xs font-semibold text-cyan-200 transition hover:bg-white/10"
+                    onClick={handleRefresh}
+                    className="rounded-2xl bg-cyan-400 px-4 py-3 text-sm font-semibold text-slate-950 shadow-lg shadow-cyan-500/20 transition hover:bg-cyan-300"
                   >
-                    Filtruj
+                    {refreshing ? 'Aktualizuję…' : 'Potwierdź obecność SMS'}
                   </button>
                 </div>
+              </div>
+            </div>
 
-                <div className="mt-4 space-y-3">
-                  {notifications.map((item) => (
-                    <div
-                      key={item.id}
-                      className={`rounded-[1.85rem] border ${item.accent} p-4 shadow-[0_20px_45px_rgba(0,0,0,0.12)]`}
-                    >
-                      <div className="flex items-start justify-between gap-3">
-                        <div>
-                          <p className="text-sm font-semibold text-white">{item.title}</p>
-                          <p className="mt-1 text-sm text-slate-300">{item.subtitle}</p>
-                        </div>
-                        <div className="rounded-full bg-white/5 px-2 py-1 text-[10px] uppercase tracking-[0.28em] text-slate-200">
-                          {item.id === 'cancel' ? 'Pilne' : item.id === 'change' ? 'Do decyzji' : 'Nowe'}
-                        </div>
-                      </div>
-                      {item.action === 'decision' ? (
-                        <div className="mt-4 flex flex-wrap gap-2">
-                          <button className="min-w-[120px] rounded-2xl bg-emerald-400/10 px-4 py-2 text-sm font-semibold text-emerald-200 transition hover:bg-emerald-400/15">
-                            Akceptuj
-                          </button>
-                          <button className="min-w-[120px] rounded-2xl bg-white/5 px-4 py-2 text-sm font-semibold text-slate-200 transition hover:bg-white/10">
-                            Odrzuć
-                          </button>
-                        </div>
-                      ) : (
-                        <button className="mt-4 w-full rounded-2xl bg-white/5 px-4 py-3 text-sm font-semibold text-cyan-200 transition hover:bg-white/10">
-                          {item.button}
-                        </button>
-                      )}
-                    </div>
-                  ))}
+            <div className="mt-5 rounded-[2rem] border border-white/10 bg-white/10 p-4 backdrop-blur-xl shadow-[0_22px_60px_rgba(0,0,0,0.18)]">
+              <div className="flex items-center justify-between gap-3">
+                <div>
+                  <p className="text-xs uppercase tracking-[0.28em] text-slate-400">Stan dnia</p>
+                  <h3 className="mt-2 text-lg font-semibold text-white">Przegląd harmonogramu</h3>
+                </div>
+                <span className="rounded-full bg-emerald-400/10 px-3 py-1 text-xs font-semibold text-emerald-200">Potwierdzone wizyty</span>
+              </div>
+
+              <div className="mt-4 grid gap-3 sm:grid-cols-2">
+                <div className="rounded-[1.75rem] bg-slate-950/80 p-4 ring-1 ring-white/10">
+                  <p className="text-xs uppercase tracking-[0.26em] text-slate-400">Obłożenie</p>
+                  <p className="mt-3 text-4xl font-semibold text-cyan-300">{displayedOccupancy}%</p>
+                </div>
+                <div className="rounded-[1.75rem] bg-slate-950/80 p-4 ring-1 ring-white/10">
+                  <p className="text-xs uppercase tracking-[0.26em] text-slate-400">Luka</p>
+                  <p className="mt-3 text-2xl font-semibold text-amber-300">11:30–12:00</p>
+                  <button className="mt-4 rounded-2xl bg-amber-300/10 px-4 py-3 text-sm font-semibold text-amber-100 transition hover:bg-amber-300/15">
+                    Znajdź zastępstwo
+                  </button>
+                </div>
+              </div>
+
+              <div className="mt-4 grid gap-3 sm:grid-cols-2">
+                <div className="rounded-[1.75rem] bg-slate-950/80 p-4 ring-1 ring-white/10">
+                  <p className="text-xs uppercase tracking-[0.26em] text-slate-400">Potwierdzone</p>
+                  <p className="mt-2 text-2xl font-semibold text-emerald-300">18</p>
+                </div>
+                <div className="rounded-[1.75rem] bg-slate-950/80 p-4 ring-1 ring-white/10">
+                  <p className="text-xs uppercase tracking-[0.26em] text-slate-400">Oczekujące</p>
+                  <p className="mt-2 text-2xl font-semibold text-slate-100">2</p>
                 </div>
               </div>
             </div>
           </div>
 
-          <div className="mt-4 grid grid-cols-4 gap-2 rounded-[1.75rem] border border-white/10 bg-slate-900/70 p-3">
+          <div className="mt-5 grid grid-cols-4 gap-2 rounded-[1.85rem] border border-white/10 bg-slate-900/70 p-3">
             <button
               type="button"
               onClick={() => setActiveTab('dashboard')}
@@ -529,7 +455,7 @@ function HeroCarousel() {
               }`}
             >
               <CalendarClock className="h-5 w-5" />
-              Kalendarz
+              Dashboard
             </button>
             <button
               type="button"
@@ -577,28 +503,18 @@ function Hero() {
       <div className="pointer-events-none absolute right-0 top-0 h-[520px] w-[520px] rounded-full bg-purple-500/10 blur-3xl" />
       <div className="pointer-events-none absolute -left-16 bottom-0 h-[340px] w-[340px] rounded-full bg-pink-500/5 blur-3xl" />
 
-      <div className="relative mx-auto grid max-w-6xl items-start gap-10 lg:grid-cols-[1.05fr_0.95fr]">
-        <div className="max-w-xl text-left flex flex-col justify-start gap-8 pt-4 lg:pt-6">
-          <h1 className="pf-hero-fade-in text-4xl font-bold leading-tight text-white sm:text-5xl lg:text-6xl xl:text-7xl">
-            {t.hero.title.split(' ').map((word, i) => (
-              <span
-                key={i}
-                className={`pf-hero-word ${i === 0 ? 'pf-hero-word-1' : i === 1 ? 'pf-hero-word-2' : 'pf-hero-word-3'}`}
-              >
-                {word}
-              </span>
-            )).reduce<ReactNode[]>((acc, el, i) => {
-              if (i > 0) acc.push(' ');
-              acc.push(el);
-              return acc;
-            }, [])}
+      <div className="relative mx-auto grid max-w-6xl items-center gap-10 lg:grid-cols-[1.05fr_0.95fr]">
+        <div className="max-w-xl text-left flex flex-col justify-center gap-8 lg:min-h-[640px]">
+          <p className="pf-hero-fade-in text-sm font-semibold uppercase tracking-[0.3em] text-cyan-300">Nowoczesny pulpit zarządzania</p>
+          <h1 className="pf-hero-fade-in text-4xl font-semibold leading-tight text-white sm:text-5xl lg:text-5xl xl:text-6xl">
+            {t.hero.title}
           </h1>
           <p className="pf-hero-fade-in-delayed max-w-2xl text-base leading-8 text-gray-300 sm:text-lg">
             {t.hero.subtitle}
           </p>
           <a
             href="#diagnoza"
-            className="pf-hero-fade-in-delayed-2 inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-sky-500 to-cyan-400 px-8 py-4 text-base font-bold text-black shadow-xl shadow-cyan-500/40 transition hover:bg-cyan-400"
+            className="pf-hero-fade-in-delayed-2 inline-flex max-w-max items-center gap-2 rounded-full bg-gradient-to-r from-sky-500 to-cyan-400 px-8 py-4 text-base font-semibold text-black shadow-xl shadow-cyan-500/40 transition hover:bg-cyan-400"
           >
             {t.hero.cta}
             <ArrowRight className="h-5 w-5" />
