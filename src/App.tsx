@@ -8,7 +8,6 @@ import {
   ArrowRight,
   Calendar,
   Users,
-  TrendingUp,
   CheckCircle,
   XCircle,
   Phone,
@@ -19,8 +18,6 @@ import {
   Video,
   Database,
   Sparkles,
-  Star,
-  Quote,
   Plus,
   Minus,
   Wrench,
@@ -368,28 +365,68 @@ function AboutSection() {
 // Hero Carousel — rotating dashboard views with smooth crossfade
 // ---------------------------------------------------------------------------
 function HeroCarousel() {
+  const [activeScreen, setActiveScreen] = useState(0);
+
+  useEffect(() => {
+    const interval = window.setInterval(() => {
+      setActiveScreen((current) => (current === 0 ? 1 : 0));
+    }, 4500);
+    return () => window.clearInterval(interval);
+  }, []);
+
+  const screens = [
+    {
+      title: 'Wskaźniki zajętości',
+      subtitle: 'Jak automatyzacja wypełnia grafik i redukuje no-shows.',
+      content: <PhoneScreenOverview />,
+    },
+    {
+      title: 'Plan dnia',
+      subtitle: 'Kluczowe wizyty i statusy potwierdzeń na pierwszy rzut oka.',
+      content: <PhoneScreenToday />,
+    },
+  ];
+
   return (
     <div className="relative hidden md:flex justify-end lg:justify-self-end lg:ml-10">
-      <div className="w-[340px] max-w-[90vw] rounded-[2.5rem] border border-white/10 bg-slate-950/95 shadow-[0_35px_90px_rgba(15,23,42,0.35)]">
-        <div className="p-5">
-          <div className="mb-4 flex items-center justify-between gap-4">
-            <div>
-              <p className="text-xs uppercase tracking-[0.24em] text-slate-400">Widok kliniki</p>
-              <h3 className="mt-2 text-lg font-semibold text-white">Szybki przegląd grafiku</h3>
-            </div>
-            <div className="flex items-center gap-2 rounded-full bg-white/5 px-3 py-2 text-[11px] text-slate-300">
-              <span className="inline-flex h-2.5 w-2.5 rounded-full bg-emerald-400" />
-              Online
-            </div>
+      <div className="w-[300px] max-w-[90vw] rounded-[2.5rem] border border-white/10 bg-slate-950/95 p-5 shadow-[0_35px_90px_rgba(15,23,42,0.25)]">
+        <div className="mb-4 flex items-start justify-between gap-3">
+          <div className="min-w-0">
+            <p className="text-xs uppercase tracking-[0.24em] text-slate-400">Ekran</p>
+            <h3 className="mt-2 truncate text-lg font-semibold text-white">Panel automatyzacji</h3>
+            <p className="mt-2 text-sm leading-5 text-slate-400">{screens[activeScreen].subtitle}</p>
           </div>
-
-          <HeroPhoneShell>
-            <div className="space-y-4">
-              <PhoneScreenOverview />
-              <PhoneScreenToday />
-            </div>
-          </HeroPhoneShell>
+          <div className="flex items-center gap-2">
+            {screens.map((_, index) => (
+              <button
+                key={index}
+                type="button"
+                onClick={() => setActiveScreen(index)}
+                className={`h-2.5 w-2.5 rounded-full transition-colors ${
+                  activeScreen === index ? 'bg-cyan-400' : 'bg-white/20'
+                }`}
+                aria-label={`Pokaż ekran ${screens[index].title}`}
+              />
+            ))}
+          </div>
         </div>
+
+        <HeroPhoneShell>
+          <div className="relative h-[430px] overflow-hidden rounded-[1.8rem]">
+            {screens.map((screen, index) => (
+              <div
+                key={screen.title}
+                className={`absolute inset-0 transition-all duration-700 ease-in-out ${
+                  activeScreen === index
+                    ? 'opacity-100 translate-y-0'
+                    : 'opacity-0 -translate-y-5 pointer-events-none'
+                }`}
+              >
+                {screen.content}
+              </div>
+            ))}
+          </div>
+        </HeroPhoneShell>
       </div>
     </div>
   );
@@ -397,24 +434,24 @@ function HeroCarousel() {
 
 function HeroPhoneShell({ children }: { children: ReactNode }) {
   return (
-    <div className="overflow-hidden rounded-[2rem] border border-white/10 bg-gradient-to-b from-slate-900 via-slate-950 to-slate-900 p-4 shadow-[inset_0_0_0_1px_rgba(255,255,255,0.03)]">
-      <div className="mb-4 flex items-center justify-between rounded-[1.75rem] border border-white/10 bg-white/5 px-4 py-3 text-[11px] text-slate-300">
+    <div className="overflow-hidden rounded-[2rem] border border-white/10 bg-gradient-to-b from-slate-900 via-slate-950 to-slate-900 p-3 shadow-[inset_0_0_0_1px_rgba(255,255,255,0.05)]">
+      <div className="mb-4 flex items-center justify-between rounded-[1.8rem] border border-white/10 bg-white/5 px-4 py-3 text-[11px] text-slate-300">
         <div className="flex items-center gap-2">
           <span className="h-2.5 w-2.5 rounded-full bg-white/80" />
           <span className="h-2.5 w-2.5 rounded-full bg-white/50" />
           <span className="h-2.5 w-2.5 rounded-full bg-white/30" />
         </div>
-        <span className="text-[10px] uppercase tracking-[0.28em] text-slate-400">Panel</span>
+        <span className="text-[10px] uppercase tracking-[0.28em] text-slate-400">Aktywny</span>
         <div className="flex gap-2">
           <span className="h-2.5 w-2.5 rounded-full bg-emerald-400" />
           <span className="h-2.5 w-2.5 rounded-full bg-sky-400" />
         </div>
       </div>
 
-      <div className="space-y-4">{children}</div>
+      <div className="h-full overflow-hidden rounded-[1.6rem] bg-[#06101d]/90 p-3">{children}</div>
 
       <div className="mt-4 flex items-center justify-between rounded-[1.75rem] border border-white/10 bg-white/5 px-4 py-3 text-[11px] text-slate-300">
-        <span>Statystyki aktualne</span>
+        <span>Ostatnia aktualizacja</span>
         <span className="rounded-full bg-slate-800/70 px-3 py-1 text-[10px] text-slate-200">2 min temu</span>
       </div>
     </div>
@@ -423,27 +460,27 @@ function HeroPhoneShell({ children }: { children: ReactNode }) {
 
 function PhoneScreenOverview() {
   return (
-    <div className="rounded-[1.75rem] border border-white/10 bg-slate-950/90 p-4">
+    <div className="h-full rounded-[1.6rem] border border-white/10 bg-slate-950/90 p-4">
       <div className="flex items-center justify-between text-sm font-semibold text-white">
-        <span>Wskaźniki zajętości</span>
-        <span className="text-[10px] uppercase tracking-[0.25em] text-sky-300">W tym tyg.</span>
+        <span>Wskaźniki</span>
+        <span className="text-[10px] uppercase tracking-[0.25em] text-sky-300">Tydzień</span>
       </div>
       <div className="mt-4 grid grid-cols-3 gap-3 text-center">
-        <div className="rounded-3xl bg-slate-900/80 p-3">
+        <div className="rounded-[1.5rem] bg-slate-900/85 p-3">
           <p className="text-2xl font-semibold text-white">94%</p>
-          <p className="mt-1 text-[11px] text-slate-400">Grafik obsadzony</p>
+          <p className="mt-1 text-[11px] text-slate-400">Obsadzenie</p>
         </div>
-        <div className="rounded-3xl bg-slate-900/80 p-3">
+        <div className="rounded-[1.5rem] bg-slate-900/85 p-3">
           <p className="text-2xl font-semibold text-sky-300">2%</p>
           <p className="mt-1 text-[11px] text-slate-400">No-show</p>
         </div>
-        <div className="rounded-3xl bg-slate-900/80 p-3">
+        <div className="rounded-[1.5rem] bg-slate-900/85 p-3">
           <p className="text-2xl font-semibold text-emerald-300">14h</p>
-          <p className="mt-1 text-[11px] text-slate-400">Odzyskany czas</p>
+          <p className="mt-1 text-[11px] text-slate-400">Odzyskany</p>
         </div>
       </div>
       <div className="mt-4 rounded-[1.75rem] border border-white/10 bg-[#07101a]/95 p-3 text-[12px] leading-6 text-slate-400">
-        System rezerwacji online wypełnił 6 wolnych terminów i ułatwił potwierdzenia SMS.
+        Automatyczne potwierdzenia i rezerwacje wypełniły 6 wolnych terminów.
       </div>
     </div>
   );
@@ -451,9 +488,9 @@ function PhoneScreenOverview() {
 
 function PhoneScreenToday() {
   return (
-    <div className="rounded-[1.75rem] border border-white/10 bg-slate-950/90 p-4">
+    <div className="h-full rounded-[1.6rem] border border-white/10 bg-slate-950/90 p-4">
       <div className="flex items-center justify-between text-sm font-semibold text-white">
-        <span>Dzisiaj</span>
+        <span>Plan dnia</span>
         <span className="text-[10px] uppercase tracking-[0.25em] text-slate-400">7 wizyt</span>
       </div>
       <div className="mt-4 space-y-3">
@@ -462,7 +499,7 @@ function PhoneScreenToday() {
           { time: '10:30', patient: 'M. Nowak', status: 'Nowa rezerwacja' },
           { time: '12:00', patient: 'J. Wiśniewski', status: 'SMS przypomnienie' },
         ].map((row) => (
-          <div key={row.time} className="rounded-3xl border border-white/10 bg-[#06111f]/95 p-3">
+          <div key={row.time} className="rounded-[1.5rem] border border-white/10 bg-[#06111f]/95 p-3">
             <div className="flex items-center justify-between text-[13px] font-semibold text-white">
               <span>{row.time}</span>
               <span className="rounded-full bg-slate-800/70 px-2 py-1 text-[10px] text-slate-300">{row.status}</span>
@@ -472,7 +509,7 @@ function PhoneScreenToday() {
         ))}
       </div>
       <div className="mt-4 rounded-[1.75rem] border border-white/10 bg-slate-900/70 p-3 text-[11px] text-slate-300">
-        Wysyłka przypomnień SMS pomogła odzyskać 2 wolne sloty o 17:00.
+        Przypomnienia SMS odzyskały 2 wolne sloty, które zostały natychmiast zarezerwowane.
       </div>
     </div>
   );
@@ -640,8 +677,8 @@ function Hero() {
       <div className="pointer-events-none absolute right-0 top-0 h-[520px] w-[520px] rounded-full bg-purple-500/10 blur-3xl" />
       <div className="pointer-events-none absolute -left-16 bottom-0 h-[340px] w-[340px] rounded-full bg-pink-500/5 blur-3xl" />
 
-      <div className="relative mx-auto grid max-w-6xl items-center gap-10 lg:grid-cols-[1.15fr_0.85fr]">
-        <div className="max-w-xl text-left flex flex-col justify-center">
+      <div className="relative mx-auto grid max-w-6xl items-start gap-10 lg:grid-cols-[1.15fr_0.85fr]">
+        <div className="max-w-xl text-left flex flex-col justify-start">
           <h1 className="pf-hero-fade-in text-4xl font-bold leading-tight text-white sm:text-5xl lg:text-6xl xl:text-7xl">
             {t.hero.title.split(' ').map((word, i) => (
               <span
