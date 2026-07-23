@@ -771,7 +771,7 @@ function Hero() {
   const { t } = useI18n();
 
   return (
-    <section className="relative overflow-hidden px-6 pt-24 pb-20 min-h-screen">
+    <section className="relative overflow-hidden px-6 py-10 h-screen">
       {/* Hero background — clean gradient, no photo */}
       <div className="absolute inset-0 bg-gradient-to-br from-[#08111f] via-[#0a1628] to-[#0c1e35]" />
       <div className="pointer-events-none absolute right-0 top-0 h-[600px] w-[600px] rounded-full bg-purple-500/10 blur-3xl" />
