@@ -186,7 +186,7 @@ const translations = {
     },
     beforeAfter: {
       eyebrow: 'Przed / Po',
-      title: 'Chaos administracyjny vs. czysty, zautomatyzowany kalendarz.',
+      title: 'Chaos administracyjny vs. czysty kalendarz.',
       beforeLabel: 'Przed — chaos w grafiku',
       afterLabel: 'Po — zautomatyzowany kalendarz',
       beforeSlots: [
