@@ -7,6 +7,8 @@ import {
 import {
   ArrowRight,
   Users,
+  Bell,
+  Settings,
   CheckCircle,
   XCircle,
   Phone,
@@ -305,26 +307,93 @@ function AboutSection() {
 // ---------------------------------------------------------------------------
 // Hero Carousel — rotating dashboard views with smooth crossfade
 // ---------------------------------------------------------------------------
-function HeroCarousel() {
-  const [activeScreen, setActiveScreen] = useState(0);
+function easeOutCubic(x: number) {
+  return 1 - Math.pow(1 - x, 3);
+}
+
+function useAnimatedNumber(value: number, duration = 700) {
+  const [displayValue, setDisplayValue] = useState(value);
+  const frameRef = useRef<number | null>(null);
 
   useEffect(() => {
-    const interval = window.setInterval(() => {
-      setActiveScreen((index) => (index === 0 ? 1 : 0));
-    }, 4500);
-    return () => window.clearInterval(interval);
+    const from = displayValue;
+    const delta = value - from;
+    if (delta === 0) return;
+
+    let start: number | null = null;
+
+    const step = (timestamp: number) => {
+      if (start === null) start = timestamp;
+      const progress = Math.min((timestamp - start) / duration, 1);
+      setDisplayValue(Math.round(from + delta * easeOutCubic(progress)));
+      if (progress < 1) {
+        frameRef.current = window.requestAnimationFrame(step);
+      }
+    };
+
+    frameRef.current = window.requestAnimationFrame(step);
+
+    return () => {
+      if (frameRef.current !== null) {
+        window.cancelAnimationFrame(frameRef.current);
+      }
+    };
+  }, [value]);
+
+  return displayValue;
+}
+
+function HeroCarousel() {
+  const [activeTab, setActiveTab] = useState<'dashboard' | 'notifications'>('dashboard');
+  const [occupancy, setOccupancy] = useState(85);
+  const [freeSeats, setFreeSeats] = useState(2);
+  const [refreshing, setRefreshing] = useState(false);
+  const refreshTimeout = useRef<number | null>(null);
+
+  const displayedOccupancy = useAnimatedNumber(occupancy, 700);
+  const displayedFreeSeats = useAnimatedNumber(freeSeats, 700);
+
+  useEffect(() => {
+    return () => {
+      if (refreshTimeout.current !== null) {
+        window.clearTimeout(refreshTimeout.current);
+      }
+    };
   }, []);
 
-  const screens = [
+  const handleRefresh = () => {
+    setRefreshing(true);
+    setOccupancy(83 + Math.round(Math.random() * 4));
+    setFreeSeats(Math.max(0, 1 + Math.round(Math.random() * 2)));
+    if (refreshTimeout.current !== null) {
+      window.clearTimeout(refreshTimeout.current);
+    }
+    refreshTimeout.current = window.setTimeout(() => {
+      setRefreshing(false);
+    }, 650);
+  };
+
+  const notifications = [
     {
-      title: 'Wskaźniki zajętości',
-      subtitle: 'Automatyczne wypełnianie grafiku.',
-      content: <PhoneScreenOverview />,
+      id: 'cancel',
+      title: 'Odwołanie wizyty',
+      subtitle: 'Jan Kowalski — 14:00',
+      accent: 'border-red-400/20 bg-red-500/10 text-red-100',
+      button: 'Znajdź zastępstwo',
     },
     {
-      title: 'Plan dnia',
-      subtitle: 'Kluczowe wizyty i potwierdzenia.',
-      content: <PhoneScreenToday />,
+      id: 'change',
+      title: 'Prośba o zmianę',
+      subtitle: 'Anna Nowak — Jutro 09:30',
+      accent: 'border-amber-300/20 bg-amber-400/10 text-amber-100',
+      action: 'decision',
+    },
+    {
+      id: 'new',
+      title: 'Nowa rezerwacja',
+      subtitle: 'Marek Wiśniewski — Pojutrze 11:00',
+      accent: 'border-emerald-400/20 bg-emerald-400/10 text-emerald-100',
+      button: 'Sprawdź szczegóły',
     },
   ];
 
@@ -335,8 +404,8 @@ function HeroCarousel() {
           <div className="flex items-center justify-between rounded-[2.25rem] border border-white/10 bg-slate-900/90 px-4 py-3">
             <div className="min-w-0">
               <p className="text-[10px] uppercase tracking-[0.28em] text-slate-400">Ekran telefonu</p>
-              <p className="truncate text-lg font-semibold text-white">Aplikacja</p>
-              <p className="mt-1 text-sm leading-5 text-slate-400">Przejrzysty widok</p>
+              <p className="truncate text-lg font-semibold text-white">Dental Dashboard</p>
+              <p className="mt-1 text-sm leading-5 text-slate-400">Minimalny mockup iPhone</p>
             </div>
             <div className="flex items-center gap-2">
               <span className="h-2.5 w-2.5 rounded-full bg-emerald-400" />
@@ -345,93 +414,152 @@ function HeroCarousel() {
           </div>
 
           <div className="relative mt-4 overflow-hidden rounded-[2.5rem] border border-white/10 bg-[#06101d]/95 p-4">
-            <div className="relative h-[560px] overflow-hidden rounded-[2rem] bg-slate-950/90">
-              {screens.map((screen, index) => (
-                <div
-                  key={screen.title}
-                  className={`absolute inset-0 transition-all duration-700 ease-in-out ${
-                    activeScreen === index
-                      ? 'opacity-100 translate-x-0'
-                      : 'opacity-0 translate-x-4 pointer-events-none'
-                  }`}
-                >
-                  {screen.content}
-                </div>
-              ))}
-            </div>
-          </div>
-
-          <div className="mt-4 flex items-center justify-center gap-2">
-            {screens.map((_, index) => (
-              <button
-                key={index}
-                type="button"
-                onClick={() => setActiveScreen(index)}
-                className={`h-2.5 w-2.5 rounded-full transition-colors ${
-                  activeScreen === index ? 'bg-cyan-400' : 'bg-white/20'
+            <div className="relative h-[560px] overflow-hidden rounded-[2rem] bg-slate-950/95">
+              <div
+                className={`absolute inset-0 px-4 py-5 transition-all duration-500 ease-out ${
+                  activeTab === 'dashboard'
+                    ? 'opacity-100 translate-y-0'
+                    : 'opacity-0 -translate-y-6 pointer-events-none'
                 }`}
-                aria-label={`Pokaż ekran ${screens[index].title}`}
-              />
-            ))}
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
+              >
+                <div className="flex items-center justify-between text-[11px] text-slate-400">
+                  <span>9:41</span>
+                  <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-[10px] uppercase tracking-[0.24em] text-slate-300">
+                    Dynamic Island
+                  </span>
+                  <span>98% 🔋</span>
+                </div>
 
-function PhoneScreenOverview() {
-  return (
-    <div className="h-full rounded-[1.6rem] border border-white/10 bg-slate-950/90 p-4">
-      <div className="flex items-center justify-between text-sm font-semibold text-white">
-        <span>Wskaźniki</span>
-        <span className="text-[10px] uppercase tracking-[0.25em] text-sky-300">Tydzień</span>
-      </div>
-      <div className="mt-4 grid grid-cols-3 gap-3 text-center">
-        <div className="rounded-[1.5rem] bg-slate-900/85 p-3">
-          <p className="text-2xl font-semibold text-white">94%</p>
-          <p className="mt-1 text-[11px] text-slate-400">Obsadzenie</p>
-        </div>
-        <div className="rounded-[1.5rem] bg-slate-900/85 p-3">
-          <p className="text-2xl font-semibold text-sky-300">2%</p>
-          <p className="mt-1 text-[11px] text-slate-400">No-show</p>
-        </div>
-        <div className="rounded-[1.5rem] bg-slate-900/85 p-3">
-          <p className="text-2xl font-semibold text-emerald-300">14h</p>
-          <p className="mt-1 text-[11px] text-slate-400">Odzyskany</p>
-        </div>
-      </div>
-      <div className="mt-4 rounded-[1.75rem] border border-white/10 bg-[#07101a]/95 p-3 text-[12px] leading-6 text-slate-400">
-        Automatyczne potwierdzenia i rezerwacje wypełniły 6 wolnych terminów.
-      </div>
-    </div>
-  );
-}
+                <div className="mt-4 flex items-center justify-center">
+                  <div className="min-w-[170px] rounded-full bg-white/5 px-4 py-2 text-center text-[11px] uppercase tracking-[0.26em] text-slate-300 shadow-inner shadow-black/20">
+                    iPhone mockup
+                  </div>
+                </div>
 
-function PhoneScreenToday() {
-  return (
-    <div className="h-full rounded-[1.6rem] border border-white/10 bg-slate-950/90 p-4">
-      <div className="flex items-center justify-between text-sm font-semibold text-white">
-        <span>Plan dnia</span>
-        <span className="text-[10px] uppercase tracking-[0.25em] text-slate-400">7 wizyt</span>
-      </div>
-      <div className="mt-4 space-y-3">
-        {[
-          { time: '09:00', patient: 'A. Kowalska', status: 'Potwierdzona' },
-          { time: '10:30', patient: 'M. Nowak', status: 'Nowa rezerwacja' },
-          { time: '12:00', patient: 'J. Wiśniewski', status: 'SMS przypomnienie' },
-        ].map((row) => (
-          <div key={row.time} className="rounded-[1.5rem] border border-white/10 bg-[#06111f]/95 p-3">
-            <div className="flex items-center justify-between text-[13px] font-semibold text-white">
-              <span>{row.time}</span>
-              <span className="rounded-full bg-slate-800/70 px-2 py-1 text-[10px] text-slate-300">{row.status}</span>
+                <div className="mt-5 rounded-[2rem] border border-white/10 bg-white/5 p-5 backdrop-blur-xl shadow-[inset_0_1px_0_rgba(255,255,255,0.05)]">
+                  <div className="flex items-start justify-between gap-4">
+                    <div>
+                      <p className="text-xs uppercase tracking-[0.28em] text-slate-400">Dziś w klinice</p>
+                      <h2 className="mt-3 text-2xl font-semibold text-white">Obłożenie</h2>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={handleRefresh}
+                      className="rounded-2xl border border-white/10 bg-white/5 px-3 py-2 text-xs font-semibold text-cyan-200 transition hover:bg-white/10"
+                    >
+                      {refreshing ? 'Aktualizuję…' : 'Odśwież'}
+                    </button>
+                  </div>
+
+                  <div className="mt-5 grid gap-4 lg:grid-cols-2">
+                    <div className="rounded-[1.75rem] bg-slate-900/80 p-4 shadow-[0_20px_40px_rgba(7,17,28,0.3)]">
+                      <p className="text-5xl font-semibold text-cyan-300">{displayedOccupancy}%</p>
+                      <p className="mt-2 text-sm text-slate-400">Obłożenie</p>
+                    </div>
+                    <div className="rounded-[1.75rem] bg-slate-900/80 p-4 shadow-[0_20px_40px_rgba(7,17,28,0.3)]">
+                      <p className="text-5xl font-semibold text-white">{displayedFreeSeats}</p>
+                      <p className="mt-2 text-sm text-slate-400">Wolnych foteli</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div
+                className={`absolute inset-0 px-4 py-5 transition-all duration-500 ease-out ${
+                  activeTab === 'notifications'
+                    ? 'opacity-100 translate-y-0'
+                    : 'opacity-0 translate-y-6 pointer-events-none'
+                }`}
+              >
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-xs uppercase tracking-[0.28em] text-slate-400">Ostatnie alerty</p>
+                    <h2 className="mt-2 text-2xl font-semibold text-white">Powiadomienia</h2>
+                  </div>
+                  <button
+                    type="button"
+                    className="rounded-2xl border border-white/10 bg-white/5 px-3 py-2 text-xs font-semibold text-cyan-200 transition hover:bg-white/10"
+                  >
+                    Filtruj
+                  </button>
+                </div>
+
+                <div className="mt-4 space-y-3">
+                  {notifications.map((item) => (
+                    <div
+                      key={item.id}
+                      className={`rounded-[1.85rem] border ${item.accent} p-4 shadow-[0_20px_45px_rgba(0,0,0,0.12)]`}
+                    >
+                      <div className="flex items-start justify-between gap-3">
+                        <div>
+                          <p className="text-sm font-semibold text-white">{item.title}</p>
+                          <p className="mt-1 text-sm text-slate-300">{item.subtitle}</p>
+                        </div>
+                        <div className="rounded-full bg-white/5 px-2 py-1 text-[10px] uppercase tracking-[0.28em] text-slate-200">
+                          {item.id === 'cancel' ? 'Pilne' : item.id === 'change' ? 'Do decyzji' : 'Nowe'}
+                        </div>
+                      </div>
+                      {item.action === 'decision' ? (
+                        <div className="mt-4 flex flex-wrap gap-2">
+                          <button className="min-w-[120px] rounded-2xl bg-emerald-400/10 px-4 py-2 text-sm font-semibold text-emerald-200 transition hover:bg-emerald-400/15">
+                            Akceptuj
+                          </button>
+                          <button className="min-w-[120px] rounded-2xl bg-white/5 px-4 py-2 text-sm font-semibold text-slate-200 transition hover:bg-white/10">
+                            Odrzuć
+                          </button>
+                        </div>
+                      ) : (
+                        <button className="mt-4 w-full rounded-2xl bg-white/5 px-4 py-3 text-sm font-semibold text-cyan-200 transition hover:bg-white/10">
+                          {item.button}
+                        </button>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </div>
             </div>
-            <p className="mt-2 text-sm text-slate-200">{row.patient}</p>
           </div>
-        ))}
-      </div>
-      <div className="mt-4 rounded-[1.75rem] border border-white/10 bg-slate-900/70 p-3 text-[11px] text-slate-300">
-        Przypomnienia SMS odzyskały 2 wolne sloty, które zostały natychmiast zarezerwowane.
+
+          <div className="mt-4 grid grid-cols-4 gap-2 rounded-[1.75rem] border border-white/10 bg-slate-900/70 p-3">
+            <button
+              type="button"
+              onClick={() => setActiveTab('dashboard')}
+              className={`flex flex-col items-center justify-center gap-1 rounded-2xl px-2 py-3 text-[11px] font-semibold transition ${
+                activeTab === 'dashboard' ? 'bg-cyan-400/15 text-cyan-200' : 'text-slate-400 hover:bg-white/5'
+              }`}
+            >
+              <CalendarClock className="h-5 w-5" />
+              Kalendarz
+            </button>
+            <button
+              type="button"
+              onClick={() => setActiveTab('dashboard')}
+              className={`flex flex-col items-center justify-center gap-1 rounded-2xl px-2 py-3 text-[11px] font-semibold transition ${
+                activeTab === 'dashboard' ? 'bg-cyan-400/15 text-cyan-200' : 'text-slate-400 hover:bg-white/5'
+              }`}
+            >
+              <Users className="h-5 w-5" />
+              Pacjenci
+            </button>
+            <button
+              type="button"
+              onClick={() => setActiveTab('notifications')}
+              className={`flex flex-col items-center justify-center gap-1 rounded-2xl px-2 py-3 text-[11px] font-semibold transition ${
+                activeTab === 'notifications' ? 'bg-cyan-400/15 text-cyan-200' : 'text-slate-400 hover:bg-white/5'
+              }`}
+            >
+              <Bell className="h-5 w-5" />
+              Powiad.
+            </button>
+            <button
+              type="button"
+              className="flex flex-col items-center justify-center gap-1 rounded-2xl px-2 py-3 text-[11px] font-semibold text-slate-400 transition hover:bg-white/5"
+            >
+              <Settings className="h-5 w-5" />
+              Ustaw.
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   );
@@ -449,7 +577,7 @@ function Hero() {
       <div className="pointer-events-none absolute right-0 top-0 h-[520px] w-[520px] rounded-full bg-purple-500/10 blur-3xl" />
       <div className="pointer-events-none absolute -left-16 bottom-0 h-[340px] w-[340px] rounded-full bg-pink-500/5 blur-3xl" />
 
-      <div className="relative mx-auto grid max-w-6xl items-start gap-10">
+      <div className="relative mx-auto grid max-w-6xl items-start gap-10 lg:grid-cols-[1.05fr_0.95fr]">
         <div className="max-w-xl text-left flex flex-col justify-start gap-8 pt-4 lg:pt-6">
           <h1 className="pf-hero-fade-in text-4xl font-bold leading-tight text-white sm:text-5xl lg:text-6xl xl:text-7xl">
             {t.hero.title.split(' ').map((word, i) => (
@@ -476,6 +604,7 @@ function Hero() {
             <ArrowRight className="h-5 w-5" />
           </a>
         </div>
+        <HeroCarousel />
       </div>
     </section>
   );
