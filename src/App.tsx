@@ -513,6 +513,78 @@ function SystemSlide({ slide }: { slide: { title: string; subtitle: string; node
 // ---------------------------------------------------------------------------
 // Hero — asymmetric, with rotating dashboard carousel on the right
 // ---------------------------------------------------------------------------
+function HeroPhoneMockup() {
+  return (
+    <div className="relative mx-auto w-full max-w-[380px] lg:ml-auto">
+      <div className="relative flex h-[690px] w-full flex-col overflow-hidden rounded-[54px] border border-white/10 bg-[#03070d]/95 shadow-[0_45px_110px_-40px_rgba(6,18,29,0.9)] ring-1 ring-white/5">
+        <div className="absolute inset-x-0 top-4 flex justify-center">
+          <div className="h-1.5 w-24 rounded-full bg-white/10" />
+        </div>
+
+        <div className="absolute right-5 top-4 flex items-center gap-2">
+          <span className="h-3.5 w-3.5 rounded-full bg-emerald-400/80 ring-1 ring-white/10" />
+          <span className="h-3.5 w-3.5 rounded-full bg-cyan-400/80 ring-1 ring-white/10" />
+          <span className="h-3.5 w-3.5 rounded-full bg-rose-400/80 ring-1 ring-white/10" />
+        </div>
+
+        <div className="relative mt-16 mx-4 flex-1 overflow-hidden rounded-[34px] border border-white/10 bg-slate-950/65 p-5 shadow-inner shadow-black/40 backdrop-blur-xl">
+          <div className="flex items-center justify-between gap-3 pb-4">
+            <div>
+              <p className="text-[11px] uppercase tracking-[0.32em] text-slate-500">Dzisiejsze Alerty</p>
+              <p className="mt-2 text-sm font-semibold text-white">Panel kliniki stomatologicznej</p>
+            </div>
+            <div className="rounded-full border border-white/10 bg-white/5 px-3 py-2 text-xs font-semibold uppercase tracking-[0.24em] text-cyan-200">
+              5 alertów
+            </div>
+          </div>
+
+          <div className="space-y-4">
+            <div className="rounded-[30px] border border-rose-400/15 bg-white/5 p-4 shadow-[0_24px_50px_-32px_rgba(244,63,94,0.4)]">
+              <div className="flex items-start justify-between gap-4">
+                <div>
+                  <p className="text-[11px] uppercase tracking-[0.26em] text-rose-300">Pilne</p>
+                  <p className="mt-2 text-sm font-semibold text-white">Odwołanie wizyty</p>
+                  <p className="mt-1 text-sm text-slate-300">Jan Kowalski, 14:00</p>
+                </div>
+                <span className="rounded-full bg-rose-500/10 px-2 py-1 text-[11px] font-semibold text-rose-200">Wymaga reakcji</span>
+              </div>
+              <button className="mt-5 inline-flex w-full items-center justify-center rounded-full border border-rose-400/20 bg-rose-500/10 px-4 py-2 text-sm font-semibold text-rose-100 transition hover:bg-rose-500/15">
+                Znajdź zastępstwo (SMS)
+              </button>
+            </div>
+
+            <div className="rounded-[30px] border border-cyan-300/15 bg-white/5 p-4 shadow-[0_24px_50px_-32px_rgba(14,165,233,0.24)]">
+              <div className="flex items-start justify-between gap-4">
+                <div>
+                  <p className="text-[11px] uppercase tracking-[0.26em] text-cyan-200">Informacyjne</p>
+                  <p className="mt-2 text-sm font-semibold text-white">Automatyczne przypomnienie wysłane</p>
+                  <p className="mt-1 text-sm text-slate-300">A. Nowak, 09:00</p>
+                </div>
+                <span className="rounded-full bg-cyan-500/10 px-2 py-1 text-[11px] font-semibold text-cyan-100">Potwierdzone</span>
+              </div>
+            </div>
+
+            <div className="rounded-[30px] border border-emerald-300/15 bg-white/5 p-4 shadow-[0_24px_50px_-32px_rgba(52,211,153,0.24)]">
+              <div className="flex items-start justify-between gap-4">
+                <div>
+                  <p className="text-[11px] uppercase tracking-[0.26em] text-emerald-200">Pozytywne</p>
+                  <p className="mt-2 text-sm font-semibold text-white">Nowa rezerwacja online</p>
+                  <p className="mt-1 text-sm text-slate-300">M. Wiśniewski, Piątek 11:30</p>
+                </div>
+                <span className="rounded-full bg-emerald-500/10 px-2 py-1 text-[11px] font-semibold text-emerald-100">Nowe</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="mt-5 px-6 pb-6">
+          <div className="mx-auto h-1.5 w-28 rounded-full bg-white/10" />
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function Hero() {
   const { t } = useI18n();
 
@@ -522,7 +594,7 @@ function Hero() {
       <div className="pointer-events-none absolute right-0 top-0 h-[520px] w-[520px] rounded-full bg-purple-500/10 blur-3xl" />
       <div className="pointer-events-none absolute -left-16 bottom-0 h-[340px] w-[340px] rounded-full bg-pink-500/5 blur-3xl" />
 
-      <div className="relative mx-auto grid max-w-6xl items-start">
+      <div className="relative mx-auto grid max-w-6xl gap-16 items-center lg:grid-cols-[minmax(0,1fr)_minmax(360px,420px)] lg:gap-24">
         <div className="max-w-xl text-left flex flex-col justify-start gap-8 pt-16 lg:pt-18">
           <h1 className="pf-hero-fade-in text-4xl font-bold leading-tight text-white sm:text-5xl lg:text-6xl xl:text-7xl">
             {t.hero.title.split(' ').map((word, i) => (
@@ -549,6 +621,10 @@ function Hero() {
             <ArrowRight className="h-5 w-5" />
           </a>
         </div>
+
+        <Reveal delay={120} className="lg:order-last">
+          <HeroPhoneMockup />
+        </Reveal>
       </div>
     </section>
   );
