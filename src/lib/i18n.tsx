@@ -8,7 +8,8 @@ import {
 
 export type Lang = 'pl' | 'en';
 
-type Dict = typeof translations.pl;
+type Translations = typeof translations;
+type Dict = Translations[Lang];
 
 const translations = {
   pl: {
