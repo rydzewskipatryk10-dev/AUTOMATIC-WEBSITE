@@ -14,6 +14,7 @@ type Dict = Translations[Lang];
 const translations = {
   pl: {
     nav: {
+      home: 'Strona Główna',
       calc: 'Kalkulator',
       howItWorks: 'Jak to działa',
       about: 'O nas',

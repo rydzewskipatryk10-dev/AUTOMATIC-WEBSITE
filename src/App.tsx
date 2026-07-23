@@ -313,6 +313,12 @@ function Nav() {
               className="h-10 w-auto"
             />
           </a>
+          <a
+            href="#top"
+            className="hidden text-sm font-semibold text-gray-200 transition hover:text-white lg:inline-flex"
+          >
+            {t.nav.home}
+          </a>
         </div>
         <div className="hidden lg:flex items-center gap-8 text-sm font-semibold text-gray-200">
           <a href="#calculator" className="transition hover:text-white">
@@ -345,6 +351,13 @@ function Nav() {
         }`}
       >
         <div className="mx-auto flex max-w-6xl flex-col gap-2 px-6 py-4 text-sm font-semibold text-gray-200">
+          <a
+            href="#top"
+            onClick={() => setMobileOpen(false)}
+            className="rounded-2xl px-3 py-2 transition hover:bg-white/5"
+          >
+            {t.nav.home}
+          </a>
           <a
             href="#calculator"
             onClick={() => setMobileOpen(false)}
