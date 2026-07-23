@@ -997,35 +997,35 @@ function Calculator() {
 
   return (
     /* ROI Calculator Section */
-    <section id="calculator" className="relative px-6 py-20 bg-[#08111f] min-h-screen overflow-hidden">
+    <section id="calculator" className="relative px-6 py-12 bg-[#08111f] min-h-screen overflow-hidden flex items-center">
       <div className="pointer-events-none absolute left-1/2 top-1/2 h-[520px] w-[520px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-fuchsia-500/5 blur-[120px]" />
       
       <div className="relative mx-auto max-w-6xl">
-        <p className="text-xs font-semibold uppercase tracking-widest text-cyan-400">
+        <p className="text-[11px] font-semibold uppercase tracking-[0.35em] text-cyan-400">
           {t.calc.eyebrow}
         </p>
-        <h2 className="mt-4 max-w-2xl text-3xl font-bold text-white sm:text-4xl">
+        <h2 className="mt-4 max-w-2xl text-2xl font-bold text-white sm:text-3xl">
           {t.calc.title}
         </h2>
 
-        <div className="mt-8 grid gap-6 lg:grid-cols-2">
+        <div className="mt-6 grid gap-4 lg:grid-cols-2">
           {/* Calculator */}
-          <div className="rounded-2xl border border-white/15 bg-[#0d1a2e] p-5">
-            <h3 className="text-lg font-semibold text-white">
+          <div className="rounded-2xl border border-white/15 bg-[#0d1a2e] p-4">
+            <h3 className="text-base font-semibold text-white">
               {t.calc.calculatorTitle}
             </h3>
             <p className="mt-2 text-sm text-gray-300">
               {t.calc.calculatorDesc}
             </p>
 
-            <div className="mt-8 space-y-8">
+            <div className="mt-5 space-y-5">
               <div>
                 <div className="flex items-center justify-between">
                   <label className="flex items-center gap-2 text-sm font-medium text-gray-100">
                     <CalendarClock className="h-4 w-4 text-cyan-400" />
                     {t.calc.cancellations}
                   </label>
-                  <span className="text-lg font-bold text-cyan-300">{cancellations}</span>
+                  <span className="text-base font-bold text-cyan-300">{cancellations}</span>
                 </div>
                 <RangeSlider value={cancellations} min={1} max={30} onChange={setCancellations} />
               </div>
@@ -1036,13 +1036,13 @@ function Calculator() {
                     <Users className="h-4 w-4 text-cyan-400" />
                     {t.calc.staff}
                   </label>
-                  <span className="text-lg font-bold text-cyan-300">{staff}</span>
+                  <span className="text-base font-bold text-cyan-300">{staff}</span>
                 </div>
                 <RangeSlider value={staff} min={1} max={10} onChange={setStaff} />
               </div>
             </div>
 
-            <div className="mt-10 space-y-4 border-t border-white/15 pt-8">
+            <div className="mt-6 space-y-4 border-t border-white/15 pt-5">
               <div className="flex items-center justify-between gap-4">
                 <span className="text-sm text-gray-300">{t.calc.recoveredRevenue}</span>
                 <span className="text-lg font-bold tabular-nums text-white whitespace-nowrap">
@@ -1051,7 +1051,7 @@ function Calculator() {
               </div>
               <div className="flex items-center justify-between gap-4">
                 <span className="text-sm text-gray-300">{t.calc.savedHours}</span>
-                <span className="text-lg font-bold tabular-nums text-white whitespace-nowrap">{savedHoursMonthly}h</span>
+                <span className="text-base font-bold tabular-nums text-white whitespace-nowrap">{savedHoursMonthly}h</span>
               </div>
               <div className="flex items-center justify-between gap-4">
                 <span className="text-sm text-gray-300">{t.calc.savedStaffCost}</span>
@@ -1064,7 +1064,7 @@ function Calculator() {
                   <span className="text-sm font-medium text-cyan-200">
                     {t.calc.totalPotential}
                   </span>
-                  <span className="text-2xl font-bold tabular-nums text-cyan-200 whitespace-nowrap">
+                  <span className="text-lg font-bold tabular-nums text-cyan-200 whitespace-nowrap">
                     {totalMonthly.toLocaleString('pl-PL')} zł
                   </span>
                 </div>
@@ -1077,7 +1077,7 @@ function Calculator() {
           </div>
 
           {/* Diagnosis */}
-          <div className="rounded-2xl border border-white/15 bg-[#0d1a2e] p-6">
+          <div className="rounded-2xl border border-white/15 bg-[#0d1a2e] p-5">
             {!showResult ? (
               <>
                 <div className="flex items-center justify-between">
@@ -1096,17 +1096,17 @@ function Calculator() {
                   />
                 </div>
 
-                <div className="mt-8">
+                <div className="mt-6">
                   <div className="flex items-center gap-2 text-cyan-400">
                     {(() => {
                       const Icon = questions[step].icon;
                       return <Icon className="h-5 w-5" strokeWidth={1.5} />;
                     })()}
-                    <span className="text-xs font-semibold uppercase tracking-widest">
+                    <span className="text-[11px] font-semibold uppercase tracking-widest">
                       {t.calc.question} {step + 1}
                     </span>
                   </div>
-                  <p className="mt-3 text-base font-medium text-white">
+                  <p className="mt-3 text-sm font-medium text-white">
                     {questions[step].title}
                   </p>
 
@@ -1115,7 +1115,7 @@ function Calculator() {
                       <button
                         key={opt.value}
                         onClick={() => handleAnswer(questions[step].key, opt.value)}
-                        className="flex items-center justify-between rounded-xl border border-white/10 bg-[#0a1628] px-5 py-3 text-left text-sm font-medium text-gray-200 transition hover:border-cyan-400/40 hover:text-white"
+                        className="flex items-center justify-between rounded-xl border border-white/10 bg-[#0a1628] px-4 py-3 text-left text-sm font-medium text-gray-200 transition hover:border-cyan-400/40 hover:text-white"
                       >
                         {opt.label}
                         <ArrowRight className="h-4 w-4 text-gray-500" />
@@ -1132,7 +1132,7 @@ function Calculator() {
                     {t.calc.resultEyebrow}
                   </span>
                 </div>
-                <h3 className="mt-4 text-xl font-bold text-white">
+                <h3 className="mt-4 text-lg font-bold text-white">
                   {diagnosisLevel.title}
                 </h3>
                 <p className="mt-3 text-sm text-gray-300">
@@ -1154,7 +1154,7 @@ function Calculator() {
                 <div className="mt-6">
                   <a
                     href="#book"
-                    className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-sky-500 to-cyan-400 px-6 py-3 text-base font-bold text-black shadow-xl shadow-cyan-500/40 transition hover:bg-cyan-400"
+                    className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-sky-500 to-cyan-400 px-5 py-3 text-sm font-bold text-black shadow-xl shadow-cyan-500/40 transition hover:bg-cyan-400"
                   >
                     {t.calc.bookCta}
                     <ArrowRight className="h-5 w-5" />
