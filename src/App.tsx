@@ -585,114 +585,111 @@ function AboutSection() {
 // Hero Carousel — rotating dashboard views with smooth crossfade
 // ---------------------------------------------------------------------------
 function HeroCarousel() {
-  const { t } = useI18n();
-  const features = t.heroCarousel.slides.find((slide) => slide.type === 'features')?.items ?? [];
-  const iconMap: Record<string, typeof Calendar> = {
-    Calendar,
-    Bell,
-    Database,
-    Sparkles,
-    Clock,
-    Rocket,
-    ShieldCheck,
-  };
-
   return (
-    <div className="relative hidden md:flex items-start justify-end lg:justify-self-end lg:ml-10">
-      <div className="absolute -right-6 top-20 hidden xl:block">
-        <div className="rounded-[1.75rem] border border-white/10 bg-slate-950/95 px-4 py-4 shadow-[0_30px_90px_rgba(15,23,42,0.22)] backdrop-blur-xl">
-          <div className="flex items-center gap-3">
-            <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-emerald-400/15 text-emerald-300 shadow-inner shadow-emerald-400/10">
-              <CheckCircle className="h-5 w-5" strokeWidth={1.5} />
+    <div className="relative hidden md:flex justify-end lg:justify-self-end lg:ml-10">
+      <div className="w-[340px] max-w-[90vw] rounded-[2.5rem] border border-white/10 bg-slate-950/95 shadow-[0_35px_90px_rgba(15,23,42,0.35)]">
+        <div className="p-5">
+          <div className="mb-4 flex items-center justify-between gap-4">
+            <div>
+              <p className="text-xs uppercase tracking-[0.24em] text-slate-400">Widok kliniki</p>
+              <h3 className="mt-2 text-lg font-semibold text-white">Szybki przegląd grafiku</h3>
             </div>
-            <div className="min-w-0">
-              <p className="truncate text-sm font-semibold text-white">Potwierdzono</p>
-              <p className="mt-1 text-xs text-gray-400">A. Kowalska · 09:00</p>
+            <div className="flex items-center gap-2 rounded-full bg-white/5 px-3 py-2 text-[11px] text-slate-300">
+              <span className="inline-flex h-2.5 w-2.5 rounded-full bg-emerald-400" />
+              Online
             </div>
           </div>
+
+          <HeroPhoneShell>
+            <div className="space-y-4">
+              <PhoneScreenOverview />
+              <PhoneScreenToday />
+            </div>
+          </HeroPhoneShell>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function HeroPhoneShell({ children }: { children: ReactNode }) {
+  return (
+    <div className="overflow-hidden rounded-[2rem] border border-white/10 bg-gradient-to-b from-slate-900 via-slate-950 to-slate-900 p-4 shadow-[inset_0_0_0_1px_rgba(255,255,255,0.03)]">
+      <div className="mb-4 flex items-center justify-between rounded-[1.75rem] border border-white/10 bg-white/5 px-4 py-3 text-[11px] text-slate-300">
+        <div className="flex items-center gap-2">
+          <span className="h-2.5 w-2.5 rounded-full bg-white/80" />
+          <span className="h-2.5 w-2.5 rounded-full bg-white/50" />
+          <span className="h-2.5 w-2.5 rounded-full bg-white/30" />
+        </div>
+        <span className="text-[10px] uppercase tracking-[0.28em] text-slate-400">Panel</span>
+        <div className="flex gap-2">
+          <span className="h-2.5 w-2.5 rounded-full bg-emerald-400" />
+          <span className="h-2.5 w-2.5 rounded-full bg-sky-400" />
         </div>
       </div>
 
-      <div className="relative w-[320px] max-w-[90vw] h-[620px] overflow-hidden rounded-[3rem] border border-slate-900/80 bg-[#03070f] shadow-[0_35px_90px_rgba(0,0,0,0.65)]">
-        <div className="absolute inset-0 bg-gradient-to-b from-[#05070d] via-[#08111f] to-[#06101a]" />
+      <div className="space-y-4">{children}</div>
 
-        <div className="absolute inset-x-0 top-0 z-20 flex justify-center pt-4">
-          <div className="h-10 w-[150px] rounded-b-[22px] bg-[#04050d]/95 shadow-inner shadow-black/40" />
+      <div className="mt-4 flex items-center justify-between rounded-[1.75rem] border border-white/10 bg-white/5 px-4 py-3 text-[11px] text-slate-300">
+        <span>Statystyki aktualne</span>
+        <span className="rounded-full bg-slate-800/70 px-3 py-1 text-[10px] text-slate-200">2 min temu</span>
+      </div>
+    </div>
+  );
+}
+
+function PhoneScreenOverview() {
+  return (
+    <div className="rounded-[1.75rem] border border-white/10 bg-slate-950/90 p-4">
+      <div className="flex items-center justify-between text-sm font-semibold text-white">
+        <span>Wskaźniki zajętości</span>
+        <span className="text-[10px] uppercase tracking-[0.25em] text-sky-300">W tym tyg.</span>
+      </div>
+      <div className="mt-4 grid grid-cols-3 gap-3 text-center">
+        <div className="rounded-3xl bg-slate-900/80 p-3">
+          <p className="text-2xl font-semibold text-white">94%</p>
+          <p className="mt-1 text-[11px] text-slate-400">Grafik obsadzony</p>
         </div>
+        <div className="rounded-3xl bg-slate-900/80 p-3">
+          <p className="text-2xl font-semibold text-sky-300">2%</p>
+          <p className="mt-1 text-[11px] text-slate-400">No-show</p>
+        </div>
+        <div className="rounded-3xl bg-slate-900/80 p-3">
+          <p className="text-2xl font-semibold text-emerald-300">14h</p>
+          <p className="mt-1 text-[11px] text-slate-400">Odzyskany czas</p>
+        </div>
+      </div>
+      <div className="mt-4 rounded-[1.75rem] border border-white/10 bg-[#07101a]/95 p-3 text-[12px] leading-6 text-slate-400">
+        System rezerwacji online wypełnił 6 wolnych terminów i ułatwił potwierdzenia SMS.
+      </div>
+    </div>
+  );
+}
 
-        <div className="absolute inset-x-0 top-5 z-30 px-5 text-white/80">
-          <div className="flex items-center justify-between text-[11px]">
-            <span className="font-semibold">9:41</span>
-            <div className="flex items-center gap-2">
-              <div className="flex items-center gap-1">
-                <span className="h-1.5 w-1.5 rounded-full bg-white" />
-                <span className="h-1.5 w-5 rounded-full border border-white/70" />
-              </div>
-              <span className="text-[10px]">LTE</span>
-              <div className="flex items-center gap-1">
-                <span className="flex h-4 w-7 items-center justify-end rounded-[10px] border border-white/70 px-0.5">
-                  <span className="h-2.5 w-4 rounded-[8px] bg-white ml-[1px]" />
-                </span>
-                <span className="text-[10px]">86%</span>
-              </div>
+function PhoneScreenToday() {
+  return (
+    <div className="rounded-[1.75rem] border border-white/10 bg-slate-950/90 p-4">
+      <div className="flex items-center justify-between text-sm font-semibold text-white">
+        <span>Dzisiaj</span>
+        <span className="text-[10px] uppercase tracking-[0.25em] text-slate-400">7 wizyt</span>
+      </div>
+      <div className="mt-4 space-y-3">
+        {[
+          { time: '09:00', patient: 'A. Kowalska', status: 'Potwierdzona' },
+          { time: '10:30', patient: 'M. Nowak', status: 'Nowa rezerwacja' },
+          { time: '12:00', patient: 'J. Wiśniewski', status: 'SMS przypomnienie' },
+        ].map((row) => (
+          <div key={row.time} className="rounded-3xl border border-white/10 bg-[#06111f]/95 p-3">
+            <div className="flex items-center justify-between text-[13px] font-semibold text-white">
+              <span>{row.time}</span>
+              <span className="rounded-full bg-slate-800/70 px-2 py-1 text-[10px] text-slate-300">{row.status}</span>
             </div>
+            <p className="mt-2 text-sm text-slate-200">{row.patient}</p>
           </div>
-        </div>
-
-        <div className="absolute inset-x-0 top-20 bottom-6 px-4">
-          <div className="relative h-full overflow-hidden rounded-[2rem] border border-white/10 bg-[#08131f]/95 shadow-inner shadow-black/40">
-            <div className="px-4 pt-4 text-[10px] uppercase tracking-[0.25em] text-sky-200">
-              Harmonogram
-            </div>
-            <div className="mt-4 space-y-3 px-1 pb-4">
-              <div className="rounded-[1.75rem] border border-white/10 bg-[#0c1826]/95 p-4 shadow-[inset_0_1px_2px_rgba(255,255,255,0.05)]">
-                <div className="flex items-start justify-between gap-4">
-                  <div>
-                    <p className="text-xs uppercase tracking-[0.2em] text-slate-400">Obsadzenie</p>
-                    <p className="mt-2 text-xl font-semibold text-white">87% grafiku</p>
-                  </div>
-                  <span className="rounded-full bg-emerald-400/10 px-3 py-1 text-[10px] uppercase tracking-[0.25em] text-emerald-200">
-                    Aktywne
-                  </span>
-                </div>
-                <p className="mt-3 text-[11px] leading-snug text-slate-400">
-                  Rezerwacje online i przypomnienia działają bez ręcznej obsługi.
-                </p>
-              </div>
-
-              <div className="grid gap-3">
-                {features.slice(0, 3).map((item, index) => {
-                  const Icon = iconMap[item.icon as string] ?? CheckCircle;
-                  return (
-                    <div key={index} className="rounded-[1.5rem] border border-white/10 bg-[#06101a]/95 p-3">
-                      <div className="flex items-center gap-3">
-                        <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-sky-500/10 text-sky-300">
-                          <Icon className="h-4.5 w-4.5" strokeWidth={1.5} />
-                        </div>
-                        <div className="min-w-0">
-                          <p className="text-sm font-semibold text-white">{item.label}</p>
-                          <p className="mt-1 text-[11px] leading-tight text-slate-400">{item.desc}</p>
-                        </div>
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div className="absolute bottom-4 left-4 right-4 rounded-[2rem] border border-white/10 bg-slate-950/90 px-4 py-3 text-[11px] text-gray-300 shadow-lg shadow-slate-950/20">
-          <div className="flex items-center justify-between gap-3">
-            <div>
-              <p className="text-xs uppercase tracking-[0.25em] text-slate-400">Dzisiaj</p>
-              <p className="mt-1 text-sm font-semibold text-white">A. Kowalska potwierdzono</p>
-            </div>
-            <span className="rounded-full bg-slate-800/80 px-3 py-1 text-[10px] uppercase tracking-[0.25em] text-slate-300">
-              09:00
-            </span>
-          </div>
-        </div>
+        ))}
+      </div>
+      <div className="mt-4 rounded-[1.75rem] border border-white/10 bg-slate-900/70 p-3 text-[11px] text-slate-300">
+        Wysyłka przypomnień SMS pomogła odzyskać 2 wolne sloty o 17:00.
       </div>
     </div>
   );
@@ -860,7 +857,7 @@ function Hero() {
       <div className="pointer-events-none absolute right-0 top-0 h-[520px] w-[520px] rounded-full bg-purple-500/10 blur-3xl" />
       <div className="pointer-events-none absolute -left-16 bottom-0 h-[340px] w-[340px] rounded-full bg-pink-500/5 blur-3xl" />
 
-      <div className="relative mx-auto grid max-w-6xl items-start gap-10 lg:grid-cols-[1.15fr_0.85fr]">
+      <div className="relative mx-auto grid max-w-6xl items-center gap-10 lg:grid-cols-[1.15fr_0.85fr]">
         <div className="max-w-xl text-left flex flex-col justify-center">
           <h1 className="pf-hero-fade-in text-4xl font-bold leading-tight text-white sm:text-5xl lg:text-6xl xl:text-7xl">
             {t.hero.title.split(' ').map((word, i) => (
