@@ -404,7 +404,7 @@ function HeroCarousel() {
                     onClick={handleRefresh}
                     className="rounded-2xl bg-cyan-400 px-4 py-3 text-sm font-semibold text-slate-950 shadow-lg shadow-cyan-500/20 transition hover:bg-cyan-300"
                   >
-                    {refreshing ? 'Aktualizuję…' : 'Potwierdź obecność SMS'}
+                    {refreshing ? 'Aktualizuję…' : 'Potwierdź obecność'}
                   </button>
                 </div>
               </div>
@@ -498,12 +498,12 @@ function Hero() {
   const { t } = useI18n();
 
   return (
-    <section className="relative overflow-hidden px-6 py-10 min-h-screen sm:py-14 lg:py-18">
+    <section className="relative overflow-hidden px-6 py-0 min-h-screen">
       <div className="absolute inset-0 bg-gradient-to-br from-[#08111f] via-[#0a1628] to-[#0c1e35]" />
       <div className="pointer-events-none absolute right-0 top-0 h-[520px] w-[520px] rounded-full bg-purple-500/10 blur-3xl" />
       <div className="pointer-events-none absolute -left-16 bottom-0 h-[340px] w-[340px] rounded-full bg-pink-500/5 blur-3xl" />
 
-      <div className="relative mx-auto grid max-w-6xl items-center gap-10 lg:grid-cols-[1.05fr_0.95fr]">
+      <div className="relative mx-auto grid min-h-screen max-w-6xl items-center gap-10 lg:grid-cols-[1.05fr_0.95fr]">
         <div className="max-w-xl text-left flex flex-col justify-center gap-8 lg:min-h-[640px]">
           <p className="pf-hero-fade-in text-sm font-semibold uppercase tracking-[0.3em] text-cyan-300">Nowoczesny pulpit zarządzania</p>
           <h1 className="pf-hero-fade-in text-4xl font-semibold leading-tight text-white sm:text-5xl lg:text-5xl xl:text-6xl">
@@ -1146,28 +1146,30 @@ function AppContent() {
     <div id="top" className="min-h-screen bg-[#0a1628] text-white antialiased">
       <Nav />
       <Hero />
-      <Reveal>
-        <Calculator />
-      </Reveal>
-      <Reveal>
-        <MiniCta />
-      </Reveal>
-      <Reveal>
-        <Implementation />
-      </Reveal>
-      <Reveal>
-        <BeforeAfter />
-      </Reveal>
-      <Reveal>
-        <AboutSection />
-      </Reveal>
-      <Reveal>
-        <FAQ />
-      </Reveal>
-      <Reveal>
-        <AuditCta />
-      </Reveal>
-      <Footer />
+      <div className="hidden">
+        <Reveal>
+          <Calculator />
+        </Reveal>
+        <Reveal>
+          <MiniCta />
+        </Reveal>
+        <Reveal>
+          <Implementation />
+        </Reveal>
+        <Reveal>
+          <BeforeAfter />
+        </Reveal>
+        <Reveal>
+          <AboutSection />
+        </Reveal>
+        <Reveal>
+          <FAQ />
+        </Reveal>
+        <Reveal>
+          <AuditCta />
+        </Reveal>
+        <Footer />
+      </div>
 
       <StickyMobileCta />
       <ExitIntentPopup />
