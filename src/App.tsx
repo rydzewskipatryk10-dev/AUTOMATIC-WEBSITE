@@ -324,7 +324,7 @@ function Nav() {
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
-    const onScroll = () => setVisible(window.scrollY > 40);
+    const onScroll = () => setVisible(window.scrollY > 120);
     onScroll();
     window.addEventListener('scroll', onScroll);
     return () => window.removeEventListener('scroll', onScroll);
@@ -598,8 +598,8 @@ function HeroCarousel() {
   }, [slides.length]);
 
   return (
-    <div className="relative hidden md:flex items-center justify-center lg:mr-auto lg:justify-self-start lg:ml-10">
-      <div className="relative mt-10 w-[320px] h-[600px] overflow-hidden rounded-[3rem] border-[10px] border-[#102035] bg-[#0d1a2e] shadow-2xl shadow-black/80">
+    <div className="relative hidden md:flex items-end justify-center lg:mr-auto lg:justify-self-start lg:ml-10">
+      <div className="relative mt-10 lg:mt-16 w-[320px] h-[600px] overflow-hidden rounded-[3rem] border-[10px] border-[#102035] bg-[#0d1a2e] shadow-2xl shadow-black/80">
         
         {/* Notch */}
         <div className="absolute top-0 inset-x-0 z-30 flex justify-center">
