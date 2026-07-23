@@ -598,8 +598,8 @@ function HeroCarousel() {
   };
 
   return (
-    <div className="relative hidden md:flex items-center justify-end lg:justify-self-end lg:ml-10 overflow-visible">
-      <div className="absolute -right-6 top-24 hidden xl:block">
+    <div className="relative hidden md:flex items-start justify-end lg:justify-self-end lg:ml-10">
+      <div className="absolute -right-6 top-20 hidden xl:block">
         <div className="rounded-[1.75rem] border border-white/10 bg-slate-950/95 px-4 py-4 shadow-[0_30px_90px_rgba(15,23,42,0.22)] backdrop-blur-xl">
           <div className="flex items-center gap-3">
             <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-emerald-400/15 text-emerald-300 shadow-inner shadow-emerald-400/10">
@@ -613,11 +613,11 @@ function HeroCarousel() {
         </div>
       </div>
 
-      <div className="relative w-[340px] max-w-[90vw] h-[680px] overflow-hidden rounded-[3.5rem] border border-slate-900/80 bg-[#04050d] shadow-[0_35px_90px_rgba(0,0,0,0.65)]">
+      <div className="relative w-[320px] max-w-[90vw] h-[620px] overflow-hidden rounded-[3rem] border border-slate-900/80 bg-[#03070f] shadow-[0_35px_90px_rgba(0,0,0,0.65)]">
         <div className="absolute inset-0 bg-gradient-to-b from-[#05070d] via-[#08111f] to-[#06101a]" />
 
         <div className="absolute inset-x-0 top-0 z-20 flex justify-center pt-4">
-          <div className="h-10 w-[165px] rounded-b-[24px] bg-[#04050d]/95 shadow-inner shadow-black/40" />
+          <div className="h-10 w-[150px] rounded-b-[22px] bg-[#04050d]/95 shadow-inner shadow-black/40" />
         </div>
 
         <div className="absolute inset-x-0 top-5 z-30 px-5 text-white/80">
@@ -639,33 +639,60 @@ function HeroCarousel() {
           </div>
         </div>
 
-        <div className="absolute inset-x-0 top-20 bottom-6 px-5">
-          <div className="relative h-full overflow-hidden rounded-[2.2rem] border border-white/10 bg-[#08131f]/95 shadow-inner shadow-black/40">
-            <div className="absolute left-5 top-5 rounded-full bg-sky-500/10 px-3 py-1 text-[10px] uppercase tracking-[0.25em] text-sky-200">
-              Co wprowadzamy
+        <div className="absolute inset-x-0 top-20 bottom-6 px-4">
+          <div className="relative h-full overflow-hidden rounded-[2rem] border border-white/10 bg-[#08131f]/95 shadow-inner shadow-black/40">
+            <div className="px-4 pt-4 text-[10px] uppercase tracking-[0.25em] text-sky-200">
+              Harmonogram
             </div>
-            <div className="relative mt-16 space-y-4 pb-5">
-              {features.slice(0, 4).map((item, index) => {
-                const Icon = iconMap[item.icon as string] ?? CheckCircle;
-                return (
-                  <div key={index} className="rounded-[1.75rem] border border-white/10 bg-[#0d1a2e]/95 p-4 shadow-[inset_0_1px_2px_rgba(255,255,255,0.05)]">
-                    <div className="flex items-start gap-3">
-                      <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-sky-500/10 text-sky-300 shadow-inner shadow-sky-500/10">
-                        <Icon className="h-5 w-5" strokeWidth={1.5} />
-                      </div>
-                      <div className="min-w-0">
-                        <p className="text-sm font-semibold text-white">{item.label}</p>
-                        <p className="mt-1 text-[11px] leading-tight text-slate-400">{item.desc}</p>
+            <div className="mt-4 space-y-3 px-1 pb-4">
+              <div className="rounded-[1.75rem] border border-white/10 bg-[#0c1826]/95 p-4 shadow-[inset_0_1px_2px_rgba(255,255,255,0.05)]">
+                <div className="flex items-start justify-between gap-4">
+                  <div>
+                    <p className="text-xs uppercase tracking-[0.2em] text-slate-400">Obsadzenie</p>
+                    <p className="mt-2 text-xl font-semibold text-white">87% grafiku</p>
+                  </div>
+                  <span className="rounded-full bg-emerald-400/10 px-3 py-1 text-[10px] uppercase tracking-[0.25em] text-emerald-200">
+                    Aktywne
+                  </span>
+                </div>
+                <p className="mt-3 text-[11px] leading-snug text-slate-400">
+                  Rezerwacje online i przypomnienia działają bez ręcznej obsługi.
+                </p>
+              </div>
+
+              <div className="grid gap-3">
+                {features.slice(0, 3).map((item, index) => {
+                  const Icon = iconMap[item.icon as string] ?? CheckCircle;
+                  return (
+                    <div key={index} className="rounded-[1.5rem] border border-white/10 bg-[#06101a]/95 p-3">
+                      <div className="flex items-center gap-3">
+                        <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-sky-500/10 text-sky-300">
+                          <Icon className="h-4.5 w-4.5" strokeWidth={1.5} />
+                        </div>
+                        <div className="min-w-0">
+                          <p className="text-sm font-semibold text-white">{item.label}</p>
+                          <p className="mt-1 text-[11px] leading-tight text-slate-400">{item.desc}</p>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                );
-              })}
+                  );
+                })}
+              </div>
             </div>
           </div>
         </div>
 
-        <div className="absolute bottom-4 left-1/2 z-30 h-1.5 w-20 -translate-x-1/2 rounded-full bg-white/15" />
+        <div className="absolute bottom-4 left-4 right-4 rounded-[2rem] border border-white/10 bg-slate-950/90 px-4 py-3 text-[11px] text-gray-300 shadow-lg shadow-slate-950/20">
+          <div className="flex items-center justify-between gap-3">
+            <div>
+              <p className="text-xs uppercase tracking-[0.25em] text-slate-400">Dzisiaj</p>
+              <p className="mt-1 text-sm font-semibold text-white">A. Kowalska potwierdzono</p>
+            </div>
+            <span className="rounded-full bg-slate-800/80 px-3 py-1 text-[10px] uppercase tracking-[0.25em] text-slate-300">
+              09:00
+            </span>
+          </div>
+        </div>
       </div>
     </div>
   );
@@ -828,15 +855,14 @@ function Hero() {
   const { t } = useI18n();
 
   return (
-    <section className="relative overflow-hidden px-6 pb-24 pt-20 min-h-screen">
-      {/* Hero background — clean gradient, no photo */}
+    <section className="relative overflow-hidden px-6 py-16 min-h-[calc(100vh-4rem)] sm:py-20">
       <div className="absolute inset-0 bg-gradient-to-br from-[#08111f] via-[#0a1628] to-[#0c1e35]" />
-      <div className="pointer-events-none absolute right-0 top-0 h-[600px] w-[600px] rounded-full bg-purple-500/10 blur-3xl" />
-      <div className="pointer-events-none absolute -left-20 bottom-0 h-[400px] w-[400px] rounded-full bg-pink-500/5 blur-3xl" />
+      <div className="pointer-events-none absolute right-0 top-0 h-[520px] w-[520px] rounded-full bg-purple-500/10 blur-3xl" />
+      <div className="pointer-events-none absolute -left-16 bottom-0 h-[340px] w-[340px] rounded-full bg-pink-500/5 blur-3xl" />
 
-      <div className="relative mx-auto grid max-w-6xl items-center gap-12 lg:grid-cols-[1.15fr_0.85fr]">
-        <div className="max-w-xl text-left">
-          <h1 className="pf-hero-fade-in text-4xl font-bold leading-tight text-white sm:text-5xl md:text-7xl">
+      <div className="relative mx-auto grid max-w-6xl items-start gap-10 lg:grid-cols-[1.15fr_0.85fr]">
+        <div className="max-w-xl text-left flex flex-col justify-center">
+          <h1 className="pf-hero-fade-in text-4xl font-bold leading-tight text-white sm:text-5xl lg:text-6xl xl:text-7xl">
             {t.hero.title.split(' ').map((word, i) => (
               <span
                 key={i}
@@ -850,19 +876,18 @@ function Hero() {
               return acc;
             }, [])}
           </h1>
-          <p className="pf-hero-fade-in-delayed mt-6 text-xl text-gray-300">
+          <p className="pf-hero-fade-in-delayed mt-6 max-w-2xl text-base leading-8 text-gray-300 sm:text-lg">
             {t.hero.subtitle}
           </p>
           <a
             href="#diagnoza"
-            className="pf-hero-fade-in-delayed-2 mt-10 inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-sky-500 to-cyan-400 px-10 py-6 text-xl font-bold text-black shadow-xl shadow-cyan-500/40 transition hover:bg-cyan-400"
+            className="pf-hero-fade-in-delayed-2 mt-10 inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-sky-500 to-cyan-400 px-8 py-4 text-base font-bold text-black shadow-xl shadow-cyan-500/40 transition hover:bg-cyan-400"
           >
             {t.hero.cta}
             <ArrowRight className="h-5 w-5" />
           </a>
         </div>
 
-        {/* Rotating dashboard carousel */}
         <HeroCarousel />
       </div>
     </section>
@@ -1610,36 +1635,36 @@ function MiniCta() {
 function AuditCta() {
   const { t } = useI18n();
   return (
-    <section id="kontakt" className="relative overflow-hidden bg-[#0d1a2e] px-6 py-32">
+    <section id="kontakt" className="relative overflow-hidden bg-[#0d1a2e] px-6 py-16 sm:py-20">
       <div className="relative mx-auto max-w-3xl text-center">
-        <h2 className="text-5xl font-bold text-white sm:text-6xl">
+        <h2 className="text-4xl font-bold text-white sm:text-5xl">
           {t.audit.title}
         </h2>
-        <p className="mx-auto mt-8 max-w-xl text-xl text-gray-300">
+        <p className="mx-auto mt-6 max-w-2xl text-base leading-8 text-gray-300 sm:text-lg">
           {t.audit.desc}
         </p>
 
-        <div className="mt-8 flex flex-wrap justify-center gap-x-8 gap-y-3">
-          <div className="flex items-center gap-2 text-base text-gray-300">
+        <div className="mt-8 grid gap-3 sm:grid-cols-3 sm:justify-center">
+          <div className="flex items-center justify-center gap-2 rounded-3xl bg-slate-950/75 px-4 py-3 text-sm text-gray-300">
             <Clock className="h-5 w-5 text-cyan-400" strokeWidth={1.5} />
             <span>15 min</span>
           </div>
-          <div className="flex items-center gap-2 text-base text-gray-300">
+          <div className="flex items-center justify-center gap-2 rounded-3xl bg-slate-950/75 px-4 py-3 text-sm text-gray-300">
             <Video className="h-5 w-5 text-cyan-400" strokeWidth={1.5} />
             <span>Online</span>
           </div>
-          <div className="flex items-center gap-2 text-base text-gray-300">
+          <div className="flex items-center justify-center gap-2 rounded-3xl bg-slate-950/75 px-4 py-3 text-sm text-gray-300">
             <ShieldCheck className="h-5 w-5 text-cyan-400" strokeWidth={1.5} />
             <span>Bez zobowiązań</span>
           </div>
         </div>
 
-        <div className="mx-auto mt-14 max-w-xl rounded-2xl border border-white/10 bg-[#0a1628]/60 p-8 text-left backdrop-blur-sm sm:p-10">
+        <div className="mx-auto mt-10 max-w-xl rounded-3xl border border-white/10 bg-[#0a1628]/70 p-5 text-left backdrop-blur-sm sm:p-6">
           <LeadForm source="audit-cta" variant="booking" />
         </div>
-        <p className="mt-5 text-base text-gray-400">{t.audit.noCommit}</p>
+        <p className="mt-4 text-sm text-gray-400">{t.audit.noCommit}</p>
 
-        <p className="mt-6 flex items-center justify-center gap-2 text-sm text-gray-400">
+        <p className="mt-5 flex items-center justify-center gap-2 text-sm text-gray-400">
           <Mail className="h-4 w-4" />
           kontakt@fullschedule.pl
         </p>
