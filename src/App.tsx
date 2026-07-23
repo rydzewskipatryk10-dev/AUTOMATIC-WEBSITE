@@ -449,7 +449,7 @@ function Hero() {
       <div className="pointer-events-none absolute right-0 top-0 h-[520px] w-[520px] rounded-full bg-purple-500/10 blur-3xl" />
       <div className="pointer-events-none absolute -left-16 bottom-0 h-[340px] w-[340px] rounded-full bg-pink-500/5 blur-3xl" />
 
-      <div className="relative mx-auto grid max-w-6xl items-start gap-10 lg:grid-cols-[1.1fr_auto]">
+      <div className="relative mx-auto grid max-w-6xl items-start gap-10">
         <div className="max-w-xl text-left flex flex-col justify-start gap-8 pt-4 lg:pt-6">
           <h1 className="pf-hero-fade-in text-4xl font-bold leading-tight text-white sm:text-5xl lg:text-6xl xl:text-7xl">
             {t.hero.title.split(' ').map((word, i) => (
@@ -476,8 +476,6 @@ function Hero() {
             <ArrowRight className="h-5 w-5" />
           </a>
         </div>
-
-        <HeroCarousel />
       </div>
     </section>
   );
