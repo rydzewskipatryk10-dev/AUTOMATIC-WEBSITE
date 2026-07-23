@@ -1239,16 +1239,16 @@ function MiniCta() {
 function AuditCta() {
   const { t } = useI18n();
   return (
-    <section id="kontakt" className="relative overflow-hidden bg-[#0d1a2e] px-6 py-16 sm:py-20">
+    <section id="kontakt" className="relative overflow-hidden bg-[#0d1a2e] px-6 py-12 sm:py-16">
       <div className="relative mx-auto max-w-3xl text-center">
         <h2 className="text-4xl font-bold text-white sm:text-5xl">
           {t.audit.title}
         </h2>
-        <p className="mx-auto mt-6 max-w-2xl text-base leading-8 text-gray-300 sm:text-lg">
+        <p className="mx-auto mt-5 max-w-2xl text-base leading-7 text-gray-300 sm:text-lg">
           {t.audit.desc}
         </p>
 
-        <div className="mt-8 grid gap-3 sm:grid-cols-3 sm:justify-center">
+        <div className="mt-6 grid gap-3 sm:grid-cols-3 sm:justify-center">
           <div className="flex items-center justify-center gap-2 rounded-3xl bg-slate-950/75 px-3 py-2 text-xs text-gray-300 sm:text-sm">
             <Clock className="h-5 w-5 text-cyan-400" strokeWidth={1.5} />
             <span>15 min</span>
@@ -1263,12 +1263,12 @@ function AuditCta() {
           </div>
         </div>
 
-        <div className="mx-auto mt-10 max-w-xl rounded-3xl border border-white/10 bg-[#0a1628]/70 p-4 text-left backdrop-blur-sm sm:p-6">
+        <div className="mx-auto mt-8 max-w-xl rounded-3xl border border-white/10 bg-[#0a1628]/70 p-4 text-left backdrop-blur-sm sm:p-5">
           <LeadForm source="audit-cta" variant="booking" />
         </div>
-        <p className="mt-4 text-sm text-gray-400">{t.audit.noCommit}</p>
+        <p className="mt-3 text-sm text-gray-400">{t.audit.noCommit}</p>
 
-        <p className="mt-5 flex items-center justify-center gap-2 text-sm text-gray-400">
+        <p className="mt-4 flex items-center justify-center gap-2 text-sm text-gray-400">
           <Mail className="h-4 w-4" />
           kontakt@fullschedule.pl
         </p>
