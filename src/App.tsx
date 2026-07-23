@@ -1128,24 +1128,24 @@ function Implementation() {
 function MiniCta() {
   const { t } = useI18n();
   return (
-    <section className="bg-white px-6 py-24">
+    <section className="bg-white px-4 py-20 sm:px-6 sm:py-24">
       <div className="mx-auto max-w-4xl">
         <div className="text-center">
-          <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-cyan-50 ring-1 ring-cyan-100">
-            <Stethoscope className="h-8 w-8 text-cyan-600" strokeWidth={1.5} />
+          <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-cyan-50 ring-1 ring-cyan-100">
+            <Stethoscope className="h-7 w-7 text-cyan-600" strokeWidth={1.5} />
           </div>
-          <p className="mt-6 text-sm font-semibold uppercase tracking-[0.18em] text-cyan-600">
+          <p className="mt-5 text-sm font-semibold uppercase tracking-[0.18em] text-cyan-600">
             {t.miniCta.eyebrow}
           </p>
           <h3 className="mx-auto mt-4 max-w-2xl text-3xl font-bold leading-tight text-slate-900 sm:text-4xl">
             {t.miniCta.title}
           </h3>
-          <p className="mx-auto mt-5 max-w-xl text-lg text-slate-500">
+          <p className="mx-auto mt-4 max-w-xl text-base text-slate-500 sm:text-lg">
             {t.miniCta.subtitle}
           </p>
         </div>
 
-        <div className="mx-auto mt-12 grid max-w-3xl gap-4 sm:grid-cols-3">
+        <div className="mx-auto mt-10 grid max-w-3xl gap-4 sm:grid-cols-3">
           {[
             { icon: Clock, value: '15 min', label: t.miniCta.feature1 },
             { icon: ShieldCheck, value: t.miniCta.feature2Value, label: t.miniCta.feature2 },
@@ -1153,19 +1153,19 @@ function MiniCta() {
           ].map((item, i) => (
             <div
               key={i}
-              className="rounded-2xl border border-slate-100 bg-slate-50/50 p-6 text-center"
+              className="rounded-2xl border border-slate-100 bg-slate-50/50 p-4 text-center"
             >
-              <item.icon className="mx-auto h-7 w-7 text-cyan-600" strokeWidth={1.5} />
-              <p className="mt-3 text-lg font-bold text-slate-900">{item.value}</p>
+              <item.icon className="mx-auto h-6 w-6 text-cyan-600" strokeWidth={1.5} />
+              <p className="mt-2 text-base font-semibold text-slate-900 sm:text-lg">{item.value}</p>
               <p className="mt-1 text-sm text-slate-500">{item.label}</p>
             </div>
           ))}
         </div>
 
-        <div className="mt-12 text-center">
+        <div className="mt-10 text-center">
           <a
             href="#book"
-            className="group inline-flex items-center gap-3 rounded-xl bg-cyan-600 px-10 py-4 text-base font-bold text-white shadow-lg shadow-cyan-600/20 transition hover:bg-cyan-700"
+            className="group inline-flex items-center gap-3 rounded-xl bg-cyan-600 px-6 py-3 text-base font-bold text-white shadow-lg shadow-cyan-600/20 transition hover:bg-cyan-700 sm:px-10 sm:py-4"
           >
             {t.miniCta.cta}
             <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
@@ -1193,21 +1193,21 @@ function AuditCta() {
         </p>
 
         <div className="mt-8 grid gap-3 sm:grid-cols-3 sm:justify-center">
-          <div className="flex items-center justify-center gap-2 rounded-3xl bg-slate-950/75 px-4 py-3 text-sm text-gray-300">
+          <div className="flex items-center justify-center gap-2 rounded-3xl bg-slate-950/75 px-3 py-2 text-xs text-gray-300 sm:text-sm">
             <Clock className="h-5 w-5 text-cyan-400" strokeWidth={1.5} />
             <span>15 min</span>
           </div>
-          <div className="flex items-center justify-center gap-2 rounded-3xl bg-slate-950/75 px-4 py-3 text-sm text-gray-300">
+          <div className="flex items-center justify-center gap-2 rounded-3xl bg-slate-950/75 px-3 py-2 text-xs text-gray-300 sm:text-sm">
             <Video className="h-5 w-5 text-cyan-400" strokeWidth={1.5} />
             <span>Online</span>
           </div>
-          <div className="flex items-center justify-center gap-2 rounded-3xl bg-slate-950/75 px-4 py-3 text-sm text-gray-300">
+          <div className="flex items-center justify-center gap-2 rounded-3xl bg-slate-950/75 px-3 py-2 text-xs text-gray-300 sm:text-sm">
             <ShieldCheck className="h-5 w-5 text-cyan-400" strokeWidth={1.5} />
             <span>Bez zobowiązań</span>
           </div>
         </div>
 
-        <div className="mx-auto mt-10 max-w-xl rounded-3xl border border-white/10 bg-[#0a1628]/70 p-5 text-left backdrop-blur-sm sm:p-6">
+        <div className="mx-auto mt-10 max-w-xl rounded-3xl border border-white/10 bg-[#0a1628]/70 p-4 text-left backdrop-blur-sm sm:p-6">
           <LeadForm source="audit-cta" variant="booking" />
         </div>
         <p className="mt-4 text-sm text-gray-400">{t.audit.noCommit}</p>
