@@ -304,7 +304,7 @@ function Nav() {
             {mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
           </button>
           <a
-            href="#top"
+            href="#hero"
             className="flex items-center"
           >
             <img
@@ -314,7 +314,7 @@ function Nav() {
             />
           </a>
           <a
-            href="#top"
+            href="#hero"
             className="hidden text-sm font-semibold text-gray-200 transition hover:text-white lg:inline-flex"
           >
             {t.nav.home}
@@ -352,7 +352,7 @@ function Nav() {
       >
         <div className="mx-auto flex max-w-6xl flex-col gap-2 px-6 py-4 text-sm font-semibold text-gray-200">
           <a
-            href="#top"
+            href="#hero"
             onClick={() => setMobileOpen(false)}
             className="rounded-2xl px-3 py-2 transition hover:bg-white/5"
           >
@@ -667,7 +667,7 @@ function Hero() {
   const { t } = useI18n();
 
   return (
-    <section className="relative min-h-screen overflow-hidden px-6 py-10 sm:py-14 lg:py-18">
+    <section id="hero" className="scroll-mt-24 relative min-h-screen overflow-hidden px-6 py-10 sm:py-14 lg:py-18">
       <div className="absolute inset-0 -z-20 bg-gradient-to-br from-[#08111f] via-[#0a1628] to-[#0c1e35]" />
       <div className="pointer-events-none absolute right-0 top-0 -z-10 h-[520px] w-[520px] rounded-full bg-purple-500/10 blur-3xl" />
       <div className="pointer-events-none absolute -left-16 bottom-0 -z-10 h-[340px] w-[340px] rounded-full bg-pink-500/5 blur-3xl" />
