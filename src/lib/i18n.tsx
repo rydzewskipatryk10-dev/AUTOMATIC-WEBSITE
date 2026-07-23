@@ -28,10 +28,6 @@ const translations = {
       booked: 'Obsadzone',
       noshow: 'No-shows',
       saved: 'Odzyskany czas',
-      notify1Title: 'SMS Wysłany',
-      notify1Desc: 'Przypomnienie o wizycie',
-      notify2Title: 'Potwierdzono',
-      notify2Desc: 'A. Kowalska (09:00)',
     },
     heroCarousel: {
       slides: [
