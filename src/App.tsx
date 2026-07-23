@@ -523,7 +523,7 @@ function Hero() {
       <div className="pointer-events-none absolute -left-16 bottom-0 h-[340px] w-[340px] rounded-full bg-pink-500/5 blur-3xl" />
 
       <div className="relative mx-auto grid max-w-6xl items-start">
-        <div className="max-w-xl text-left flex flex-col justify-start gap-8 pt-10 lg:pt-12">
+        <div className="max-w-xl text-left flex flex-col justify-start gap-8 pt-16 lg:pt-18">
           <h1 className="pf-hero-fade-in text-4xl font-bold leading-tight text-white sm:text-5xl lg:text-6xl xl:text-7xl">
             {t.hero.title.split(' ').map((word, i) => (
               <span
