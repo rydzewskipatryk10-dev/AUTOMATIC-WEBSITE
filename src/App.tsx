@@ -302,11 +302,6 @@ function Nav() {
             className="h-10 w-auto"
           />
         </a>
-        <nav className="hidden items-center gap-7 md:flex">
-          <a href="#diagnoza" className="text-sm font-medium text-gray-300 transition hover:text-cyan-300">{t.nav.calc}</a>
-          <a href="#onas" className="text-sm font-medium text-gray-300 transition hover:text-cyan-300">{t.nav.about}</a>
-          <a href="#kontakt" className="text-sm font-medium text-gray-300 transition hover:text-cyan-300">{t.nav.contact}</a>
-        </nav>
         <div className="flex items-center gap-3">
           <LanguageToggle />
           <a
