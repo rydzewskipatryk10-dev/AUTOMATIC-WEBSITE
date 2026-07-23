@@ -302,6 +302,20 @@ function Nav() {
             className="h-10 w-auto"
           />
         </a>
+        <div className="hidden lg:flex items-center gap-8 text-sm font-semibold text-gray-200">
+          <a href="#calculator" className="transition hover:text-white">
+            {t.nav.calc}
+          </a>
+          <a href="#implementation" className="transition hover:text-white">
+            {t.nav.howItWorks}
+          </a>
+          <a href="#onas" className="transition hover:text-white">
+            {t.nav.about}
+          </a>
+          <a href="#faq" className="transition hover:text-white">
+            {t.nav.faq}
+          </a>
+        </div>
         <div className="flex items-center gap-3">
           <LanguageToggle />
           <a
@@ -1070,7 +1084,7 @@ function Implementation() {
   const { t } = useI18n();
   const icons = [Wrench, Rocket, ShieldCheck];
   return (
-    <section className="bg-[#0d1a2e] px-6 py-24">
+    <section id="implementation" className="bg-[#0d1a2e] px-6 py-24">
       <div className="mx-auto max-w-5xl">
         <p className="text-xs font-semibold uppercase tracking-widest text-cyan-400">
           {t.implementation.eyebrow}
@@ -1207,7 +1221,7 @@ function FAQ() {
   const [open, setOpen] = useState<number | null>(0);
 
   return (
-    <section className="px-6 py-24">
+    <section id="faq" className="px-6 py-24">
       <div className="mx-auto max-w-3xl">
         <p className="text-xs font-semibold uppercase tracking-widest text-cyan-400">
           {t.faq.eyebrow}

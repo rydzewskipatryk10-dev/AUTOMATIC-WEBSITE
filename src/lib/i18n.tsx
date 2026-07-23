@@ -15,7 +15,9 @@ const translations = {
   pl: {
     nav: {
       calc: 'Kalkulator',
+      howItWorks: 'Jak to działa',
       about: 'O nas',
+      faq: 'FAQ',
       contact: 'Kontakt',
       book: 'Umów rozmowę',
     },
@@ -318,7 +320,9 @@ const translations = {
   en: {
     nav: {
       calc: 'Calculator',
+      howItWorks: 'How it works',
       about: 'About',
+      faq: 'FAQ',
       contact: 'Contact',
       book: 'Book a call',
     },
