@@ -586,7 +586,7 @@ function AboutSection() {
 // ---------------------------------------------------------------------------
 function HeroCarousel() {
   const { t } = useI18n();
-  const [index, setIndex] = useState(0);
+  const [index, setIndex] = useState(1);
   const slides = t.heroCarousel.slides;
 
   useEffect(() => {
@@ -597,10 +597,24 @@ function HeroCarousel() {
   }, [slides.length]);
 
   return (
-    <div className="relative hidden md:flex items-center justify-center lg:mr-auto lg:justify-self-start lg:ml-10">
-      
+    <div className="relative hidden md:flex items-end justify-end lg:justify-self-end lg:ml-10 overflow-visible">
+      {/* Floating confirmation bubble */}
+      <div className="absolute right-[-1rem] top-1/2 hidden xl:block">
+        <div className="relative w-[255px] rounded-[2rem] border border-white/10 bg-slate-950/95 px-4 py-4 shadow-[0_30px_100px_rgba(15,23,42,0.28)] backdrop-blur-xl">
+          <div className="flex items-center gap-3">
+            <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-emerald-500/15 text-emerald-300 shadow-inner shadow-emerald-500/10">
+              <CheckCircle className="h-5 w-5" strokeWidth={1.5} />
+            </div>
+            <div className="min-w-0">
+              <p className="truncate text-sm font-semibold text-white">Potwierdzono</p>
+              <p className="mt-1 text-xs text-gray-400">A. Kowalska · 09:00</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
       {/* Phone Mockup */}
-      <div className="relative mt-12 w-[334px] h-[710px] overflow-hidden rounded-[3.5rem] border border-slate-900/80 bg-[#04050d] shadow-[0_35px_80px_rgba(0,0,0,0.6)]">
+      <div className="relative w-[334px] h-[710px] overflow-hidden rounded-[3.5rem] border border-slate-900/80 bg-[#04050d] shadow-[0_35px_90px_rgba(0,0,0,0.65)]">
         <div className="absolute inset-0 bg-gradient-to-b from-[#05070d] via-[#07101a] to-[#06101a]" />
 
         {/* Notch */}
@@ -628,8 +642,8 @@ function HeroCarousel() {
           </div>
         </div>
 
-        <div className="absolute inset-x-0 top-16 bottom-7 px-3">
-          <div className="relative h-full overflow-hidden rounded-[2.2rem] border border-white/10 bg-[#08131f]/95 shadow-inner shadow-black/40 backdrop-blur-xl">
+        <div className="absolute inset-x-0 top-16 bottom-6 px-4">
+          <div className="relative h-full overflow-hidden rounded-[2.2rem] border border-white/10 bg-gradient-to-b from-[#08131f]/to-[#06131f] shadow-inner shadow-black/40 backdrop-blur-xl">
             {slides.map((slide, i) => (
               <div
                 key={i}
