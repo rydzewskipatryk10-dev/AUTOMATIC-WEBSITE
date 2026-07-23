@@ -331,10 +331,6 @@ const translations = {
       booked: 'Booked',
       noshow: 'No-shows',
       saved: 'Time saved',
-      notify1Title: 'SMS Sent',
-      notify1Desc: 'Visit reminder',
-      notify2Title: 'Confirmed',
-      notify2Desc: 'A. Kowalska (09:00)',
     },
     heroCarousel: {
       slides: [

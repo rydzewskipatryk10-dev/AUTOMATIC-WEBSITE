@@ -597,10 +597,10 @@ function HeroCarousel() {
   }, [slides.length]);
 
   return (
-    <div className="relative hidden md:flex items-center justify-center lg:mr-auto lg:justify-self-start lg:ml-10">
+    <div className="relative hidden md:flex items-end justify-center lg:mr-auto lg:justify-self-start lg:ml-10">
       
       {/* Phone Mockup */}
-      <div className="relative mt-12 w-[334px] h-[710px] overflow-hidden rounded-[3.5rem] border border-slate-900/80 bg-[#04050d] shadow-[0_35px_80px_rgba(0,0,0,0.6)]">
+      <div className="relative mt-20 w-[334px] h-[710px] overflow-hidden rounded-[3.5rem] border border-slate-900/80 bg-[#04050d] shadow-[0_35px_80px_rgba(0,0,0,0.6)]">
         <div className="absolute inset-0 bg-gradient-to-b from-[#05070d] via-[#07101a] to-[#06101a]" />
 
         {/* Notch */}
