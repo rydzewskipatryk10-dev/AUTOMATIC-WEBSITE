@@ -601,50 +601,59 @@ function HeroCarousel() {
     <div className="relative hidden md:flex items-center justify-center lg:mr-auto lg:justify-self-start lg:ml-10">
       
       {/* Phone Mockup */}
-      <div className="relative mt-12 w-[320px] h-[600px] overflow-hidden rounded-[3rem] border-[10px] border-[#102035] bg-[#0d1a2e] shadow-2xl shadow-black/80">
-        
+      <div className="relative mt-12 w-[334px] h-[710px] overflow-hidden rounded-[3.5rem] border border-slate-900/80 bg-[#04050d] shadow-[0_35px_80px_rgba(0,0,0,0.6)]">
+        <div className="absolute inset-0 bg-gradient-to-b from-[#05070d] via-[#07101a] to-[#06101a]" />
+
         {/* Notch */}
-        <div className="absolute top-0 inset-x-0 z-30 flex justify-center">
-          <div className="h-6 w-32 rounded-b-2xl bg-[#102035]"></div>
+        <div className="absolute inset-x-0 top-0 z-20 flex justify-center pt-4">
+          <div className="h-10 w-[180px] rounded-b-[26px] bg-[#04050d]/95 shadow-inner shadow-black/40" />
         </div>
 
-        {/* Slide container with full height */}
-        <div className="relative h-full pt-8">
-          {slides.map((slide, i) => (
-            <div
-              key={i}
-              className={`absolute inset-0 pt-8 transition-all duration-1000 ease-in-out ${
-                i === index ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8 pointer-events-none'
-              }`}
-            >
-              {/* Slide header */}
-              <div className="flex items-center justify-center border-b border-white/10 px-5 pb-3">
-                <span className="text-sm font-semibold text-gray-300">{slide.header}</span>
+        {/* Status bar */}
+        <div className="absolute inset-x-0 top-5 z-30 px-5 text-white/80">
+          <div className="flex items-center justify-between text-[11px]">
+            <span className="font-semibold">9:41</span>
+            <div className="flex items-center gap-2">
+              <div className="flex items-center gap-1">
+                <span className="h-1.5 w-1.5 rounded-full bg-white" />
+                <span className="h-1.5 w-5 rounded-full border border-white/70" />
               </div>
-
-              {/* Slide content */}
-              <div className="px-5 py-4 h-[470px] overflow-hidden">
-                {slide.type === 'calendar' && <CalendarSlide slide={slide} />}
-                {slide.type === 'features' && <FeaturesSlide slide={slide} />}
-                {slide.type === 'system' && <SystemSlide slide={slide} />}
+              <span className="text-[10px]">LTE</span>
+              <div className="flex items-center gap-1">
+                <span className="flex h-4 w-7 items-center justify-end rounded-[10px] border border-white/70 px-0.5">
+                  <span className="h-2.5 w-4 rounded-[8px] bg-white ml-[1px]" />
+                </span>
+                <span className="text-[10px]">86%</span>
               </div>
             </div>
-          ))}
+          </div>
         </div>
 
-        {/* Dot indicators inside phone */}
-        <div className="absolute bottom-6 left-0 right-0 z-30 flex items-center justify-center gap-2 bg-gradient-to-t from-[#0d1a2e] via-[#0d1a2e]/80 to-transparent pb-2 pt-6">
-          {slides.map((_, i) => (
-            <button
-              key={i}
-              onClick={() => setIndex(i)}
-              aria-label={`Slide ${i + 1}`}
-              className={`h-1.5 rounded-full transition-all duration-300 ${
-                i === index ? 'w-6 bg-cyan-400' : 'w-1.5 bg-white/30 hover:bg-white/50'
-              }`}
-            />
-          ))}
+        <div className="absolute inset-x-0 top-16 bottom-7 px-3">
+          <div className="relative h-full overflow-hidden rounded-[2.2rem] border border-white/10 bg-[#08131f]/95 shadow-inner shadow-black/40 backdrop-blur-xl">
+            {slides.map((slide, i) => (
+              <div
+                key={i}
+                className={`absolute inset-0 px-4 pt-5 transition-all duration-1000 ease-in-out ${
+                  i === index ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8 pointer-events-none'
+                }`}
+              >
+                <div className="flex items-center justify-between text-[10px] font-semibold uppercase tracking-[0.35em] text-sky-300">
+                  <span>{slide.header}</span>
+                  <span className="text-white/60">Dziś</span>
+                </div>
+
+                <div className="mt-4 h-[calc(100%-1.5rem)] overflow-hidden rounded-[1.75rem] border border-white/10 bg-[#06101a]/95 p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.03)]">
+                  {slide.type === 'calendar' && <CalendarSlide slide={slide} />}
+                  {slide.type === 'features' && <FeaturesSlide slide={slide} />}
+                  {slide.type === 'system' && <SystemSlide slide={slide} />}
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
+
+        <div className="absolute bottom-4 left-1/2 z-30 h-1.5 w-20 -translate-x-1/2 rounded-full bg-white/15" />
       </div>
     </div>
   );
@@ -653,43 +662,46 @@ function HeroCarousel() {
 function CalendarSlide({ slide }: { slide: { items: { time: string; label: string; status: string }[]; footer: { booked: string; noshow: string; saved: string } } }) {
   const { t } = useI18n();
   return (
-    <div className="space-y-2">
-      {slide.items.map((slot, i) => (
-        <div
-          key={i}
-          className={`flex items-center gap-3 rounded-lg border px-3 py-2.5 text-xs transition ${
-            slot.status === 'filled'
-              ? 'border-cyan-400/30 bg-cyan-400/10'
-              : slot.status === 'reminder'
-              ? 'border-sky-400/30 bg-sky-500/5'
-              : 'border-white/10 bg-[#0a1628]'
-          }`}
-        >
-          <span className="w-12 font-mono text-gray-400">{slot.time}</span>
-          <span
-            className={`flex-1 font-medium ${
-              slot.status === 'filled' ? 'text-cyan-300' : slot.status === 'reminder' ? 'text-sky-300' : 'text-gray-300'
-            }`}
-          >
-            {slot.label}
-          </span>
-          {slot.status === 'booked' && <CheckCircle className="h-3.5 w-3.5 text-cyan-400/70" strokeWidth={1.5} />}
-          {slot.status === 'filled' && <Sparkles className="h-3.5 w-3.5 text-cyan-400" strokeWidth={1.5} />}
-          {slot.status === 'reminder' && <Bell className="h-3.5 w-3.5 text-sky-400" strokeWidth={1.5} />}
+    <div className="flex h-full flex-col gap-4">
+      <div className="rounded-[1.75rem] border border-white/10 bg-white/5 p-4">
+        <div className="flex items-center justify-between text-sm font-semibold text-white">
+          <span>Wtorek, 21 lip</span>
+          <span className="text-xs text-sky-300">9:00–18:00</span>
         </div>
-      ))}
-      <div className="mt-4 grid grid-cols-3 gap-3 border-t border-white/15 pt-4">
-        <div>
-          <p className="text-xs text-gray-400">{t.hero.booked}</p>
-          <p className="text-sm font-bold text-cyan-300">94%</p>
+        <div className="mt-4 space-y-2">
+          {slide.items.slice(0, 6).map((slot, i) => (
+            <div
+              key={i}
+              className={`flex items-center justify-between gap-3 rounded-2xl border px-3 py-2 text-xs ${
+                slot.status === 'filled'
+                  ? 'border-cyan-400/20 bg-cyan-400/10 text-cyan-100'
+                  : slot.status === 'reminder'
+                  ? 'border-sky-400/20 bg-sky-500/10 text-sky-100'
+                  : 'border-white/10 bg-slate-950/60 text-white'
+              }`}
+            >
+              <span className="w-14 font-mono text-xs font-semibold">{slot.time}</span>
+              <span className="min-w-0 flex-1 truncate text-[11px] font-medium">{slot.label}</span>
+              <span className="rounded-full bg-white/5 px-2 py-0.5 text-[10px] uppercase tracking-[0.18em] text-slate-300">
+                {slot.status === 'reminder' ? 'Przypomnienie' : slot.status === 'filled' ? 'Wypełnione' : 'Potwierdzone'}
+              </span>
+            </div>
+          ))}
         </div>
-        <div>
-          <p className="text-xs text-gray-400">{t.hero.noshow}</p>
-          <p className="text-sm font-bold text-sky-300">2%</p>
+      </div>
+
+      <div className="grid grid-cols-3 gap-3 text-[10px]">
+        <div className="rounded-2xl bg-white/5 p-3 text-center">
+          <p className="text-[10px] uppercase tracking-[0.18em] text-slate-400">{t.hero.booked}</p>
+          <p className="mt-2 text-sm font-semibold text-cyan-300">94%</p>
         </div>
-        <div>
-          <p className="text-xs text-gray-400">{t.hero.saved}</p>
-          <p className="text-sm font-bold text-white">14h</p>
+        <div className="rounded-2xl bg-white/5 p-3 text-center">
+          <p className="text-[10px] uppercase tracking-[0.18em] text-slate-400">{t.hero.noshow}</p>
+          <p className="mt-2 text-sm font-semibold text-sky-300">2%</p>
+        </div>
+        <div className="rounded-2xl bg-white/5 p-3 text-center">
+          <p className="text-[10px] uppercase tracking-[0.18em] text-slate-400">{t.hero.saved}</p>
+          <p className="mt-2 text-sm font-semibold text-white">14h</p>
         </div>
       </div>
     </div>
@@ -708,24 +720,39 @@ function FeaturesSlide({ slide }: { slide: { items: { icon: string; label: strin
     Database,
   };
   return (
-    <div className="space-y-3">
-      {slide.items.map((item, i) => {
-        const Icon = iconMap[item.icon] ?? CheckCircle;
-        return (
-          <div
-            key={i}
-            className="flex items-start gap-3 rounded-lg border border-white/10 bg-[#0a1628] px-4 py-3"
-          >
-            <div className="mt-0.5 flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-lg bg-cyan-400/15">
-              <Icon className="h-4 w-4 text-cyan-400" strokeWidth={1.5} />
+    <div className="flex h-full flex-col gap-4">
+      <div className="rounded-[1.75rem] border border-white/10 bg-white/5 p-4">
+        <p className="text-sm font-semibold text-white">Aplikacje w jednym miejscu</p>
+        <p className="mt-2 text-xs text-slate-400">Wszystko, co potrzebne do zarządzania wizytami.</p>
+        <div className="mt-4 grid grid-cols-2 gap-3">
+          {slide.items.slice(0, 4).map((item, i) => {
+            const Icon = iconMap[item.icon] ?? CheckCircle;
+            return (
+              <div key={i} className="rounded-3xl border border-white/10 bg-[#06101a]/90 p-3">
+                <div className="inline-flex h-10 w-10 items-center justify-center rounded-3xl bg-cyan-400/10 text-cyan-300">
+                  <Icon className="h-5 w-5" strokeWidth={1.5} />
+                </div>
+                <p className="mt-3 text-xs font-semibold text-white">{item.label}</p>
+                <p className="mt-1 text-[10px] leading-tight text-slate-400">{item.desc}</p>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
+      <div className="grid grid-cols-3 gap-3 text-[10px]">
+        {slide.items.slice(4).map((item, i) => {
+          const Icon = iconMap[item.icon] ?? CheckCircle;
+          return (
+            <div key={i} className="rounded-2xl border border-white/10 bg-white/5 p-3 text-center">
+              <div className="mx-auto flex h-9 w-9 items-center justify-center rounded-2xl bg-slate-950/60 text-cyan-300">
+                <Icon className="h-4 w-4" strokeWidth={1.5} />
+              </div>
+              <p className="mt-3 text-[10px] font-medium text-white">{item.label}</p>
             </div>
-            <div>
-              <p className="text-sm font-semibold text-white">{item.label}</p>
-              <p className="mt-0.5 text-xs text-gray-400">{item.desc}</p>
-            </div>
-          </div>
-        );
-      })}
+          );
+        })}
+      </div>
     </div>
   );
 }
@@ -740,27 +767,43 @@ function SystemSlide({ slide }: { slide: { title: string; subtitle: string; node
     Users,
   };
   return (
-    <div className="flex h-full flex-col">
-      <p className="text-sm font-bold text-white">{slide.title}</p>
-      <p className="mt-1 text-xs text-gray-400">{slide.subtitle}</p>
-      <div className="mt-4 grid grid-cols-2 gap-3">
-        {slide.nodes.map((node, i) => {
-          const Icon = iconMap[node.icon] ?? CheckCircle;
-          return (
-            <div
-              key={i}
-              className="flex flex-col items-center gap-2 rounded-lg border border-white/10 bg-[#0a1628] p-4 text-center"
-            >
-              <div className="flex h-10 w-10 items-center justify-center rounded-full bg-cyan-400/15">
-                <Icon className="h-5 w-5 text-cyan-400" strokeWidth={1.5} />
+    <div className="flex h-full flex-col justify-between gap-4">
+      <div className="rounded-[1.75rem] border border-white/10 bg-white/5 p-4">
+        <p className="text-sm font-semibold text-white">{slide.title}</p>
+        <p className="mt-2 text-xs text-slate-400">{slide.subtitle}</p>
+        <div className="mt-4 grid grid-cols-2 gap-3">
+          {slide.nodes.map((node, i) => {
+            const Icon = iconMap[node.icon] ?? CheckCircle;
+            return (
+              <div key={i} className="rounded-3xl border border-white/10 bg-[#06101a]/90 p-3 text-center">
+                <div className="mx-auto flex h-10 w-10 items-center justify-center rounded-3xl bg-cyan-400/10 text-cyan-300">
+                  <Icon className="h-5 w-5" strokeWidth={1.5} />
+                </div>
+                <p className="mt-3 text-xs font-medium text-white">{node.label}</p>
               </div>
-              <span className="text-xs font-medium text-gray-300">{node.label}</span>
-            </div>
-          );
-        })}
+            );
+          })}
+        </div>
       </div>
-      <div className="mt-auto rounded-lg border border-cyan-400/20 bg-cyan-400/5 px-4 py-3">
-        <p className="text-xs text-cyan-200">{slide.footer}</p>
+
+      <div className="space-y-3">
+        <div className="rounded-[1.75rem] border border-white/10 bg-white/5 p-4">
+          <p className="text-[10px] uppercase tracking-[0.18em] text-slate-400">Status</p>
+          <p className="mt-2 text-sm font-semibold text-white">{slide.footer}</p>
+        </div>
+        <div className="rounded-[1.75rem] border border-white/10 bg-white/5 p-3 text-[10px] text-slate-400">
+          <p className="font-semibold text-white">Dock</p>
+          <div className="mt-3 flex items-center justify-between gap-2">
+            {slide.nodes.slice(0, 4).map((node, i) => {
+              const Icon = iconMap[node.icon] ?? CheckCircle;
+              return (
+                <div key={i} className="flex h-12 min-w-[2.5rem] flex-1 items-center justify-center rounded-2xl bg-slate-950/70 text-cyan-300">
+                  <Icon className="h-5 w-5" strokeWidth={1.5} />
+                </div>
+              );
+            })}
+          </div>
+        </div>
       </div>
     </div>
   );
