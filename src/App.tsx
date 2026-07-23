@@ -321,10 +321,20 @@ function StickyMobileCta() {
 // ---------------------------------------------------------------------------
 function Nav() {
   const { t } = useI18n();
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => setVisible(window.scrollY > 40);
+    onScroll();
+    window.addEventListener('scroll', onScroll);
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
 
   return (
     <header
-      className="fixed inset-x-0 top-0 z-50 border-b border-white/5 bg-[#0a1628]/80 backdrop-blur-md"
+      className={`fixed inset-x-0 top-0 z-50 border-b border-white/5 bg-[#0a1628]/80 backdrop-blur-md transition-transform duration-300 ease-out ${
+        visible ? 'translate-y-0' : '-translate-y-full'
+      }`}
     >
       <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
         <a
@@ -590,33 +600,8 @@ function HeroCarousel() {
   return (
     <div className="relative hidden md:flex items-center justify-center lg:mr-auto lg:justify-self-start lg:ml-10">
       
-      {/* 3D Floating Notifications */}
-      <div className="absolute -left-16 top-1/4 z-20 animate-[pfWordRise_3s_ease-in-out_infinite_alternate]">
-        <div className="flex items-center gap-3 rounded-2xl border border-white/20 bg-white/10 p-3 pr-5 shadow-[0_8px_32px_rgba(0,0,0,0.4)] backdrop-blur-md">
-          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-sky-400/20">
-            <Bell className="h-5 w-5 text-sky-300" strokeWidth={1.5} />
-          </div>
-          <div>
-            <p className="text-xs font-semibold text-white">{t.hero.notify1Title}</p>
-            <p className="text-[10px] text-gray-300">{t.hero.notify1Desc}</p>
-          </div>
-        </div>
-      </div>
-      
-      <div className="absolute -right-12 bottom-1/4 z-20 animate-[pfWordRise_4s_ease-in-out_infinite_alternate_reverse]">
-        <div className="flex items-center gap-3 rounded-2xl border border-white/20 bg-white/10 p-3 pr-5 shadow-[0_8px_32px_rgba(0,0,0,0.4)] backdrop-blur-md">
-          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-emerald-400/20">
-            <CheckCircle className="h-5 w-5 text-emerald-300" strokeWidth={1.5} />
-          </div>
-          <div>
-            <p className="text-xs font-semibold text-white">{t.hero.notify2Title}</p>
-            <p className="text-[10px] text-gray-300">{t.hero.notify2Desc}</p>
-          </div>
-        </div>
-      </div>
-
       {/* Phone Mockup */}
-      <div className="relative w-[320px] h-[600px] overflow-hidden rounded-[3rem] border-[10px] border-[#102035] bg-[#0d1a2e] shadow-2xl shadow-black/80">
+      <div className="relative mt-12 w-[320px] h-[600px] overflow-hidden rounded-[3rem] border-[10px] border-[#102035] bg-[#0d1a2e] shadow-2xl shadow-black/80">
         
         {/* Notch */}
         <div className="absolute top-0 inset-x-0 z-30 flex justify-center">
@@ -788,7 +773,7 @@ function Hero() {
   const { t } = useI18n();
 
   return (
-    <section className="relative overflow-hidden px-6 pb-32 pt-10">
+    <section className="relative overflow-hidden px-6 pb-24 pt-20 min-h-screen">
       {/* Hero background — clean gradient, no photo */}
       <div className="absolute inset-0 bg-gradient-to-br from-[#08111f] via-[#0a1628] to-[#0c1e35]" />
       <div className="pointer-events-none absolute right-0 top-0 h-[600px] w-[600px] rounded-full bg-purple-500/10 blur-3xl" />
