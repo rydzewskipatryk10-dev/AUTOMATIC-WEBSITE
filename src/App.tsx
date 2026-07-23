@@ -597,10 +597,10 @@ function HeroCarousel() {
   }, [slides.length]);
 
   return (
-    <div className="relative hidden md:flex items-end justify-center lg:mr-auto lg:justify-self-start lg:ml-10">
+    <div className="relative hidden md:flex items-center justify-center lg:mr-auto lg:justify-self-start lg:ml-10">
       
       {/* Phone Mockup */}
-      <div className="relative mt-20 w-[334px] h-[710px] overflow-hidden rounded-[3.5rem] border border-slate-900/80 bg-[#04050d] shadow-[0_35px_80px_rgba(0,0,0,0.6)]">
+      <div className="relative mt-12 w-[334px] h-[710px] overflow-hidden rounded-[3.5rem] border border-slate-900/80 bg-[#04050d] shadow-[0_35px_80px_rgba(0,0,0,0.6)]">
         <div className="absolute inset-0 bg-gradient-to-b from-[#05070d] via-[#07101a] to-[#06101a]" />
 
         {/* Notch */}
@@ -815,7 +815,7 @@ function Hero() {
   const { t } = useI18n();
 
   return (
-    <section className="relative overflow-hidden px-6 pb-32 pt-28 min-h-screen">
+    <section className="relative overflow-hidden px-6 pb-24 pt-20 min-h-screen">
       {/* Hero background — clean gradient, no photo */}
       <div className="absolute inset-0 bg-gradient-to-br from-[#08111f] via-[#0a1628] to-[#0c1e35]" />
       <div className="pointer-events-none absolute right-0 top-0 h-[600px] w-[600px] rounded-full bg-purple-500/10 blur-3xl" />
