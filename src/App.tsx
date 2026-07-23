@@ -953,7 +953,7 @@ function Calculator() {
 
   return (
     /* ROI Calculator Section */
-    <section id="calculator" className="relative px-6 py-32 bg-[#08111f] overflow-hidden">
+    <section id="calculator" className="relative px-6 py-20 md:py-24 bg-[#08111f] overflow-hidden scroll-mt-24">
       <div className="pointer-events-none absolute left-1/2 top-1/2 h-[600px] w-[600px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-fuchsia-500/5 blur-[120px]" />
       
       <div className="relative mx-auto max-w-6xl">
@@ -964,9 +964,9 @@ function Calculator() {
           {t.calc.title}
         </h2>
 
-        <div className="mt-10 grid gap-6 lg:grid-cols-2">
+        <div className="mt-8 grid gap-5 lg:grid-cols-2">
           {/* Calculator */}
-          <div className="rounded-2xl border border-white/15 bg-[#0d1a2e] p-6">
+          <div className="rounded-2xl border border-white/15 bg-[#0d1a2e] p-5">
             <h3 className="text-lg font-semibold text-white">
               {t.calc.calculatorTitle}
             </h3>
@@ -974,7 +974,7 @@ function Calculator() {
               {t.calc.calculatorDesc}
             </p>
 
-            <div className="mt-8 space-y-8">
+            <div className="mt-6 space-y-6">
               <div>
                 <div className="flex items-center justify-between">
                   <label className="flex items-center gap-2 text-sm font-medium text-gray-100">
@@ -998,20 +998,20 @@ function Calculator() {
               </div>
             </div>
 
-            <div className="mt-10 space-y-4 border-t border-white/15 pt-8">
+            <div className="mt-8 space-y-3 border-t border-white/15 pt-6">
               <div className="flex items-center justify-between gap-4">
                 <span className="text-sm text-gray-300">{t.calc.recoveredRevenue}</span>
-                <span className="text-xl font-bold tabular-nums text-white whitespace-nowrap">
+                <span className="text-lg font-bold tabular-nums text-white whitespace-nowrap">
                   {recoveredRevenueMonthly.toLocaleString('pl-PL')} zł
                 </span>
               </div>
               <div className="flex items-center justify-between gap-4">
                 <span className="text-sm text-gray-300">{t.calc.savedHours}</span>
-                <span className="text-xl font-bold tabular-nums text-white whitespace-nowrap">{savedHoursMonthly}h</span>
+                <span className="text-lg font-bold tabular-nums text-white whitespace-nowrap">{savedHoursMonthly}h</span>
               </div>
               <div className="flex items-center justify-between gap-4">
                 <span className="text-sm text-gray-300">{t.calc.savedStaffCost}</span>
-                <span className="text-xl font-bold tabular-nums text-white whitespace-nowrap">
+                <span className="text-lg font-bold tabular-nums text-white whitespace-nowrap">
                   {staffCostMonthly.toLocaleString('pl-PL')} zł
                 </span>
               </div>
@@ -1020,12 +1020,12 @@ function Calculator() {
                   <span className="text-sm font-medium text-cyan-200">
                     {t.calc.totalPotential}
                   </span>
-                  <span className="text-2xl font-bold tabular-nums text-cyan-200 whitespace-nowrap">
+                  <span className="text-xl font-bold tabular-nums text-cyan-200 whitespace-nowrap">
                     {totalMonthly.toLocaleString('pl-PL')} zł
                   </span>
                 </div>
               </div>
-              <div className="mt-2 flex flex-wrap gap-x-5 gap-y-1 text-xs text-gray-400">
+              <div className="mt-2 flex flex-wrap gap-x-5 gap-y-1 text-[11px] text-gray-400">
                 <span>{t.calc.staffHint}</span>
                 <span>{t.calc.visitHint}</span>
               </div>
@@ -1033,7 +1033,7 @@ function Calculator() {
           </div>
 
           {/* Diagnosis */}
-          <div className="rounded-2xl border border-white/15 bg-[#0d1a2e] p-6">
+          <div className="rounded-2xl border border-white/15 bg-[#0d1a2e] p-5">
             {!showResult ? (
               <>
                 <div className="flex items-center justify-between">
@@ -1052,7 +1052,7 @@ function Calculator() {
                   />
                 </div>
 
-                <div className="mt-8">
+                <div className="mt-6">
                   <div className="flex items-center gap-2 text-cyan-400">
                     {(() => {
                       const Icon = questions[step].icon;
@@ -1066,7 +1066,7 @@ function Calculator() {
                     {questions[step].title}
                   </p>
 
-                  <div className="mt-6 grid gap-3">
+                  <div className="mt-5 grid gap-3">
                     {questions[step].options.map((opt) => (
                       <button
                         key={opt.value}
@@ -1107,10 +1107,10 @@ function Calculator() {
                   ))}
                 </div>
 
-                <div className="mt-auto pt-8">
+                <div className="mt-6">
                   <a
                     href="#book"
-                    className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-sky-500 to-cyan-400 px-8 py-4 text-lg font-bold text-black shadow-xl shadow-cyan-500/40 transition hover:bg-cyan-400"
+                    className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-sky-500 to-cyan-400 px-6 py-3 text-base font-bold text-black shadow-xl shadow-cyan-500/40 transition hover:bg-cyan-400"
                   >
                     {t.calc.bookCta}
                     <ArrowRight className="h-5 w-5" />
