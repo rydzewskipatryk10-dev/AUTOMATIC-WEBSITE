@@ -586,23 +586,23 @@ function AboutSection() {
 // ---------------------------------------------------------------------------
 function HeroCarousel() {
   const { t } = useI18n();
-  const [index, setIndex] = useState(1);
-  const slides = t.heroCarousel.slides;
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setIndex((i) => (i + 1) % slides.length);
-    }, 5000);
-    return () => clearInterval(timer);
-  }, [slides.length]);
+  const features = t.heroCarousel.slides.find((slide) => slide.type === 'features')?.items ?? [];
+  const iconMap: Record<string, typeof Calendar> = {
+    Calendar,
+    Bell,
+    Database,
+    Sparkles,
+    Clock,
+    Rocket,
+    ShieldCheck,
+  };
 
   return (
-    <div className="relative hidden md:flex items-end justify-end lg:justify-self-end lg:ml-10 overflow-visible">
-      {/* Floating confirmation bubble */}
-      <div className="absolute right-[-1rem] top-1/2 hidden xl:block">
-        <div className="relative w-[255px] rounded-[2rem] border border-white/10 bg-slate-950/95 px-4 py-4 shadow-[0_30px_100px_rgba(15,23,42,0.28)] backdrop-blur-xl">
+    <div className="relative hidden md:flex items-center justify-end lg:justify-self-end lg:ml-10 overflow-visible">
+      <div className="absolute -right-6 top-24 hidden xl:block">
+        <div className="rounded-[1.75rem] border border-white/10 bg-slate-950/95 px-4 py-4 shadow-[0_30px_90px_rgba(15,23,42,0.22)] backdrop-blur-xl">
           <div className="flex items-center gap-3">
-            <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-emerald-500/15 text-emerald-300 shadow-inner shadow-emerald-500/10">
+            <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-emerald-400/15 text-emerald-300 shadow-inner shadow-emerald-400/10">
               <CheckCircle className="h-5 w-5" strokeWidth={1.5} />
             </div>
             <div className="min-w-0">
@@ -613,16 +613,13 @@ function HeroCarousel() {
         </div>
       </div>
 
-      {/* Phone Mockup */}
-      <div className="relative w-[334px] h-[710px] overflow-hidden rounded-[3.5rem] border border-slate-900/80 bg-[#04050d] shadow-[0_35px_90px_rgba(0,0,0,0.65)]">
-        <div className="absolute inset-0 bg-gradient-to-b from-[#05070d] via-[#07101a] to-[#06101a]" />
+      <div className="relative w-[340px] max-w-[90vw] h-[680px] overflow-hidden rounded-[3.5rem] border border-slate-900/80 bg-[#04050d] shadow-[0_35px_90px_rgba(0,0,0,0.65)]">
+        <div className="absolute inset-0 bg-gradient-to-b from-[#05070d] via-[#08111f] to-[#06101a]" />
 
-        {/* Notch */}
         <div className="absolute inset-x-0 top-0 z-20 flex justify-center pt-4">
-          <div className="h-10 w-[180px] rounded-b-[26px] bg-[#04050d]/95 shadow-inner shadow-black/40" />
+          <div className="h-10 w-[165px] rounded-b-[24px] bg-[#04050d]/95 shadow-inner shadow-black/40" />
         </div>
 
-        {/* Status bar */}
         <div className="absolute inset-x-0 top-5 z-30 px-5 text-white/80">
           <div className="flex items-center justify-between text-[11px]">
             <span className="font-semibold">9:41</span>
@@ -642,27 +639,29 @@ function HeroCarousel() {
           </div>
         </div>
 
-        <div className="absolute inset-x-0 top-16 bottom-6 px-4">
-          <div className="relative h-full overflow-hidden rounded-[2.2rem] border border-white/10 bg-gradient-to-b from-[#08131f]/to-[#06131f] shadow-inner shadow-black/40 backdrop-blur-xl">
-            {slides.map((slide, i) => (
-              <div
-                key={i}
-                className={`absolute inset-0 px-4 pt-5 transition-all duration-1000 ease-in-out ${
-                  i === index ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8 pointer-events-none'
-                }`}
-              >
-                <div className="flex items-center justify-between text-[10px] font-semibold uppercase tracking-[0.35em] text-sky-300">
-                  <span>{slide.header}</span>
-                  <span className="text-white/60">Dziś</span>
-                </div>
-
-                <div className="mt-4 h-[calc(100%-1.5rem)] overflow-hidden rounded-[1.75rem] border border-white/10 bg-[#06101a]/95 p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.03)]">
-                  {slide.type === 'calendar' && <CalendarSlide slide={slide} />}
-                  {slide.type === 'features' && <FeaturesSlide slide={slide} />}
-                  {slide.type === 'system' && <SystemSlide slide={slide} />}
-                </div>
-              </div>
-            ))}
+        <div className="absolute inset-x-0 top-20 bottom-6 px-5">
+          <div className="relative h-full overflow-hidden rounded-[2.2rem] border border-white/10 bg-[#08131f]/95 shadow-inner shadow-black/40">
+            <div className="absolute left-5 top-5 rounded-full bg-sky-500/10 px-3 py-1 text-[10px] uppercase tracking-[0.25em] text-sky-200">
+              Co wprowadzamy
+            </div>
+            <div className="relative mt-16 space-y-4 pb-5">
+              {features.slice(0, 4).map((item, index) => {
+                const Icon = iconMap[item.icon as string] ?? CheckCircle;
+                return (
+                  <div key={index} className="rounded-[1.75rem] border border-white/10 bg-[#0d1a2e]/95 p-4 shadow-[inset_0_1px_2px_rgba(255,255,255,0.05)]">
+                    <div className="flex items-start gap-3">
+                      <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-sky-500/10 text-sky-300 shadow-inner shadow-sky-500/10">
+                        <Icon className="h-5 w-5" strokeWidth={1.5} />
+                      </div>
+                      <div className="min-w-0">
+                        <p className="text-sm font-semibold text-white">{item.label}</p>
+                        <p className="mt-1 text-[11px] leading-tight text-slate-400">{item.desc}</p>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
           </div>
         </div>
 
