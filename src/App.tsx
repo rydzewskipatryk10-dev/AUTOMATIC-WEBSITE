@@ -24,6 +24,7 @@ import {
   Rocket,
   ShieldCheck,
   X,
+  Menu,
   Languages,
   Stethoscope,
   TrendingUp,
@@ -147,7 +148,7 @@ function LanguageToggle({ className = '' }: { className?: string }) {
     <button
       onClick={() => setLang(next)}
       aria-label={lang === 'pl' ? 'Switch to English' : 'Przełącz na polski'}
-      className={`inline-flex items-center gap-1.5 rounded-full border border-white/15 px-3 py-2 text-xs font-bold text-gray-300 transition hover:border-cyan-400/50 hover:text-white ${className}`}
+      className={`inline-flex items-center gap-1.5 rounded-full border border-white/15 px-2.5 py-1.5 text-[11px] font-bold text-gray-300 transition hover:border-cyan-400/50 hover:text-white md:px-3 md:py-2 md:text-xs ${className}`}
     >
       <Languages className="h-3.5 w-3.5" strokeWidth={1.5} />
       {t.langLabel}
@@ -278,6 +279,7 @@ function StickyMobileCta() {
 function Nav() {
   const { t } = useI18n();
   const [visible, setVisible] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
 
   useEffect(() => {
     const onScroll = () => setVisible(window.scrollY > 40);
@@ -292,16 +294,26 @@ function Nav() {
       }`}
     >
       <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
-        <a
-          href="#top"
-          className="flex items-center"
-        >
-          <img
-            src="/logo-fullschedule.svg"
-            alt="FullSchedule"
-            className="h-10 w-auto"
-          />
-        </a>
+        <div className="flex items-center gap-3">
+          <button
+            type="button"
+            onClick={() => setMobileOpen((open) => !open)}
+            aria-label={mobileOpen ? 'Close navigation' : 'Open navigation'}
+            className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-white/15 bg-white/5 text-gray-200 transition hover:bg-white/10 lg:hidden"
+          >
+            {mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+          </button>
+          <a
+            href="#top"
+            className="flex items-center"
+          >
+            <img
+              src="/logo-fullschedule.svg"
+              alt="FullSchedule"
+              className="h-10 w-auto"
+            />
+          </a>
+        </div>
         <div className="hidden lg:flex items-center gap-8 text-sm font-semibold text-gray-200">
           <a href="#calculator" className="transition hover:text-white">
             {t.nav.calc}
@@ -316,11 +328,55 @@ function Nav() {
             {t.nav.faq}
           </a>
         </div>
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2">
           <LanguageToggle />
           <a
             href="#book"
-            className="rounded-full bg-gradient-to-r from-sky-500 to-cyan-400 px-7 py-3 text-base font-bold text-black shadow-lg shadow-cyan-500/40 transition hover:bg-cyan-400"
+            className="hidden rounded-full bg-gradient-to-r from-sky-500 to-cyan-400 px-4 py-2 text-sm font-bold text-black shadow-lg shadow-cyan-500/40 transition hover:bg-cyan-400 lg:inline-flex"
+          >
+            {t.nav.book}
+          </a>
+        </div>
+      </div>
+
+      <div
+        className={`lg:hidden overflow-hidden border-t border-white/5 bg-[#0a1628]/95 transition-all duration-300 ${
+          mobileOpen ? 'max-h-80 opacity-100' : 'max-h-0 opacity-0'
+        }`}
+      >
+        <div className="mx-auto flex max-w-6xl flex-col gap-2 px-6 py-4 text-sm font-semibold text-gray-200">
+          <a
+            href="#calculator"
+            onClick={() => setMobileOpen(false)}
+            className="rounded-2xl px-3 py-2 transition hover:bg-white/5"
+          >
+            {t.nav.calc}
+          </a>
+          <a
+            href="#implementation"
+            onClick={() => setMobileOpen(false)}
+            className="rounded-2xl px-3 py-2 transition hover:bg-white/5"
+          >
+            {t.nav.howItWorks}
+          </a>
+          <a
+            href="#onas"
+            onClick={() => setMobileOpen(false)}
+            className="rounded-2xl px-3 py-2 transition hover:bg-white/5"
+          >
+            {t.nav.about}
+          </a>
+          <a
+            href="#faq"
+            onClick={() => setMobileOpen(false)}
+            className="rounded-2xl px-3 py-2 transition hover:bg-white/5"
+          >
+            {t.nav.faq}
+          </a>
+          <a
+            href="#book"
+            onClick={() => setMobileOpen(false)}
+            className="rounded-full bg-gradient-to-r from-sky-500 to-cyan-400 px-4 py-2 text-sm font-bold text-black transition hover:bg-cyan-400"
           >
             {t.nav.book}
           </a>
