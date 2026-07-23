@@ -6,17 +6,14 @@ import {
 } from 'react';
 import {
   ArrowRight,
-  Calendar,
   Users,
   CheckCircle,
   XCircle,
   Phone,
   Mail,
   CalendarClock,
-  Bell,
   Clock,
   Video,
-  Database,
   Sparkles,
   Plus,
   Minus,
@@ -77,63 +74,6 @@ function Reveal({
     >
       {children}
     </div>
-  );
-}
-
-// ---------------------------------------------------------------------------
-// Animated counter — counts up from 0 to target when scrolled into view
-// ---------------------------------------------------------------------------
-function useCountUp(target: number, duration = 1600, startDelay = 200) {
-  const [value, setValue] = useState(0);
-  const ref = useRef<HTMLSpanElement>(null);
-  const started = useRef(false);
-
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting && !started.current) {
-          started.current = true;
-          setTimeout(() => {
-            const startTime = performance.now();
-            const tick = (now: number) => {
-              const progress = Math.min((now - startTime) / duration, 1);
-              const eased = 1 - Math.pow(1 - progress, 3);
-              setValue(Math.round(target * eased));
-              if (progress < 1) requestAnimationFrame(tick);
-            };
-            requestAnimationFrame(tick);
-          }, startDelay);
-        }
-      },
-      { threshold: 0.4 }
-    );
-    observer.observe(el);
-    return () => observer.disconnect();
-  }, [target, duration, startDelay]);
-
-  return { ref, value };
-}
-
-function StatCounter({
-  value,
-  suffix = '',
-  prefix = '',
-  className = '',
-}: {
-  value: number;
-  suffix?: string;
-  prefix?: string;
-  className?: string;
-}) {
-  const { ref, value: display } = useCountUp(value);
-  return (
-    <span ref={ref} className={className}>
-      {prefix}
-      {display.toLocaleString('pl-PL')}
-      {suffix}
-    </span>
   );
 }
 
@@ -497,156 +437,6 @@ function PhoneScreenToday() {
   );
 }
 
-function CalendarSlide({ slide }: { slide: { items: { time: string; label: string; status: string }[]; footer: { booked: string; noshow: string; saved: string } } }) {
-  const { t } = useI18n();
-  return (
-    <div className="flex h-full flex-col gap-4">
-      <div className="rounded-[1.75rem] border border-white/10 bg-white/5 p-4">
-        <div className="flex items-center justify-between text-sm font-semibold text-white">
-          <span>Wtorek, 21 lip</span>
-          <span className="text-xs text-sky-300">9:00–18:00</span>
-        </div>
-        <div className="mt-4 space-y-2">
-          {slide.items.slice(0, 6).map((slot, i) => (
-            <div
-              key={i}
-              className={`flex items-center justify-between gap-3 rounded-2xl border px-3 py-2 text-xs ${
-                slot.status === 'filled'
-                  ? 'border-cyan-400/20 bg-cyan-400/10 text-cyan-100'
-                  : slot.status === 'reminder'
-                  ? 'border-sky-400/20 bg-sky-500/10 text-sky-100'
-                  : 'border-white/10 bg-slate-950/60 text-white'
-              }`}
-            >
-              <span className="w-14 font-mono text-xs font-semibold">{slot.time}</span>
-              <span className="min-w-0 flex-1 truncate text-[11px] font-medium">{slot.label}</span>
-              <span className="rounded-full bg-white/5 px-2 py-0.5 text-[10px] uppercase tracking-[0.18em] text-slate-300">
-                {slot.status === 'reminder' ? 'Przypomnienie' : slot.status === 'filled' ? 'Wypełnione' : 'Potwierdzone'}
-              </span>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      <div className="grid grid-cols-3 gap-3 text-[10px]">
-        <div className="rounded-2xl bg-white/5 p-3 text-center">
-          <p className="text-[10px] uppercase tracking-[0.18em] text-slate-400">{t.hero.booked}</p>
-          <p className="mt-2 text-sm font-semibold text-cyan-300">94%</p>
-        </div>
-        <div className="rounded-2xl bg-white/5 p-3 text-center">
-          <p className="text-[10px] uppercase tracking-[0.18em] text-slate-400">{t.hero.noshow}</p>
-          <p className="mt-2 text-sm font-semibold text-sky-300">2%</p>
-        </div>
-        <div className="rounded-2xl bg-white/5 p-3 text-center">
-          <p className="text-[10px] uppercase tracking-[0.18em] text-slate-400">{t.hero.saved}</p>
-          <p className="mt-2 text-sm font-semibold text-white">14h</p>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function FeaturesSlide({ slide }: { slide: { items: { icon: string; label: string; desc: string }[] } }) {
-  const iconMap: Record<string, typeof Calendar> = {
-    Calendar,
-    Bell,
-    Users,
-    Sparkles,
-    Clock,
-    Rocket,
-    ShieldCheck,
-    Database,
-  };
-  return (
-    <div className="flex h-full flex-col gap-4">
-      <div className="rounded-[1.75rem] border border-white/10 bg-white/5 p-4">
-        <p className="text-sm font-semibold text-white">Aplikacje w jednym miejscu</p>
-        <p className="mt-2 text-xs text-slate-400">Wszystko, co potrzebne do zarządzania wizytami.</p>
-        <div className="mt-4 grid grid-cols-2 gap-3">
-          {slide.items.slice(0, 4).map((item, i) => {
-            const Icon = iconMap[item.icon] ?? CheckCircle;
-            return (
-              <div key={i} className="rounded-3xl border border-white/10 bg-[#06101a]/90 p-3">
-                <div className="inline-flex h-10 w-10 items-center justify-center rounded-3xl bg-cyan-400/10 text-cyan-300">
-                  <Icon className="h-5 w-5" strokeWidth={1.5} />
-                </div>
-                <p className="mt-3 text-xs font-semibold text-white">{item.label}</p>
-                <p className="mt-1 text-[10px] leading-tight text-slate-400">{item.desc}</p>
-              </div>
-            );
-          })}
-        </div>
-      </div>
-
-      <div className="grid grid-cols-3 gap-3 text-[10px]">
-        {slide.items.slice(4).map((item, i) => {
-          const Icon = iconMap[item.icon] ?? CheckCircle;
-          return (
-            <div key={i} className="rounded-2xl border border-white/10 bg-white/5 p-3 text-center">
-              <div className="mx-auto flex h-9 w-9 items-center justify-center rounded-2xl bg-slate-950/60 text-cyan-300">
-                <Icon className="h-4 w-4" strokeWidth={1.5} />
-              </div>
-              <p className="mt-3 text-[10px] font-medium text-white">{item.label}</p>
-            </div>
-          );
-        })}
-      </div>
-    </div>
-  );
-}
-
-function SystemSlide({ slide }: { slide: { title: string; subtitle: string; nodes: { icon: string; label: string }[]; footer: string } }) {
-  const iconMap: Record<string, typeof Phone> = {
-    Phone,
-    Calendar,
-    Bell,
-    Database,
-    Mail,
-    Users,
-  };
-  return (
-    <div className="flex h-full flex-col justify-between gap-4">
-      <div className="rounded-[1.75rem] border border-white/10 bg-white/5 p-4">
-        <p className="text-sm font-semibold text-white">{slide.title}</p>
-        <p className="mt-2 text-xs text-slate-400">{slide.subtitle}</p>
-        <div className="mt-4 grid grid-cols-2 gap-3">
-          {slide.nodes.map((node, i) => {
-            const Icon = iconMap[node.icon] ?? CheckCircle;
-            return (
-              <div key={i} className="rounded-3xl border border-white/10 bg-[#06101a]/90 p-3 text-center">
-                <div className="mx-auto flex h-10 w-10 items-center justify-center rounded-3xl bg-cyan-400/10 text-cyan-300">
-                  <Icon className="h-5 w-5" strokeWidth={1.5} />
-                </div>
-                <p className="mt-3 text-xs font-medium text-white">{node.label}</p>
-              </div>
-            );
-          })}
-        </div>
-      </div>
-
-      <div className="space-y-3">
-        <div className="rounded-[1.75rem] border border-white/10 bg-white/5 p-4">
-          <p className="text-[10px] uppercase tracking-[0.18em] text-slate-400">Status</p>
-          <p className="mt-2 text-sm font-semibold text-white">{slide.footer}</p>
-        </div>
-        <div className="rounded-[1.75rem] border border-white/10 bg-white/5 p-3 text-[10px] text-slate-400">
-          <p className="font-semibold text-white">Dock</p>
-          <div className="mt-3 flex items-center justify-between gap-2">
-            {slide.nodes.slice(0, 4).map((node, i) => {
-              const Icon = iconMap[node.icon] ?? CheckCircle;
-              return (
-                <div key={i} className="flex h-12 min-w-[2.5rem] flex-1 items-center justify-center rounded-2xl bg-slate-950/70 text-cyan-300">
-                  <Icon className="h-5 w-5" strokeWidth={1.5} />
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
-
 // ---------------------------------------------------------------------------
 // Hero — asymmetric, with rotating dashboard carousel on the right
 // ---------------------------------------------------------------------------
@@ -719,35 +509,6 @@ function RangeSlider({ value, min, max, onChange }: { value: number; min: number
       style={{ '--pf-pct': `${pct}%` } as React.CSSProperties}
     />
   );
-}
-
-function AnimatedNumber({ value, formatFn }: { value: number; formatFn?: (val: number) => string }) {
-  const [displayValue, setDisplayValue] = useState(0);
-
-  useEffect(() => {
-    let startTimestamp: number | null = null;
-    const duration = 600;
-    const startValue = displayValue;
-    const change = value - startValue;
-
-    if (change === 0) return;
-
-    const step = (timestamp: number) => {
-      if (!startTimestamp) startTimestamp = timestamp;
-      const progress = Math.min((timestamp - startTimestamp) / duration, 1);
-      const easeOutQuart = 1 - Math.pow(1 - progress, 4);
-      setDisplayValue(startValue + change * easeOutQuart);
-      if (progress < 1) {
-        window.requestAnimationFrame(step);
-      } else {
-        setDisplayValue(value);
-      }
-    };
-    window.requestAnimationFrame(step);
-  }, [value]);
-
-  const display = Math.round(displayValue);
-  return <span className="tabular-nums">{formatFn ? formatFn(display) : display}</span>;
 }
 
 function Calculator() {
