@@ -599,15 +599,15 @@ function Hero() {
 
   return (
     <section className="relative min-h-screen overflow-hidden px-6 py-10 sm:py-14 lg:py-18">
-      <div className="absolute inset-0 bg-gradient-to-br from-[#08111f] via-[#0a1628] to-[#0c1e35]" />
-      <div className="pointer-events-none absolute right-0 top-0 h-[520px] w-[520px] rounded-full bg-purple-500/10 blur-3xl" />
-      <div className="pointer-events-none absolute -left-16 bottom-0 h-[340px] w-[340px] rounded-full bg-pink-500/5 blur-3xl" />
-      <div className="pointer-events-none absolute right-0 top-1/2 hidden h-[calc(100%-4rem)] w-[420px] -translate-y-1/2 overflow-hidden rounded-[56px] bg-slate-950/20 shadow-[0_40px_120px_-70px_rgba(11,41,70,0.8)] ring-1 ring-white/10 lg:block -z-10">
+      <div className="absolute inset-0 -z-20 bg-gradient-to-br from-[#08111f] via-[#0a1628] to-[#0c1e35]" />
+      <div className="pointer-events-none absolute right-0 top-0 -z-10 h-[520px] w-[520px] rounded-full bg-purple-500/10 blur-3xl" />
+      <div className="pointer-events-none absolute -left-16 bottom-0 -z-10 h-[340px] w-[340px] rounded-full bg-pink-500/5 blur-3xl" />
+      <div className="pointer-events-none absolute right-0 top-1/2 hidden -z-10 h-[calc(100%-4rem)] w-[420px] -translate-y-1/2 overflow-hidden rounded-[56px] bg-slate-950/20 shadow-[0_40px_120px_-70px_rgba(11,41,70,0.8)] ring-1 ring-white/10 lg:block">
         <div className="absolute inset-0 bg-gradient-to-t from-[#020812]/95 via-transparent to-[#020812]/95" />
         <img
           src="/clinic-hero.svg"
           alt="Subtelna ilustracja wnętrza kliniki stomatologicznej"
-          className="absolute inset-0 h-full w-full object-cover opacity-60"
+          className="absolute inset-0 h-full w-full object-cover opacity-75"
         />
       </div>
 
