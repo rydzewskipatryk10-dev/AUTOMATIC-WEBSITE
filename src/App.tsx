@@ -3,6 +3,7 @@ import {
   useEffect,
   useRef,
   type ReactNode,
+  type MouseEvent,
 } from 'react';
 import {
   ArrowRight,
@@ -650,6 +651,18 @@ function HeroPhoneMockup() {
 function Hero() {
   const { t } = useI18n();
 
+  const scrollToDiagnosisCenter = (e: MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault();
+    const section = document.getElementById('calculator');
+    if (!section) return;
+
+    const rect = section.getBoundingClientRect();
+    const sectionCenter = window.scrollY + rect.top + rect.height / 2;
+    const targetTop = Math.max(0, sectionCenter - window.innerHeight / 2);
+
+    window.scrollTo({ top: targetTop, behavior: 'smooth' });
+  };
+
   return (
     <section id="hero" className="scroll-mt-24 relative min-h-screen overflow-hidden px-6 py-10 sm:py-14 lg:py-18">
       <div className="absolute inset-0 -z-20 bg-gradient-to-br from-[#08111f] via-[#0a1628] to-[#0c1e35]" />
@@ -685,6 +698,7 @@ function Hero() {
           </p>
           <a
             href="#calculator"
+            onClick={scrollToDiagnosisCenter}
             className="pf-hero-fade-in-delayed-2 inline-flex items-center gap-1.5 rounded-full bg-gradient-to-r from-sky-500 to-cyan-400 px-6 py-3 text-base font-bold text-black shadow-xl shadow-cyan-500/40 transition hover:bg-cyan-400"
           >
             {t.hero.cta}
