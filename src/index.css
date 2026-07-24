@@ -327,12 +327,151 @@ body {
   animation: pfImplIconProtect 4.6s ease-in-out infinite;
 }
 
+@keyframes pfHeroPhoneFloat {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) rotate(-0.35deg);
+  }
+  50% {
+    transform: translate3d(0, -10px, 0) rotate(0.45deg);
+  }
+}
+
+@keyframes pfHeroAuraPulse {
+  0%,
+  100% {
+    opacity: 0.45;
+    transform: scale(0.98);
+    filter: blur(42px);
+  }
+  50% {
+    opacity: 0.78;
+    transform: scale(1.04);
+    filter: blur(52px);
+  }
+}
+
+@keyframes pfHeroScreenSheen {
+  0%,
+  18% {
+    transform: translateX(-170%) skewX(-16deg);
+    opacity: 0;
+  }
+  27% {
+    opacity: 0.5;
+  }
+  45% {
+    transform: translateX(340%) skewX(-16deg);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(340%) skewX(-16deg);
+    opacity: 0;
+  }
+}
+
+@keyframes pfHeroAlertCardFloat {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-4px);
+  }
+}
+
+@keyframes pfHeroDotBlink {
+  0%,
+  100% {
+    opacity: 0.7;
+    transform: scale(1);
+    box-shadow: 0 0 0 rgba(255, 255, 255, 0);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.12);
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.22);
+  }
+}
+
+@keyframes pfHeroHomeIndicatorPulse {
+  0%,
+  100% {
+    opacity: 0.45;
+    transform: scaleX(1);
+  }
+  50% {
+    opacity: 0.85;
+    transform: scaleX(1.07);
+  }
+}
+
+.pf-hero-phone-stage {
+  transform-origin: center;
+}
+
+.pf-hero-phone-shell {
+  transform-origin: center;
+  animation: pfHeroPhoneFloat 6.8s ease-in-out infinite;
+}
+
+.pf-hero-phone-aura {
+  animation: pfHeroAuraPulse 6.8s ease-in-out infinite;
+}
+
+.pf-hero-screen-sheen {
+  animation: pfHeroScreenSheen 7.5s ease-in-out infinite;
+}
+
+.pf-hero-alert-card {
+  animation: pfHeroAlertCardFloat 5.8s ease-in-out infinite;
+  will-change: transform;
+}
+
+.pf-hero-alert-card-1 {
+  animation-delay: 0s;
+}
+
+.pf-hero-alert-card-2 {
+  animation-delay: 0.9s;
+}
+
+.pf-hero-alert-card-3 {
+  animation-delay: 1.8s;
+}
+
+.pf-hero-phone-dot {
+  animation: pfHeroDotBlink 2.8s ease-in-out infinite;
+}
+
+.pf-hero-phone-dot-1 {
+  animation-delay: 0s;
+}
+
+.pf-hero-phone-dot-2 {
+  animation-delay: 0.25s;
+}
+
+.pf-hero-phone-dot-3 {
+  animation-delay: 0.5s;
+}
+
+.pf-hero-home-indicator {
+  animation: pfHeroHomeIndicatorPulse 4.5s ease-in-out infinite;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .pf-hero-word { animation: none; opacity: 1; transform: none; filter: none; }
   .pf-diagnosis-icon,
   .pf-diagnosis-check,
   .pf-calc-icon,
-  .pf-implementation-icon {
+  .pf-implementation-icon,
+  .pf-hero-phone-shell,
+  .pf-hero-phone-aura,
+  .pf-hero-screen-sheen,
+  .pf-hero-alert-card,
+  .pf-hero-phone-dot,
+  .pf-hero-home-indicator {
     animation: none;
     transform: none;
     filter: none;

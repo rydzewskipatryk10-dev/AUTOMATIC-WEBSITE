@@ -570,19 +570,23 @@ function SystemSlide({ slide }: { slide: { title: string; subtitle: string; node
 // ---------------------------------------------------------------------------
 function HeroPhoneMockup() {
   return (
-    <div className="relative mx-auto w-full max-w-[380px] lg:ml-auto">
-      <div className="relative flex h-[690px] w-full flex-col overflow-hidden rounded-[54px] border border-white/10 bg-[#03070d]/95 shadow-[0_45px_110px_-40px_rgba(6,18,29,0.9)] ring-1 ring-white/5">
+    <div className="pf-hero-phone-stage relative mx-auto w-full max-w-[380px] lg:ml-auto">
+      <div className="pf-hero-phone-aura pointer-events-none absolute -inset-x-8 -inset-y-10 -z-10 rounded-[70px] bg-cyan-400/10 blur-3xl" />
+
+      <div className="pf-hero-phone-shell relative flex h-[690px] w-full flex-col overflow-hidden rounded-[54px] border border-white/10 bg-[#03070d]/95 shadow-[0_45px_110px_-40px_rgba(6,18,29,0.9)] ring-1 ring-white/5">
         <div className="absolute inset-x-0 top-4 flex justify-center">
           <div className="h-1.5 w-24 rounded-full bg-white/10" />
         </div>
 
         <div className="absolute right-5 top-4 flex items-center gap-2">
-          <span className="h-3.5 w-3.5 rounded-full bg-emerald-400/80 ring-1 ring-white/10" />
-          <span className="h-3.5 w-3.5 rounded-full bg-cyan-400/80 ring-1 ring-white/10" />
-          <span className="h-3.5 w-3.5 rounded-full bg-rose-400/80 ring-1 ring-white/10" />
+          <span className="pf-hero-phone-dot pf-hero-phone-dot-1 h-3.5 w-3.5 rounded-full bg-emerald-400/80 ring-1 ring-white/10" />
+          <span className="pf-hero-phone-dot pf-hero-phone-dot-2 h-3.5 w-3.5 rounded-full bg-cyan-400/80 ring-1 ring-white/10" />
+          <span className="pf-hero-phone-dot pf-hero-phone-dot-3 h-3.5 w-3.5 rounded-full bg-rose-400/80 ring-1 ring-white/10" />
         </div>
 
         <div className="relative mt-16 mx-4 flex-1 overflow-hidden rounded-[34px] border border-white/10 bg-slate-950/65 p-5 shadow-inner shadow-black/40 backdrop-blur-xl">
+          <div className="pf-hero-screen-sheen pointer-events-none absolute inset-y-0 -left-1/2 w-1/2 bg-gradient-to-r from-transparent via-white/10 to-transparent" />
+
           <div className="flex items-center justify-between gap-3 pb-4">
             <div>
               <p className="text-[11px] uppercase tracking-[0.32em] text-slate-500">Dzisiejsze Alerty</p>
@@ -591,7 +595,7 @@ function HeroPhoneMockup() {
           </div>
 
           <div className="space-y-4">
-            <div className="rounded-[30px] border border-rose-400/15 bg-white/5 p-4 shadow-[0_24px_50px_-32px_rgba(244,63,94,0.4)]">
+            <div className="pf-hero-alert-card pf-hero-alert-card-1 rounded-[30px] border border-rose-400/15 bg-white/5 p-4 shadow-[0_24px_50px_-32px_rgba(244,63,94,0.4)]">
               <div className="flex items-start justify-between gap-4">
                 <div>
                   <p className="text-[11px] uppercase tracking-[0.26em] text-rose-300">Pilne</p>
@@ -605,7 +609,7 @@ function HeroPhoneMockup() {
               </button>
             </div>
 
-            <div className="rounded-[30px] border border-cyan-300/15 bg-white/5 p-4 shadow-[0_24px_50px_-32px_rgba(14,165,233,0.24)]">
+            <div className="pf-hero-alert-card pf-hero-alert-card-2 rounded-[30px] border border-cyan-300/15 bg-white/5 p-4 shadow-[0_24px_50px_-32px_rgba(14,165,233,0.24)]">
               <div className="flex items-start justify-between gap-4">
                 <div>
                   <p className="text-[11px] uppercase tracking-[0.26em] text-cyan-200">Informacyjne</p>
@@ -616,7 +620,7 @@ function HeroPhoneMockup() {
               </div>
             </div>
 
-            <div className="rounded-[30px] border border-emerald-300/15 bg-white/5 p-4 shadow-[0_24px_50px_-32px_rgba(52,211,153,0.24)]">
+            <div className="pf-hero-alert-card pf-hero-alert-card-3 rounded-[30px] border border-emerald-300/15 bg-white/5 p-4 shadow-[0_24px_50px_-32px_rgba(52,211,153,0.24)]">
               <div className="flex items-start justify-between gap-4">
                 <div>
                   <p className="text-[11px] uppercase tracking-[0.26em] text-emerald-200">Pozytywne</p>
@@ -630,7 +634,7 @@ function HeroPhoneMockup() {
         </div>
 
         <div className="mt-5 px-6 pb-6">
-          <div className="mx-auto h-1.5 w-28 rounded-full bg-white/10" />
+          <div className="pf-hero-home-indicator mx-auto h-1.5 w-28 rounded-full bg-white/10" />
         </div>
       </div>
     </div>
