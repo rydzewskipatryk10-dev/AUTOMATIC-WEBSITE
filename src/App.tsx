@@ -858,7 +858,7 @@ function Calculator() {
     <section id="calculator" className="scroll-mt-24 relative px-6 py-12 bg-[#08111f] min-h-screen overflow-hidden flex items-center">
       <div className="pointer-events-none absolute left-1/2 top-1/2 h-[520px] w-[520px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-fuchsia-500/5 blur-[120px]" />
       
-      <div className="relative mx-auto max-w-6xl">
+      <div className="relative mx-auto w-full max-w-6xl">
         <p className="text-[11px] font-semibold uppercase tracking-[0.35em] text-cyan-400">
           {t.calc.eyebrow}
         </p>
@@ -868,7 +868,7 @@ function Calculator() {
 
         <div className="mt-6 grid gap-4 lg:grid-cols-2">
           {/* Calculator */}
-          <div className="rounded-2xl border border-white/15 bg-[#0d1a2e] p-4">
+          <div className="min-w-0 rounded-2xl border border-white/15 bg-[#0d1a2e] p-4">
             <h3 className="text-base font-semibold text-white">
               {t.calc.calculatorTitle}
             </h3>
@@ -935,7 +935,7 @@ function Calculator() {
           </div>
 
           {/* Diagnosis */}
-          <div className="rounded-2xl border border-white/15 bg-[#0d1a2e] p-5">
+          <div className="min-w-0 rounded-2xl border border-white/15 bg-[#0d1a2e] p-5">
             {!showResult ? (
               <>
                 <div className="flex items-center justify-between">
@@ -973,10 +973,10 @@ function Calculator() {
                       <button
                         key={opt.value}
                         onClick={() => handleAnswer(questions[step].key, opt.value)}
-                        className="flex items-center justify-between rounded-xl border border-white/10 bg-[#0a1628] px-4 py-3 text-left text-sm font-medium text-gray-200 transition hover:border-cyan-400/40 hover:text-white"
+                        className="flex w-full min-w-0 items-center justify-between rounded-xl border border-white/10 bg-[#0a1628] px-4 py-3 text-left text-sm font-medium text-gray-200 transition hover:border-cyan-400/40 hover:text-white"
                       >
-                        {opt.label}
-                        <ArrowRight className="h-4 w-4 text-gray-500" />
+                        <span className="min-w-0 pr-3">{opt.label}</span>
+                        <ArrowRight className="h-4 w-4 flex-shrink-0 text-gray-500" />
                       </button>
                     ))}
                   </div>
