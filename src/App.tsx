@@ -1177,8 +1177,8 @@ function Implementation() {
 function MiniCta() {
   const { t } = useI18n();
   return (
-    <section className="bg-[#101c31] px-4 py-10 sm:px-6 sm:py-16">
-      <div className="mx-auto max-w-4xl">
+    <section className="bg-[#101c31] px-4 py-10 sm:px-6 sm:py-16 lg:py-20">
+      <div className="mx-auto max-w-5xl">
         <div className="text-center">
           <p className="mt-4 text-sm font-semibold uppercase tracking-[0.18em] text-cyan-400">
             {t.miniCta.eyebrow}
@@ -1191,7 +1191,7 @@ function MiniCta() {
           </p>
         </div>
 
-        <div className="mx-auto mt-5 grid max-w-2xl grid-cols-3 gap-2 sm:mt-6 sm:max-w-3xl sm:gap-3">
+        <div className="mx-auto mt-5 grid max-w-2xl grid-cols-3 gap-2 sm:mt-6 sm:max-w-2xl sm:gap-2.5 lg:max-w-[42rem]">
           {[
             { icon: Clock, value: '15 min', label: t.miniCta.feature1 },
             { icon: ShieldCheck, value: t.miniCta.feature2Value, label: t.miniCta.feature2 },
@@ -1199,11 +1199,11 @@ function MiniCta() {
           ].map((item, i) => (
             <div
               key={i}
-              className="rounded-lg border border-white/10 bg-slate-900/80 px-2 py-2 text-center shadow-lg shadow-black/20 sm:rounded-xl sm:px-3 sm:py-2.5"
+              className="rounded-lg border border-white/10 bg-slate-900/80 px-2 py-2 text-center shadow-lg shadow-black/20 sm:rounded-xl sm:px-2.5 sm:py-2"
             >
-              <item.icon className="mx-auto h-4 w-4 text-cyan-400 sm:h-5 sm:w-5" strokeWidth={1.5} />
-              <p className="mt-1 text-xs font-semibold text-white sm:mt-1.5 sm:text-base">{item.value}</p>
-              <p className="mt-0.5 text-[11px] leading-tight text-gray-400 sm:text-sm">{item.label}</p>
+              <item.icon className="mx-auto h-4 w-4 text-cyan-400 sm:h-[18px] sm:w-[18px]" strokeWidth={1.5} />
+              <p className="mt-1 text-xs font-semibold text-white sm:mt-1 sm:text-sm">{item.value}</p>
+              <p className="mt-0.5 text-[11px] leading-tight text-gray-400 sm:text-xs">{item.label}</p>
             </div>
           ))}
         </div>
