@@ -1141,27 +1141,29 @@ function Implementation() {
   const { t } = useI18n();
   const icons = [Wrench, Rocket, ShieldCheck];
   return (
-    <section id="implementation" className="scroll-mt-24 bg-[#0d1a2e] px-6 py-24">
+    <section id="implementation" className="scroll-mt-24 bg-[#0d1a2e] px-4 py-12 sm:px-6 sm:py-24">
       <div className="mx-auto max-w-5xl">
-        <p className="text-xs font-semibold uppercase tracking-widest text-cyan-400">
+        <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-cyan-400 sm:text-xs sm:tracking-widest">
           {t.implementation.eyebrow}
         </p>
-        <h2 className="mt-4 text-3xl font-bold text-white sm:text-4xl">
+        <h2 className="mt-3 text-2xl font-bold leading-tight text-white sm:mt-4 sm:text-4xl">
           {t.implementation.title}
         </h2>
-        <div className="mt-12 grid gap-6 md:grid-cols-3">
+        <div className="mt-6 grid gap-3 sm:mt-12 sm:gap-6 md:grid-cols-3">
           {t.implementation.phases.map((phase, i) => {
             const Icon = icons[i];
             return (
               <div
                 key={phase.title}
-                className="rounded-xl border border-white/10 bg-[#0d1a2e] p-6 transition hover:border-cyan-400/30"
+                className="rounded-lg border border-white/10 bg-[#0d1a2e] p-3.5 transition hover:border-cyan-400/30 sm:rounded-xl sm:p-6"
               >
-                <Icon className="h-6 w-6 text-cyan-400" strokeWidth={1.5} />
-                <h3 className="mt-4 text-base font-semibold text-white">
+                <Icon className="h-5 w-5 text-cyan-400 sm:h-6 sm:w-6" strokeWidth={1.5} />
+                <h3 className="mt-2.5 text-sm font-semibold text-white sm:mt-4 sm:text-base">
                   {phase.title}
                 </h3>
-                <p className="mt-2 text-sm text-gray-300">{phase.text}</p>
+                <p className="mt-1.5 text-xs leading-snug text-gray-300 sm:mt-2 sm:text-sm sm:leading-relaxed">
+                  {phase.text}
+                </p>
               </div>
             );
           })}
