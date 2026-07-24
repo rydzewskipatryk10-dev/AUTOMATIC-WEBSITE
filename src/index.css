@@ -269,11 +269,70 @@ body {
   filter: drop-shadow(0 0 16px rgba(34, 211, 238, 0.7)) drop-shadow(0 0 28px rgba(14, 165, 233, 0.38));
 }
 
+@keyframes pfImplIconSetup {
+  0%,
+  100% {
+    transform: translateY(0) rotate(0deg);
+    filter: drop-shadow(0 0 6px rgba(34, 211, 238, 0.3));
+  }
+  50% {
+    transform: translateY(-2px) rotate(-8deg);
+    filter: drop-shadow(0 0 14px rgba(34, 211, 238, 0.58));
+  }
+}
+
+@keyframes pfImplIconLaunch {
+  0%,
+  100% {
+    transform: translateY(0) scale(1);
+    filter: drop-shadow(0 0 7px rgba(14, 165, 233, 0.34));
+  }
+  35% {
+    transform: translateY(-4px) scale(1.08);
+    filter: drop-shadow(0 0 16px rgba(14, 165, 233, 0.6));
+  }
+  70% {
+    transform: translateY(-1px) scale(1.03);
+    filter: drop-shadow(0 0 10px rgba(34, 211, 238, 0.44));
+  }
+}
+
+@keyframes pfImplIconProtect {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.9;
+    filter: drop-shadow(0 0 6px rgba(34, 211, 238, 0.28));
+  }
+  50% {
+    transform: scale(1.11);
+    opacity: 1;
+    filter: drop-shadow(0 0 16px rgba(34, 211, 238, 0.62)) drop-shadow(0 0 24px rgba(14, 165, 233, 0.3));
+  }
+}
+
+.pf-implementation-icon {
+  transform-origin: center;
+}
+
+.pf-implementation-icon-setup {
+  animation: pfImplIconSetup 4.2s ease-in-out infinite;
+}
+
+.pf-implementation-icon-launch {
+  animation: pfImplIconLaunch 3.8s ease-in-out infinite;
+}
+
+.pf-implementation-icon-protect {
+  animation: pfImplIconProtect 4.6s ease-in-out infinite;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .pf-hero-word { animation: none; opacity: 1; transform: none; filter: none; }
   .pf-diagnosis-icon,
   .pf-diagnosis-check,
-  .pf-calc-icon {
+  .pf-calc-icon,
+  .pf-implementation-icon {
     animation: none;
     transform: none;
     filter: none;

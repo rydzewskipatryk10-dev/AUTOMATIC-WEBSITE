@@ -1144,6 +1144,7 @@ function BeforeAfter() {
 function Implementation() {
   const { t } = useI18n();
   const icons = [Wrench, Rocket, ShieldCheck];
+  const iconAnimations = ['pf-implementation-icon-setup', 'pf-implementation-icon-launch', 'pf-implementation-icon-protect'];
   return (
     <section id="implementation" className="scroll-mt-24 bg-[#0d1a2e] px-4 py-12 sm:px-6 sm:py-24">
       <div className="mx-auto max-w-5xl">
@@ -1161,7 +1162,10 @@ function Implementation() {
                 key={phase.title}
                 className="rounded-lg border border-white/10 bg-[#0d1a2e] p-3.5 transition hover:border-cyan-400/30 sm:rounded-xl sm:p-6"
               >
-                <Icon className="h-5 w-5 text-cyan-400 sm:h-6 sm:w-6" strokeWidth={1.5} />
+                <Icon
+                  className={`pf-implementation-icon ${iconAnimations[i] ?? ''} h-6 w-6 text-cyan-400 sm:h-7 sm:w-7`}
+                  strokeWidth={1.5}
+                />
                 <h3 className="mt-2.5 text-sm font-semibold text-white sm:mt-4 sm:text-base">
                   {phase.title}
                 </h3>
