@@ -394,29 +394,29 @@ function AboutSection() {
   const { t } = useI18n();
 
   return (
-    <section id="onas" className="scroll-mt-24 bg-[#f7f7f5] px-6 py-24">
+    <section id="onas" className="scroll-mt-24 bg-[#0d1a2e] px-6 py-24">
       <div className="mx-auto max-w-3xl text-center">
-        <p className="text-xs font-semibold uppercase tracking-widest text-cyan-600">
+        <p className="text-xs font-semibold uppercase tracking-widest text-cyan-400">
           {t.about.eyebrow}
         </p>
-        <h2 className="mt-3 text-3xl font-bold text-gray-900 sm:text-4xl">
+        <h2 className="mt-3 text-3xl font-bold text-white sm:text-4xl">
           {t.about.title}
         </h2>
-        <p className="mt-6 text-lg leading-relaxed text-gray-600">
+        <p className="mt-6 text-lg leading-relaxed text-gray-300">
           {t.about.body}
         </p>
         <div className="mt-12 grid gap-6 sm:grid-cols-3">
-          <div className="rounded-2xl border border-gray-200 bg-white p-8 shadow-sm">
-            <p className="text-4xl font-bold text-cyan-600">30–50%</p>
-            <p className="mt-2 text-sm text-gray-600">{t.about.stat1}</p>
+          <div className="rounded-2xl border border-cyan-400/20 bg-slate-900/70 p-8 shadow-sm shadow-black/20">
+            <p className="text-4xl font-bold text-cyan-400">30–50%</p>
+            <p className="mt-2 text-sm text-gray-300">{t.about.stat1}</p>
           </div>
-          <div className="rounded-2xl border border-gray-200 bg-white p-8 shadow-sm">
-            <p className="text-4xl font-bold text-cyan-600">24/7</p>
-            <p className="mt-2 text-sm text-gray-600">{t.about.stat2}</p>
+          <div className="rounded-2xl border border-cyan-400/20 bg-slate-900/70 p-8 shadow-sm shadow-black/20">
+            <p className="text-4xl font-bold text-cyan-400">24/7</p>
+            <p className="mt-2 text-sm text-gray-300">{t.about.stat2}</p>
           </div>
-          <div className="rounded-2xl border border-gray-200 bg-white p-8 shadow-sm">
-            <p className="text-4xl font-bold text-cyan-600">0 zł</p>
-            <p className="mt-2 text-sm text-gray-600">{t.about.stat3}</p>
+          <div className="rounded-2xl border border-cyan-400/20 bg-slate-900/70 p-8 shadow-sm shadow-black/20">
+            <p className="text-4xl font-bold text-cyan-400">0 zł</p>
+            <p className="mt-2 text-sm text-gray-300">{t.about.stat3}</p>
           </div>
         </div>
       </div>
