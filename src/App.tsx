@@ -685,10 +685,10 @@ function Hero() {
           </p>
           <a
             href="#diagnoza"
-            className="pf-hero-fade-in-delayed-2 inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-sky-500 to-cyan-400 px-8 py-4 text-base font-bold text-black shadow-xl shadow-cyan-500/40 transition hover:bg-cyan-400"
+            className="pf-hero-fade-in-delayed-2 inline-flex items-center gap-1.5 rounded-full bg-gradient-to-r from-sky-500 to-cyan-400 px-6 py-3 text-base font-bold text-black shadow-xl shadow-cyan-500/40 transition hover:bg-cyan-400"
           >
             {t.hero.cta}
-            <ArrowRight className="h-5 w-5" />
+            <ArrowRight className="h-4 w-4" />
           </a>
         </div>
 
