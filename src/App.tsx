@@ -598,9 +598,6 @@ function HeroPhoneMockup() {
               <p className="text-[11px] uppercase tracking-[0.32em] text-slate-500">Dzisiejsze Alerty</p>
               <p className="mt-2 text-sm font-semibold text-white">Panel kliniki stomatologicznej</p>
             </div>
-            <div className="rounded-full border border-white/10 bg-white/5 px-3 py-2 text-xs font-semibold uppercase tracking-[0.24em] text-cyan-200">
-              5 alertów
-            </div>
           </div>
 
           <div className="space-y-4">
