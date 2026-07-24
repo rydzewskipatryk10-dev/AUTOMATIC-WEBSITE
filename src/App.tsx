@@ -1191,7 +1191,7 @@ function MiniCta() {
           </p>
         </div>
 
-        <div className="mx-auto mt-6 grid max-w-3xl gap-3 sm:grid-cols-3">
+        <div className="mx-auto mt-5 grid max-w-2xl grid-cols-3 gap-2 sm:mt-6 sm:max-w-3xl sm:gap-3">
           {[
             { icon: Clock, value: '15 min', label: t.miniCta.feature1 },
             { icon: ShieldCheck, value: t.miniCta.feature2Value, label: t.miniCta.feature2 },
@@ -1199,11 +1199,11 @@ function MiniCta() {
           ].map((item, i) => (
             <div
               key={i}
-              className="rounded-xl border border-white/10 bg-slate-900/80 px-3 py-2.5 text-center shadow-lg shadow-black/20"
+              className="rounded-lg border border-white/10 bg-slate-900/80 px-2 py-2 text-center shadow-lg shadow-black/20 sm:rounded-xl sm:px-3 sm:py-2.5"
             >
-              <item.icon className="mx-auto h-5 w-5 text-cyan-400" strokeWidth={1.5} />
-              <p className="mt-1.5 text-sm font-semibold text-white sm:text-base">{item.value}</p>
-              <p className="mt-0.5 text-xs text-gray-400 sm:text-sm">{item.label}</p>
+              <item.icon className="mx-auto h-4 w-4 text-cyan-400 sm:h-5 sm:w-5" strokeWidth={1.5} />
+              <p className="mt-1 text-xs font-semibold text-white sm:mt-1.5 sm:text-base">{item.value}</p>
+              <p className="mt-0.5 text-[11px] leading-tight text-gray-400 sm:text-sm">{item.label}</p>
             </div>
           ))}
         </div>
