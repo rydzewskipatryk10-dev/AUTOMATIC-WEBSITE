@@ -861,8 +861,8 @@ function Calculator() {
             <div className="mt-5 space-y-5">
               <div>
                 <div className="flex items-center justify-between">
-                  <label className="flex items-center gap-2 text-sm font-medium text-gray-100">
-                    <CalendarClock className="h-4 w-4 text-cyan-400" />
+                  <label className="pf-calc-label group/calc-label flex items-center gap-2 text-sm font-medium text-gray-100">
+                    <CalendarClock className="pf-calc-icon h-4 w-4 text-cyan-400" />
                     {t.calc.cancellations}
                   </label>
                   <span className="text-base font-bold text-cyan-300">{cancellations}</span>
@@ -872,8 +872,8 @@ function Calculator() {
 
               <div>
                 <div className="flex items-center justify-between">
-                  <label className="flex items-center gap-2 text-sm font-medium text-gray-100">
-                    <Users className="h-4 w-4 text-cyan-400" />
+                  <label className="pf-calc-label group/calc-label flex items-center gap-2 text-sm font-medium text-gray-100">
+                    <Users className="pf-calc-icon h-4 w-4 text-cyan-400" />
                     {t.calc.staff}
                   </label>
                   <span className="text-base font-bold text-cyan-300">{staff}</span>
@@ -984,11 +984,11 @@ function Calculator() {
 
                 <div className="mt-6 space-y-3">
                   {diagnosisLevel.recs.map((goal, i) => (
-                    <div key={goal} className="flex items-center gap-3">
+                    <div key={goal} className="group/diagnosis-rec flex items-center gap-3">
                       <CheckCircle
-                        className="pf-diagnosis-check h-5 w-5 flex-shrink-0 text-cyan-400"
+                        className="pf-diagnosis-check h-5 w-5 flex-shrink-0 text-cyan-400 transition-transform duration-200 group-hover/diagnosis-rec:scale-110"
                         strokeWidth={1.5}
-                        style={{ animationDelay: `${i * 90}ms` }}
+                        style={{ animationDelay: `${i * 90}ms, ${i * 90 + 500}ms` }}
                       />
                       <span className="text-sm text-gray-200">{goal}</span>
                     </div>
@@ -1001,7 +1001,7 @@ function Calculator() {
                     className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-sky-500 to-cyan-400 px-5 py-3 text-sm font-bold text-black shadow-xl shadow-cyan-500/40 transition hover:bg-cyan-400"
                   >
                     {t.calc.bookCta}
-                    <ArrowRight className="h-5 w-5" />
+                    <ArrowRight className="pf-diagnosis-icon h-5 w-5" />
                   </a>
                   <p className="mt-3 text-xs text-gray-400">{t.calc.noCommit}</p>
                 </div>
