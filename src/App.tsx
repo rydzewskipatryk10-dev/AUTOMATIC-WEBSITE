@@ -940,7 +940,7 @@ function Calculator() {
                   <div className="flex items-center gap-2 text-cyan-400">
                     {(() => {
                       const Icon = questions[step].icon;
-                      return <Icon className="h-5 w-5" strokeWidth={1.5} />;
+                      return <Icon key={`diagnosis-icon-${step}`} className="pf-diagnosis-icon h-5 w-5" strokeWidth={1.5} />;
                     })()}
                     <span className="text-[11px] font-semibold uppercase tracking-widest">
                       {t.calc.question} {step + 1}
@@ -955,10 +955,10 @@ function Calculator() {
                       <button
                         key={opt.value}
                         onClick={() => handleAnswer(questions[step].key, opt.value)}
-                        className="flex w-full min-w-0 items-center justify-between rounded-xl border border-white/10 bg-[#0a1628] px-4 py-3 text-left text-sm font-medium text-gray-200 transition hover:border-cyan-400/40 hover:text-white"
+                        className="group/diagnosis-option flex w-full min-w-0 items-center justify-between rounded-xl border border-white/10 bg-[#0a1628] px-4 py-3 text-left text-sm font-medium text-gray-200 transition hover:border-cyan-400/40 hover:text-white"
                       >
                         <span className="min-w-0 pr-3">{opt.label}</span>
-                        <ArrowRight className="h-4 w-4 flex-shrink-0 text-gray-500" />
+                        <ArrowRight className="h-4 w-4 flex-shrink-0 text-gray-500 transition-transform duration-200 group-hover/diagnosis-option:translate-x-1 group-hover/diagnosis-option:text-cyan-300" />
                       </button>
                     ))}
                   </div>
@@ -967,7 +967,7 @@ function Calculator() {
             ) : (
               <div className="flex h-full flex-col">
                 <div className="flex items-center gap-2 text-cyan-400">
-                  <Sparkles className="h-5 w-5" />
+                  <Sparkles className="pf-diagnosis-icon h-5 w-5" />
                   <span className="text-xs font-semibold uppercase tracking-widest">
                     {t.calc.resultEyebrow}
                   </span>
@@ -983,9 +983,13 @@ function Calculator() {
                 </p>
 
                 <div className="mt-6 space-y-3">
-                  {diagnosisLevel.recs.map((goal) => (
+                  {diagnosisLevel.recs.map((goal, i) => (
                     <div key={goal} className="flex items-center gap-3">
-                      <CheckCircle className="h-5 w-5 flex-shrink-0 text-cyan-400" strokeWidth={1.5} />
+                      <CheckCircle
+                        className="pf-diagnosis-check h-5 w-5 flex-shrink-0 text-cyan-400"
+                        strokeWidth={1.5}
+                        style={{ animationDelay: `${i * 90}ms` }}
+                      />
                       <span className="text-sm text-gray-200">{goal}</span>
                     </div>
                   ))}
