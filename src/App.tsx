@@ -834,18 +834,6 @@ function Calculator() {
     const newAnswers = { ...answers, [key]: value };
     setAnswers(newAnswers);
 
-    if (key === 'cancellations') {
-      if (value === '0-5') setCancellations(3);
-      else if (value === '6-15') setCancellations(10);
-      else if (value === '16-25') setCancellations(20);
-      else if (value === '>25') setCancellations(28);
-    }
-    if (key === 'emptySlots') {
-      if (value === '<5') setCancellations((c) => Math.max(c, 10));
-      else if (value === '5-10') setCancellations((c) => Math.max(c, 16));
-      else if (value === '>10') setCancellations((c) => Math.max(c, 24));
-    }
-
     if (step < questions.length - 1) {
       setStep(step + 1);
     } else {
