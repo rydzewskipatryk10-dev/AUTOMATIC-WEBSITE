@@ -325,9 +325,6 @@ function Nav() {
           <a href="#onas" className="transition hover:text-white">
             {t.nav.about}
           </a>
-          <a href="#faq" className="transition hover:text-white">
-            {t.nav.faq}
-          </a>
         </div>
         <div className="flex items-center gap-2">
           <LanguageToggle />
@@ -366,13 +363,6 @@ function Nav() {
             className="rounded-2xl px-3 py-2 transition hover:bg-white/5"
           >
             {t.nav.about}
-          </a>
-          <a
-            href="#faq"
-            onClick={() => setMobileOpen(false)}
-            className="rounded-2xl px-3 py-2 transition hover:bg-white/5"
-          >
-            {t.nav.faq}
           </a>
           <a
             href="#book"
