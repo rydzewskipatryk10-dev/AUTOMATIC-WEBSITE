@@ -1199,11 +1199,11 @@ function MiniCta() {
           ].map((item, i) => (
             <div
               key={i}
-              className="rounded-2xl border border-white/10 bg-slate-900/80 p-3 text-center shadow-lg shadow-black/20"
+              className="rounded-xl border border-white/10 bg-slate-900/80 px-3 py-2.5 text-center shadow-lg shadow-black/20"
             >
-              <item.icon className="mx-auto h-6 w-6 text-cyan-400" strokeWidth={1.5} />
-              <p className="mt-2 text-base font-semibold text-white sm:text-lg">{item.value}</p>
-              <p className="mt-1 text-sm text-gray-400">{item.label}</p>
+              <item.icon className="mx-auto h-5 w-5 text-cyan-400" strokeWidth={1.5} />
+              <p className="mt-1.5 text-sm font-semibold text-white sm:text-base">{item.value}</p>
+              <p className="mt-0.5 text-xs text-gray-400 sm:text-sm">{item.label}</p>
             </div>
           ))}
         </div>
