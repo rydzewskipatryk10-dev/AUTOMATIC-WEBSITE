@@ -294,7 +294,7 @@ function Nav() {
         visible ? 'translate-y-0' : '-translate-y-full'
       }`}
     >
-      <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
+      <div className="mx-auto grid max-w-6xl grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-4 px-6 py-4 lg:gap-6">
         <div className="flex items-center gap-3">
           <button
             type="button"
@@ -315,7 +315,7 @@ function Nav() {
             />
           </a>
         </div>
-        <div className="hidden lg:flex items-center gap-8 text-sm font-semibold text-gray-200">
+        <div className="hidden lg:flex items-center justify-center gap-8 text-sm font-semibold text-gray-200">
           <a href="#calculator" className="transition hover:text-white">
             {t.nav.calc}
           </a>
@@ -326,14 +326,8 @@ function Nav() {
             {t.nav.about}
           </a>
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center justify-self-end gap-2">
           <LanguageToggle />
-          <a
-            href="#book"
-            className="hidden rounded-full bg-gradient-to-r from-sky-500 to-cyan-400 px-4 py-2 text-sm font-bold text-black shadow-lg shadow-cyan-500/40 transition hover:bg-cyan-400 lg:inline-flex"
-          >
-            {t.nav.book}
-          </a>
         </div>
       </div>
 
@@ -689,7 +683,7 @@ function Hero() {
           <a
             href="#calculator"
             onClick={scrollToDiagnosisCenter}
-            className="pf-hero-fade-in-delayed-2 inline-flex items-center gap-1.5 rounded-full bg-gradient-to-r from-sky-500 to-cyan-400 px-4 py-3 text-base font-bold text-black shadow-xl shadow-cyan-500/40 transition hover:bg-cyan-400"
+            className="pf-hero-fade-in-delayed-2 inline-flex self-start items-center gap-1.5 rounded-full bg-gradient-to-r from-sky-500 to-cyan-400 px-4 py-3 text-base font-bold text-black shadow-xl shadow-cyan-500/40 transition hover:bg-cyan-400"
           >
             {t.hero.cta}
             <ArrowRight className="h-4 w-4" />
