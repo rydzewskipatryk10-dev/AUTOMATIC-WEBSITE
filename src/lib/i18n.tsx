@@ -26,7 +26,7 @@ const translations = {
     hero: {
       title: 'Pełny grafik. Zero pustych foteli.',
       subtitle: 'Koniec z odwołanymi wizytami i chaosem w recepcji. Wdrożymy inteligentną automatyzację i AI skrojoną pod Twoją klinikę stomatologiczną, która zapełni grafik 24/7.',
-      cta: 'Sprawdź, ile możesz odzyskać',
+      cta: 'Sprawdź, ile odzyskasz',
       yourClinic: 'Twoja klinika',
       calendarLabel: 'Kalendarz — 9:00–18:00',
       booked: 'Obsadzone',
