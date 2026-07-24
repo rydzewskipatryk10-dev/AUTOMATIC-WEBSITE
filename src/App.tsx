@@ -659,7 +659,7 @@ function Hero() {
       <img
         src="/logo-fullschedule.svg"
         alt="FullSchedule"
-        className="absolute left-6 top-6 z-20 h-10 w-auto sm:h-12 lg:left-10 lg:top-8"
+        className="absolute left-8 top-6 z-20 h-9 w-auto sm:h-11 lg:left-12 lg:top-8"
       />
       <div className="pointer-events-none absolute right-0 top-0 -z-10 h-[520px] w-[520px] rounded-full bg-purple-500/10 blur-3xl" />
       <div className="pointer-events-none absolute -left-16 bottom-0 -z-10 h-[340px] w-[340px] rounded-full bg-pink-500/5 blur-3xl" />
