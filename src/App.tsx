@@ -31,6 +31,7 @@ import {
 } from 'lucide-react';
 import { I18nProvider, useI18n, type Lang } from './lib/i18n';
 import { LeadForm } from './lib/LeadForm';
+import { CalendarDaysIcon } from './lib/CalendarDaysIcon';
 
 // ---------------------------------------------------------------------------
 // Scroll-reveal hook — fades children in when they enter the viewport
@@ -862,7 +863,7 @@ function Calculator() {
               <div>
                 <div className="flex items-center justify-between">
                   <label className="flex items-center gap-2 text-sm font-medium text-gray-100">
-                    <CalendarClock className="h-4 w-4 text-cyan-400" />
+                    <CalendarDaysIcon className="text-cyan-400" size={16} />
                     {t.calc.cancellations}
                   </label>
                   <span className="text-base font-bold text-cyan-300">{cancellations}</span>
