@@ -683,7 +683,7 @@ function Hero() {
           <a
             href="#calculator"
             onClick={scrollToDiagnosisCenter}
-            className="pf-hero-fade-in-delayed-2 inline-flex self-start items-center gap-1.5 rounded-full bg-gradient-to-r from-sky-500 to-cyan-400 px-4 py-3 text-base font-bold text-black shadow-xl shadow-cyan-500/40 transition hover:bg-cyan-400"
+            className="pf-hero-fade-in-delayed-2 inline-flex self-start items-center gap-2 rounded-full bg-gradient-to-r from-sky-500 to-cyan-400 px-6 py-4 text-[1.05rem] font-bold text-black shadow-xl shadow-cyan-500/40 transition hover:bg-cyan-400"
           >
             {t.hero.cta}
             <ArrowRight className="h-4 w-4" />
