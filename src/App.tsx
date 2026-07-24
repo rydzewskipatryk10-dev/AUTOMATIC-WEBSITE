@@ -328,6 +328,12 @@ function Nav() {
         </div>
         <div className="flex items-center justify-self-end gap-2">
           <LanguageToggle />
+          <a
+            href="#book"
+            className="hidden rounded-full bg-gradient-to-r from-sky-500 to-cyan-400 px-4 py-2 text-sm font-bold text-black shadow-lg shadow-cyan-500/40 transition hover:bg-cyan-400 lg:inline-flex"
+          >
+            {t.nav.book}
+          </a>
         </div>
       </div>
 
