@@ -1181,7 +1181,7 @@ function Implementation() {
 function MiniCta() {
   const { t } = useI18n();
   return (
-    <section className="bg-[#13243f] px-4 py-10 sm:px-6 sm:py-16">
+    <section className="bg-[#101c31] px-4 py-10 sm:px-6 sm:py-16">
       <div className="mx-auto max-w-4xl">
         <div className="text-center">
           <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-cyan-400/10 ring-1 ring-cyan-400/20">
@@ -1206,7 +1206,7 @@ function MiniCta() {
           ].map((item, i) => (
             <div
               key={i}
-              className="rounded-2xl border border-white/10 bg-slate-900/70 p-3 text-center shadow-lg shadow-black/20"
+              className="rounded-2xl border border-white/10 bg-slate-900/80 p-3 text-center shadow-lg shadow-black/20"
             >
               <item.icon className="mx-auto h-6 w-6 text-cyan-400" strokeWidth={1.5} />
               <p className="mt-2 text-base font-semibold text-white sm:text-lg">{item.value}</p>
