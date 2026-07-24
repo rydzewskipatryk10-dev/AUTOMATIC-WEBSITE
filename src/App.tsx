@@ -1180,13 +1180,13 @@ function MiniCta() {
     <section className="bg-[#101c31] px-4 py-10 sm:px-6 sm:py-16 lg:px-8 lg:py-24">
       <div className="mx-auto max-w-6xl">
         <div className="text-center">
-          <p className="mt-4 text-sm font-semibold uppercase tracking-[0.2em] text-cyan-400 lg:text-base">
+          <p className="mt-4 text-sm font-semibold uppercase tracking-[0.18em] text-cyan-400 lg:text-sm">
             {t.miniCta.eyebrow}
           </p>
-          <h3 className="mx-auto mt-3 max-w-3xl text-3xl font-bold leading-[1.15] text-white sm:text-4xl lg:text-[3.6rem] lg:leading-[1.18]">
+          <h3 className="mx-auto mt-3 max-w-3xl text-3xl font-bold leading-[1.15] text-white sm:text-4xl lg:text-[3.1rem] lg:leading-[1.14]">
             {t.miniCta.title}
           </h3>
-          <p className="mx-auto mt-4 max-w-2xl text-base text-gray-300 sm:text-lg lg:text-[1.45rem] lg:leading-10">
+          <p className="mx-auto mt-4 max-w-2xl text-base text-gray-300 sm:text-lg lg:text-[1.2rem] lg:leading-8">
             {t.miniCta.subtitle}
           </p>
         </div>
@@ -1211,12 +1211,12 @@ function MiniCta() {
         <div className="mt-6 text-center">
           <a
             href="#book"
-            className="group inline-flex items-center gap-3 rounded-xl bg-cyan-400 px-6 py-3 text-base font-bold text-slate-950 shadow-lg shadow-cyan-400/20 transition hover:bg-cyan-300 sm:px-10 sm:py-4 lg:px-12 lg:py-4.5 lg:text-[1.65rem]"
+            className="group inline-flex items-center gap-3 rounded-xl bg-cyan-400 px-6 py-3 text-base font-bold text-slate-950 shadow-lg shadow-cyan-400/20 transition hover:bg-cyan-300 sm:px-10 sm:py-4 lg:px-11 lg:py-4 lg:text-[1.35rem]"
           >
             {t.miniCta.cta}
             <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1 lg:h-6 lg:w-6" />
           </a>
-          <p className="mt-4 text-sm text-gray-400 lg:text-lg">{t.miniCta.noCommit}</p>
+          <p className="mt-4 text-sm text-gray-400 lg:text-base">{t.miniCta.noCommit}</p>
         </div>
       </div>
     </section>
