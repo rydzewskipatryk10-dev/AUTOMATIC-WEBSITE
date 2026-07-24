@@ -1180,13 +1180,13 @@ function MiniCta() {
     <section className="bg-[#101c31] px-4 py-10 sm:px-6 sm:py-16 lg:px-8 lg:py-24">
       <div className="mx-auto max-w-6xl">
         <div className="text-center">
-          <p className="mt-4 text-sm font-semibold uppercase tracking-[0.18em] text-cyan-400">
+          <p className="mt-4 text-sm font-semibold uppercase tracking-[0.2em] text-cyan-400 lg:text-base">
             {t.miniCta.eyebrow}
           </p>
-          <h3 className="mx-auto mt-3 max-w-3xl text-3xl font-bold leading-tight text-white sm:text-4xl lg:text-5xl">
+          <h3 className="mx-auto mt-3 max-w-3xl text-3xl font-bold leading-tight text-white sm:text-4xl lg:text-[3.6rem]">
             {t.miniCta.title}
           </h3>
-          <p className="mx-auto mt-3 max-w-2xl text-base text-gray-300 sm:text-lg lg:text-xl">
+          <p className="mx-auto mt-4 max-w-2xl text-base text-gray-300 sm:text-lg lg:text-[1.45rem] lg:leading-10">
             {t.miniCta.subtitle}
           </p>
         </div>
@@ -1199,11 +1199,11 @@ function MiniCta() {
           ].map((item, i) => (
             <div
               key={i}
-              className="rounded-lg border border-white/10 bg-slate-900/80 px-2 py-2 text-center shadow-lg shadow-black/20 sm:rounded-xl sm:px-2.5 sm:py-2 lg:px-2 lg:py-1.5"
+              className="rounded-lg border border-white/10 bg-slate-900/80 px-2 py-2 text-center shadow-lg shadow-black/20 sm:rounded-xl sm:px-2.5 sm:py-2 lg:px-2.5 lg:py-2"
             >
-              <item.icon className="mx-auto h-4 w-4 text-cyan-400 lg:h-3.5 lg:w-3.5" strokeWidth={1.5} />
-              <p className="mt-1 text-xs font-semibold text-white lg:text-[13px]">{item.value}</p>
-              <p className="mt-0.5 text-[11px] leading-tight text-gray-400 lg:text-[10px]">{item.label}</p>
+              <item.icon className="mx-auto h-4 w-4 text-cyan-400 lg:h-4 lg:w-4" strokeWidth={1.5} />
+              <p className="mt-1 text-xs font-semibold text-white lg:text-[15px]">{item.value}</p>
+              <p className="mt-0.5 text-[11px] leading-tight text-gray-400 lg:text-xs">{item.label}</p>
             </div>
           ))}
         </div>
@@ -1211,12 +1211,12 @@ function MiniCta() {
         <div className="mt-6 text-center">
           <a
             href="#book"
-            className="group inline-flex items-center gap-3 rounded-xl bg-cyan-400 px-6 py-3 text-base font-bold text-slate-950 shadow-lg shadow-cyan-400/20 transition hover:bg-cyan-300 sm:px-10 sm:py-4"
+            className="group inline-flex items-center gap-3 rounded-xl bg-cyan-400 px-6 py-3 text-base font-bold text-slate-950 shadow-lg shadow-cyan-400/20 transition hover:bg-cyan-300 sm:px-10 sm:py-4 lg:px-12 lg:py-4.5 lg:text-[1.65rem]"
           >
             {t.miniCta.cta}
-            <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
+            <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1 lg:h-6 lg:w-6" />
           </a>
-          <p className="mt-3 text-sm text-gray-400">{t.miniCta.noCommit}</p>
+          <p className="mt-4 text-sm text-gray-400 lg:text-lg">{t.miniCta.noCommit}</p>
         </div>
       </div>
     </section>
