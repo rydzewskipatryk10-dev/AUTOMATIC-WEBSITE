@@ -1183,7 +1183,7 @@ function MiniCta() {
           <p className="mt-4 text-sm font-semibold uppercase tracking-[0.2em] text-cyan-400 lg:text-base">
             {t.miniCta.eyebrow}
           </p>
-          <h3 className="mx-auto mt-3 max-w-3xl text-3xl font-bold leading-tight text-white sm:text-4xl lg:text-[3.6rem]">
+          <h3 className="mx-auto mt-3 max-w-3xl text-3xl font-bold leading-[1.15] text-white sm:text-4xl lg:text-[3.6rem] lg:leading-[1.18]">
             {t.miniCta.title}
           </h3>
           <p className="mx-auto mt-4 max-w-2xl text-base text-gray-300 sm:text-lg lg:text-[1.45rem] lg:leading-10">
