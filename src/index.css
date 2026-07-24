@@ -177,6 +177,38 @@ body {
   }
 }
 
+@keyframes pfIconTiltFloat {
+  0%,
+  100% {
+    transform: translateY(0) rotate(0deg) scale(1);
+  }
+  50% {
+    transform: translateY(-3px) rotate(-5deg) scale(1.08);
+  }
+}
+
+@keyframes pfIconSparkBreath {
+  0%,
+  100% {
+    transform: scale(1) rotate(0deg);
+    filter: drop-shadow(0 0 8px rgba(34, 211, 238, 0.34));
+  }
+  50% {
+    transform: scale(1.14) rotate(8deg);
+    filter: drop-shadow(0 0 16px rgba(34, 211, 238, 0.66)) drop-shadow(0 0 24px rgba(14, 165, 233, 0.34));
+  }
+}
+
+@keyframes pfIconArrowDrift {
+  0%,
+  100% {
+    transform: translateX(0) scale(1);
+  }
+  50% {
+    transform: translateX(4px) scale(1.08);
+  }
+}
+
 @keyframes pfIconPopIn {
   0% {
     opacity: 0;
@@ -194,12 +226,24 @@ body {
 
 .pf-diagnosis-icon {
   transform-origin: center;
-  animation: pfIconFloat 2.2s ease-in-out infinite, pfIconGlowPulse 1.6s ease-in-out infinite;
+  animation: pfIconFloat 4.2s ease-in-out infinite, pfIconGlowPulse 3.4s ease-in-out infinite;
+}
+
+.pf-diagnosis-icon-question {
+  animation: pfIconTiltFloat 4.9s ease-in-out infinite, pfIconGlowPulse 3.8s ease-in-out infinite;
+}
+
+.pf-diagnosis-icon-result {
+  animation: pfIconSparkBreath 5.3s ease-in-out infinite, pfIconGlowPulse 4.1s ease-in-out infinite;
+}
+
+.pf-diagnosis-icon-cta {
+  animation: pfIconArrowDrift 3.6s ease-in-out infinite, pfIconGlowPulse 3.2s ease-in-out infinite;
 }
 
 .pf-diagnosis-check {
   transform-origin: center;
-  animation: pfIconPopIn 0.45s cubic-bezier(0.34, 1.56, 0.64, 1) both, pfIconFloat 2.1s ease-in-out infinite, pfIconGlowPulse 1.4s ease-in-out infinite;
+  animation: pfIconPopIn 0.55s cubic-bezier(0.34, 1.56, 0.64, 1) both, pfIconFloat 4.8s ease-in-out infinite, pfIconGlowPulse 3.5s ease-in-out infinite;
 }
 
 .pf-calc-label {
@@ -209,7 +253,15 @@ body {
 .pf-calc-icon {
   transform-origin: center;
   transition: transform 0.24s ease, filter 0.24s ease;
-  animation: pfIconFloat 2.4s ease-in-out infinite, pfIconGlowPulse 1.7s ease-in-out infinite;
+  animation: pfIconFloat 4.6s ease-in-out infinite, pfIconGlowPulse 3.6s ease-in-out infinite;
+}
+
+.pf-calc-icon-calendar {
+  animation: pfIconTiltFloat 5.1s ease-in-out infinite, pfIconGlowPulse 3.8s ease-in-out infinite;
+}
+
+.pf-calc-icon-users {
+  animation: pfIconFloat 5.4s ease-in-out infinite, pfIconGlowPulse 4.2s ease-in-out infinite;
 }
 
 .pf-calc-label:hover .pf-calc-icon {

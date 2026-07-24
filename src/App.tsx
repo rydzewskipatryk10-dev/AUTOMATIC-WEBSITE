@@ -862,7 +862,7 @@ function Calculator() {
               <div>
                 <div className="flex items-center justify-between">
                   <label className="pf-calc-label group/calc-label flex items-center gap-2 text-sm font-medium text-gray-100">
-                    <CalendarClock className="pf-calc-icon h-4 w-4 text-cyan-400" />
+                    <CalendarClock className="pf-calc-icon pf-calc-icon-calendar h-4 w-4 text-cyan-400" />
                     {t.calc.cancellations}
                   </label>
                   <span className="text-base font-bold text-cyan-300">{cancellations}</span>
@@ -873,7 +873,7 @@ function Calculator() {
               <div>
                 <div className="flex items-center justify-between">
                   <label className="pf-calc-label group/calc-label flex items-center gap-2 text-sm font-medium text-gray-100">
-                    <Users className="pf-calc-icon h-4 w-4 text-cyan-400" />
+                    <Users className="pf-calc-icon pf-calc-icon-users h-4 w-4 text-cyan-400" />
                     {t.calc.staff}
                   </label>
                   <span className="text-base font-bold text-cyan-300">{staff}</span>
@@ -940,7 +940,7 @@ function Calculator() {
                   <div className="flex items-center gap-2 text-cyan-400">
                     {(() => {
                       const Icon = questions[step].icon;
-                      return <Icon key={`diagnosis-icon-${step}`} className="pf-diagnosis-icon h-5 w-5" strokeWidth={1.5} />;
+                      return <Icon key={`diagnosis-icon-${step}`} className="pf-diagnosis-icon pf-diagnosis-icon-question h-5 w-5" strokeWidth={1.5} />;
                     })()}
                     <span className="text-[11px] font-semibold uppercase tracking-widest">
                       {t.calc.question} {step + 1}
@@ -967,7 +967,7 @@ function Calculator() {
             ) : (
               <div className="flex h-full flex-col">
                 <div className="flex items-center gap-2 text-cyan-400">
-                  <Sparkles className="pf-diagnosis-icon h-5 w-5" />
+                  <Sparkles className="pf-diagnosis-icon pf-diagnosis-icon-result h-5 w-5" />
                   <span className="text-xs font-semibold uppercase tracking-widest">
                     {t.calc.resultEyebrow}
                   </span>
@@ -1001,7 +1001,7 @@ function Calculator() {
                     className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-sky-500 to-cyan-400 px-5 py-3 text-sm font-bold text-black shadow-xl shadow-cyan-500/40 transition hover:bg-cyan-400"
                   >
                     {t.calc.bookCta}
-                    <ArrowRight className="pf-diagnosis-icon h-5 w-5" />
+                    <ArrowRight className="pf-diagnosis-icon pf-diagnosis-icon-cta h-5 w-5" />
                   </a>
                   <p className="mt-3 text-xs text-gray-400">{t.calc.noCommit}</p>
                 </div>
